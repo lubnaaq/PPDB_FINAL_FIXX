@@ -52,4 +52,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Relationship dengan Dokumen
+     */
+    public function dokumens()
+    {
+        return $this->hasMany(Dokumen::class);
+    }
+
+    /**
+     * Relationship dengan Biodata
+     */
+    public function biodata()
+    {
+        return $this->hasOne(Biodata::class);
+    }
 }

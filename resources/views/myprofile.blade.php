@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'My Profile')
+@section('title', 'Profil Saya')
 
 @section('content')
     <div class="pc-content">
@@ -10,106 +10,153 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item" aria-current="page">User Profile</li>
+                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item" aria-current="page">Profil Saya</li>
                         </ul>
                     </div>
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h2 class="mb-0">User Profile</h2>
+                            <h2 class="mb-0">Profil Pengguna</h2>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!-- [ breadcrumb ] end -->
-        <!-- [ Main Content ] start -->
+
         <div class="row">
-            <!-- [ sample-page ] start -->
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0">
                         <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
-                                    role="tab" aria-selected="true">
-                                    <i class="ti ti-user me-2"></i>Profile
+                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="true">
+                                    <i class="ti ti-user me-2"></i>Profil
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab"
-                                    aria-selected="false" tabindex="-1">
-                                    <i class="ti ti-file-text me-2"></i>Personal
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-3" data-bs-toggle="tab" href="#profile-3" role="tab"
-                                    aria-selected="false" tabindex="-1">
-                                    <i class="ti ti-id me-2"></i>My Account
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-4" data-bs-toggle="tab" href="#profile-4" role="tab"
-                                    aria-selected="false" tabindex="-1">
-                                    <i class="ti ti-lock me-2"></i>Change Password
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-5" data-bs-toggle="tab" href="#profile-5" role="tab"
-                                    aria-selected="false" tabindex="-1">
-                                    <i class="ti ti-users me-2"></i>Role
-                                </a>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-6" data-bs-toggle="tab" href="#profile-6" role="tab"
-                                    aria-selected="false" tabindex="-1">
-                                    <i class="ti ti-settings me-2"></i>Settings
+                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab" aria-selected="false">
+                                    <i class="ti ti-file-text me-2"></i>Data Pribadi
                                 </a>
                             </li>
                         </ul>
                     </div>
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="tab-pane active show" id="profile-1" role="tabpanel"
-                                aria-labelledby="profile-tab-1">
+                            <!-- Tab 1: Profil Singkat -->
+                            <div class="tab-pane active show" id="profile-1" role="tabpanel" aria-labelledby="profile-tab-1">
                                 <div class="row">
-                                    <div class="col-lg-4 col-xxl-3">
-                                        <div class="card">
-                                            <div class="card-body position-relative">
-                                                <div class="position-absolute end-0 top-0 p-3">
-                                                    <span class="badge bg-primary">Pro</span>
+                                    <div class="col-lg-4 col-xxl-3 text-center">
+                                        <div class="card-body">
+                                            <div class="chat-avtar d-inline-flex mx-auto">
+                                                <img class="rounded-circle img-fluid wid-70" src="{{ asset('assets/images/user/avatar-1.jpg') }}" alt="User image">
+                                            </div>
+                                            <h5 class="mb-0 mt-3">{{ auth()->user()->name }}</h5>
+                                            <p class="text-muted text-sm">{{ auth()->user()->email }}</p>
+                                            <hr class="my-3">
+                                            <div class="d-inline-block">
+                                                <span class="badge bg-light-primary">{{ ucfirst(auth()->user()->role) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8 col-xxl-9">
+                                        <div class="card-body">
+                                            <h5 class="mb-3">Detail Akun</h5>
+                                            <div class="row mb-2">
+                                                <div class="col-md-4 font-weight-bold">Nama Lengkap</div>
+                                                <div class="col-md-8">{{ auth()->user()->name }}</div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-md-4 font-weight-bold">Email</div>
+                                                <div class="col-md-8">{{ auth()->user()->email }}</div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-md-4 font-weight-bold">Bergabung Sejak</div>
+                                                <div class="col-md-8">{{ optional(auth()->user()->created_at)->format('d F Y') ?? '-' }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab 2: Data Pribadi (Biodata) -->
+                            <div class="tab-pane" id="profile-2" role="tabpanel" aria-labelledby="profile-tab-2">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card-body">
+                                            <h5 class="mb-4">Informasi Biodata</h5>
+                                            @php
+                                                $biodata = auth()->user()->biodata;
+                                            @endphp
+
+                                            @if($biodata)
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">NISN</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->nisn }}</p>
+                                                    </div>
                                                 </div>
-                                                <div class="text-center mt-3">
-                                                    <div class="chat-avtar d-inline-flex mx-auto">
-                                                        <img class="rounded-circle img-fluid wid-70"
-                                                            src="../assets/images/user/avatar-5.jpg" alt="User image">
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Nama Lengkap</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->nama_lengkap }}</p>
                                                     </div>
-                                                    <h5 class="mb-0">Anshan H.</h5>
-                                                    <p class="text-muted text-sm">Project Manager</p>
-                                                    <hr class="my-3">
-                                                    <div class="row g-3">
-                                                        <div class="col-4">
-                                                            <h5 class="mb-0">86</h5>
-                                                            <small class="text-muted">Post</small>
-                                                        </div>
-                                                        <div class="col-4 border border-top-0 border-bottom-0">
-                                                            <h5 class="mb-0">40</h5>
-                                                            <small class="text-muted">Project</small>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <h5 class="mb-0">4.5K</h5>
-                                                            <small class="text-muted">Members</small>
-                                                        </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Jenis Kelamin</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
                                                     </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Tempat, Tanggal Lahir</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->tempat_lahir }}, {{ $biodata->tanggal_lahir ? \Carbon\Carbon::parse($biodata->tanggal_lahir)->format('d F Y') : '-' }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Alamat</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->alamat }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Asal Sekolah</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->instansi }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">No. Telepon</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->nomor_telepon }}</p>
+                                                    </div>
+                                                </div>
+                                            @else
+                                                <div class="alert alert-warning" role="alert">
+                                                    Anda belum mengisi biodata. Silakan isi biodata terlebih dahulu di menu <a href="{{ route('user.biodata') }}" class="alert-link">Biodata</a>.
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+{{-- 
                                                     <hr class="my-3">
                                                     <div
                                                         class="d-inline-flex align-items-center justify-content-between w-100 mb-3">
                                                         <i class="ti ti-mail"></i>
                                                         <p class="mb-0">anshan@gmail.com</p>
-                                                    </div>
-                                                    <div
-                                                        class="d-inline-flex align-items-center justify-content-between w-100 mb-3">
+                                                                <div class="text-muted d-inline-block me-2">
+                                                                    <i class="fas fa-circle f-8 me-2"></i>
+                                                                    Aktif 1 bulan lalu
                                                         <i class="ti ti-phone"></i>
                                                         <p class="mb-0">(+1-876) 8654 239 581</p>
                                                     </div>
@@ -130,12 +177,12 @@
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Skills</h5>
+                                                <h5>Keahlian</h5>
                                             </div>
                                             <div class="card-body">
                                                 <div class="row align-items-center mb-3">
                                                     <div class="col-sm-6 mb-2 mb-sm-0">
-                                                        <p class="mb-0">Junior</p>
+                                                        <p class="mb-0">Pemula</p>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="d-flex align-items-center">
@@ -153,7 +200,7 @@
                                                 </div>
                                                 <div class="row align-items-center mb-3">
                                                     <div class="col-sm-6 mb-2 mb-sm-0">
-                                                        <p class="mb-0">UX Researcher</p>
+                                                        <p class="mb-0">Peneliti UX</p>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="d-flex align-items-center">
@@ -171,7 +218,7 @@
                                                 </div>
                                                 <div class="row align-items-center mb-3">
                                                     <div class="col-sm-6 mb-2 mb-sm-0">
-                                                        <p class="mb-0">Wordpress</p>
+                                                        <p class="mb-0">WordPress</p>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="d-flex align-items-center">
@@ -207,7 +254,7 @@
                                                 </div>
                                                 <div class="row align-items-center mb-3">
                                                     <div class="col-sm-6 mb-2 mb-sm-0">
-                                                        <p class="mb-0">Graphic Design</p>
+                                                        <p class="mb-0">Desain Grafis</p>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="d-flex align-items-center">
@@ -225,7 +272,7 @@
                                                 </div>
                                                 <div class="row align-items-center">
                                                     <div class="col-sm-6 mb-2 mb-sm-0">
-                                                        <p class="mb-0">Code Style</p>
+                                                        <p class="mb-0">Gaya Kode</p>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="d-flex align-items-center">
@@ -247,42 +294,41 @@
                                     <div class="col-lg-8 col-xxl-9">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>About me</h5>
+                                                <h5>Tentang Saya</h5>
                                             </div>
                                             <div class="card-body">
-                                                <p class="mb-0">Hello, I’m Anshan Handgun Creative Graphic Designer &amp;
-                                                    User Experience Designer
-                                                    based in Website, I create digital Products a more Beautiful and usable
-                                                    place. Morbid
-                                                    accusant ipsum. Nam nec tellus at.</p>
+                                                <p class="mb-0">Halo, saya Anshan Handgun, seorang desainer grafis kreatif
+                                                    dan perancang pengalaman pengguna. Saya berfokus membuat produk digital
+                                                    yang lebih indah dan mudah digunakan. Saya percaya kolaborasi yang baik
+                                                    dan riset mendalam adalah kunci menghadirkan solusi terbaik.</p>
                                             </div>
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Personal Details</h5>
+                                                <h5>Detail Pribadi</h5>
                                             </div>
                                             <div class="card-body">
                                                 <ul class="list-group list-group-flush">
                                                     <li class="list-group-item px-0 pt-0">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Full Name</p>
+                                                                <p class="mb-1 text-muted">Nama Lengkap</p>
                                                                 <p class="mb-0">Anshan Handgun</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Father Name</p>
-                                                                <p class="mb-0">Mr. Deepen Handgun</p>
+                                                                <p class="mb-1 text-muted">Nama Ayah</p>
+                                                                <p class="mb-0">Deepen Handgun</p>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li class="list-group-item px-0">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Phone</p>
+                                                                <p class="mb-1 text-muted">Nomor Telepon</p>
                                                                 <p class="mb-0">(+1-876) 8654 239 581</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Country</p>
+                                                                <p class="mb-1 text-muted">Kota</p>
                                                                 <p class="mb-0">New York</p>
                                                             </div>
                                                         </div>
@@ -294,13 +340,13 @@
                                                                 <p class="mb-0">anshan.dh81@gmail.com</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Zip Code</p>
+                                                                <p class="mb-1 text-muted">Kode Pos</p>
                                                                 <p class="mb-0">956 754</p>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li class="list-group-item px-0 pb-0">
-                                                        <p class="mb-1 text-muted">Address</p>
+                                                        <p class="mb-1 text-muted">Alamat</p>
                                                         <p class="mb-0">Street 110-B Kalians Bag, Dewan, M.P. New York
                                                         </p>
                                                     </li>
@@ -309,18 +355,18 @@
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Education</h5>
+                                                <h5>Pendidikan</h5>
                                             </div>
                                             <div class="card-body">
                                                 <ul class="list-group list-group-flush">
                                                     <li class="list-group-item px-0 pt-0">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Master Degree (Year)</p>
+                                                                <p class="mb-1 text-muted">Magister (Tahun)</p>
                                                                 <p class="mb-0">2014-2017</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Institute</p>
+                                                                <p class="mb-1 text-muted">Institusi</p>
                                                                 <p class="mb-0">-</p>
                                                             </div>
                                                         </div>
@@ -328,11 +374,11 @@
                                                     <li class="list-group-item px-0">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Bachelor (Year)</p>
+                                                                <p class="mb-1 text-muted">Sarjana (Tahun)</p>
                                                                 <p class="mb-0">2011-2013</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Institute</p>
+                                                                <p class="mb-1 text-muted">Institusi</p>
                                                                 <p class="mb-0">Imperial College London</p>
                                                             </div>
                                                         </div>
@@ -340,11 +386,11 @@
                                                     <li class="list-group-item px-0 pb-0">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">School (Year)</p>
+                                                                <p class="mb-1 text-muted">Sekolah (Tahun)</p>
                                                                 <p class="mb-0">2009-2011</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Institute</p>
+                                                                <p class="mb-1 text-muted">Institusi</p>
                                                                 <p class="mb-0">School of London, England</p>
                                                             </div>
                                                         </div>
@@ -354,7 +400,7 @@
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Employment</h5>
+                                                <h5>Pengalaman Kerja</h5>
                                             </div>
                                             <div class="card-body">
                                                 <ul class="list-group list-group-flush">
@@ -362,39 +408,39 @@
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <p class="mb-1 text-muted">Senior</p>
-                                                                <p class="mb-0">Senior UI/UX designer (Year)</p>
+                                                                <p class="mb-0">Senior UI/UX designer (Tahun)</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Job Responsibility</p>
-                                                                <p class="mb-0">Perform task related to project manager
-                                                                    with the 100+ team under my
-                                                                    observation. Team management is key role in this
-                                                                    company.</p>
+                                                                <p class="mb-1 text-muted">Tanggung Jawab</p>
+                                                                <p class="mb-0">Menangani tugas terkait manajemen proyek
+                                                                    bersama lebih dari 100 anggota tim di bawah
+                                                                    koordinasi saya. Pengelolaan tim menjadi peran utama
+                                                                    di perusahaan ini.</p>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li class="list-group-item px-0">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Trainee cum Project Manager
-                                                                    (Year)</p>
+                                                                <p class="mb-1 text-muted">Trainee sekaligus Project Manager
+                                                                    (Tahun)</p>
                                                                 <p class="mb-0">2017-2019</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Job Responsibility</p>
-                                                                <p class="mb-0">Team management is key role in this
-                                                                    company.</p>
+                                                                <p class="mb-1 text-muted">Tanggung Jawab</p>
+                                                                <p class="mb-0">Pengelolaan tim menjadi tanggung jawab
+                                                                    utama pada posisi ini.</p>
                                                             </div>
                                                         </div>
                                                     </li>
                                                     <li class="list-group-item px-0 pb-0">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">School (Year)</p>
+                                                                <p class="mb-1 text-muted">Sekolah (Tahun)</p>
                                                                 <p class="mb-0">2009-2011</p>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <p class="mb-1 text-muted">Institute</p>
+                                                                <p class="mb-1 text-muted">Institusi</p>
                                                                 <p class="mb-0">School of London, England</p>
                                                             </div>
                                                         </div>
@@ -410,7 +456,7 @@
                                     <div class="col-lg-6">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Personal Information</h5>
+                                                <h5>Informasi Pribadi</h5>
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
@@ -420,50 +466,50 @@
                                                                 class="img-fluid">
                                                             <label for="uplfile" class="img-avtar-upload">
                                                                 <i class="ti ti-camera f-24 mb-1"></i>
-                                                                <span>Upload</span>
+                                                                <span>Unggah</span>
                                                             </label>
                                                             <input type="file" id="uplfile" class="d-none">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">First Name</label>
+                                                            <label class="form-label">Nama Depan</label>
                                                             <input type="text" class="form-control" value="Anshan">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Last Name</label>
+                                                            <label class="form-label">Nama Belakang</label>
                                                             <input type="text" class="form-control" value="Handgun">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Country</label>
+                                                            <label class="form-label">Negara</label>
                                                             <input type="text" class="form-control" value="New York">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Zip code</label>
+                                                            <label class="form-label">Kode Pos</label>
                                                             <input type="text" class="form-control" value="956754">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label">Bio</label>
-                                                            <textarea class="form-control">Hello, I’m Anshan Handgun Creative Graphic Designer &amp; User Experience Designer based in Website, I create digital Products a more Beautiful and usable place. Morbid accusant ipsum. Nam nec tellus at.</textarea>
+                                                            <textarea class="form-control">Halo, saya Anshan Handgun seorang desainer grafis kreatif dan perancang pengalaman pengguna. Saya senang mengubah ide menjadi antarmuka digital yang ramah dan efektif.</textarea>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label">Experience</label>
+                                                            <label class="form-label">Pengalaman</label>
                                                             <select class="form-control">
-                                                                <option>Startup</option>
-                                                                <option>2 year</option>
-                                                                <option>3 year</option>
-                                                                <option selected="">4 year</option>
-                                                                <option>5 year</option>
+                                                                <option>Baru Mulai</option>
+                                                                <option>2 tahun</option>
+                                                                <option>3 tahun</option>
+                                                                <option selected="">4 tahun</option>
+                                                                <option>5 tahun</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -474,7 +520,7 @@
                                     <div class="col-lg-6">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Social Network</h5>
+                                                <h5>Jejaring Sosial</h5>
                                             </div>
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center mb-2">
@@ -491,7 +537,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <button class="btn btn-link-danger">Connect</button>
+                                                        <button class="btn btn-link-danger">Hubungkan</button>
                                                     </div>
                                                 </div>
                                                 <div class="d-flex align-items-center mb-2">
@@ -525,20 +571,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                        <button class="btn btn-link-danger">Connect</button>
+                                                        <button class="btn btn-link-danger">Hubungkan</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Contact Information</h5>
+                                                <h5>Kontak</h5>
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Contact Phone</label>
+                                                            <label class="form-label">Nomor Kontak</label>
                                                             <input type="text" class="form-control"
                                                                 value="(+99) 9999 999 999">
                                                         </div>
@@ -553,14 +599,14 @@
                                                     </div>
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label">Portfolio Url</label>
+                                                            <label class="form-label">URL Portofolio</label>
                                                             <input type="text" class="form-control"
                                                                 value="https://demo.com">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label">Address</label>
+                                                            <label class="form-label">Alamat</label>
                                                             <textarea class="form-control">3379  Monroe Avenue, Fort Myers, Florida(33912)</textarea>
                                                         </div>
                                                     </div>
@@ -569,8 +615,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 text-end btn-page">
-                                        <div class="btn btn-outline-secondary">Cancel</div>
-                                        <div class="btn btn-primary">Update Profile</div>
+                                        <div class="btn btn-outline-secondary">Batal</div>
+                                        <div class="btn btn-primary">Perbarui Profil</div>
                                     </div>
                                 </div>
                             </div>
@@ -579,23 +625,23 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>General Settings</h5>
+                                                <h5>Pengaturan Umum</h5>
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Username <span
+                                                            <label class="form-label">Nama Pengguna <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 value="Ashoka_Tano_16">
-                                                            <small class="form-text text-muted">Your Profile URL:
+                                                            <small class="form-text text-muted">URL Profil Anda:
                                                                 https://pc.com/Ashoka_Tano_16</small>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Account Email <span
+                                                            <label class="form-label">Email Akun <span
                                                                     class="text-danger">*</span></label>
                                                             <input type="text" class="form-control"
                                                                 value="demo@sample.com">
@@ -603,25 +649,25 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Language</label>
+                                                            <label class="form-label">Bahasa</label>
                                                             <select class="form-control">
-                                                                <option>Washington</option>
-                                                                <option>India</option>
-                                                                <option>Africa</option>
-                                                                <option>New York</option>
-                                                                <option>Malaysia</option>
+                                                                <option>Bahasa Indonesia</option>
+                                                                <option>Bahasa Inggris</option>
+                                                                <option>Bahasa Melayu</option>
+                                                                <option>Bahasa India</option>
+                                                                <option>Bahasa Jepang</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label class="form-label">Sign in Using</label>
+                                                            <label class="form-label">Metode Masuk</label>
                                                             <select class="form-control">
-                                                                <option>Password</option>
-                                                                <option>Face Recognition</option>
-                                                                <option>Thumb Impression</option>
-                                                                <option>Key</option>
-                                                                <option>Pin</option>
+                                                                <option>Kata Sandi</option>
+                                                                <option>Pengenalan Wajah</option>
+                                                                <option>Sidik Jari</option>
+                                                                <option>Kunci Fisik</option>
+                                                                <option>PIN</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -632,16 +678,15 @@
                                     <div class="col-lg-6">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Advance Settings</h5>
+                                                <h5>Pengaturan Lanjutan</h5>
                                             </div>
                                             <div class="card-body">
                                                 <ul class="list-group list-group-flush">
                                                     <li class="list-group-item px-0 pt-0">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div>
-                                                                <p class="mb-1">Secure Browsing</p>
-                                                                <p class="text-muted text-sm mb-0">Browsing Securely (
-                                                                    https ) when it's necessary</p>
+                                                                <p class="mb-1">Penjelajahan Aman</p>
+                                                                <p class="text-muted text-sm mb-0">Aktifkan koneksi aman (https) ketika diperlukan</p>
                                                             </div>
                                                             <div class="form-check form-switch p-0">
                                                                 <input class="form-check-input h4 position-relative m-0"
@@ -652,9 +697,8 @@
                                                     <li class="list-group-item px-0">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div>
-                                                                <p class="mb-1">Login Notifications</p>
-                                                                <p class="text-muted text-sm mb-0">Notify when login
-                                                                    attempted from other place</p>
+                                                                <p class="mb-1">Notifikasi Masuk</p>
+                                                                <p class="text-muted text-sm mb-0">Beritahu saat ada percobaan masuk dari lokasi lain</p>
                                                             </div>
                                                             <div class="form-check form-switch p-0">
                                                                 <input class="form-check-input h4 position-relative m-0"
@@ -665,10 +709,8 @@
                                                     <li class="list-group-item px-0 pb-0">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div>
-                                                                <p class="mb-1">Login Approvals</p>
-                                                                <p class="text-muted text-sm mb-0">Approvals is not
-                                                                    required when login from
-                                                                    unrecognized devices.</p>
+                                                                <p class="mb-1">Persetujuan Masuk</p>
+                                                                <p class="text-muted text-sm mb-0">Tidak diperlukan persetujuan saat masuk dari perangkat yang dikenali.</p>
                                                             </div>
                                                             <div class="form-check form-switch p-0">
                                                                 <input class="form-check-input h4 position-relative m-0"
@@ -683,7 +725,7 @@
                                     <div class="col-lg-6">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Recognized Devices</h5>
+                                                <h5>Perangkat Terdaftar</h5>
                                             </div>
                                             <div class="card-body">
                                                 <ul class="list-group list-group-flush">
@@ -696,7 +738,7 @@
                                                             <div class="">
                                                                 <div class="text-success d-inline-block me-2">
                                                                     <i class="fas fa-circle f-8 me-2"></i>
-                                                                    Current Active
+                                                                    Aktif Saat Ini
                                                                 </div>
                                                                 <a href="#!" class="text-danger"><i
                                                                         class="feather icon-x-circle"></i></a>
@@ -712,7 +754,7 @@
                                                             <div class="">
                                                                 <div class="text-muted d-inline-block me-2">
                                                                     <i class="fas fa-circle f-8 me-2"></i>
-                                                                    Active 5 days ago
+                                                                    Aktif 5 hari lalu
                                                                 </div>
                                                                 <a href="#!" class="text-danger"><i
                                                                         class="feather icon-x-circle"></i></a>
@@ -728,7 +770,7 @@
                                                             <div class="">
                                                                 <div class="text-muted d-inline-block me-2">
                                                                     <i class="fas fa-circle f-8 me-2"></i>
-                                                                    Active 1 month ago
+                                                                    Aktif 1 bulan lalu
                                                                 </div>
                                                                 <a href="#!" class="text-danger"><i
                                                                         class="feather icon-x-circle"></i></a>
@@ -742,7 +784,7 @@
                                     <div class="col-12">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Active Sessions</h5>
+                                                <h5>Sesi Aktif</h5>
                                             </div>
                                             <div class="card-body">
                                                 <ul class="list-group list-group-flush">
@@ -752,7 +794,7 @@
                                                                 <p class="mb-2">Celt Desktop</p>
                                                                 <p class="mb-0 text-muted">4351 Deans Lane</p>
                                                             </div>
-                                                            <button class="btn btn-link-danger">Logout</button>
+                                                            <button class="btn btn-link-danger">Keluar</button>
                                                         </div>
                                                     </li>
                                                     <li class="list-group-item px-0 pb-0">
@@ -761,7 +803,7 @@
                                                                 <p class="mb-2">Moon Tablet</p>
                                                                 <p class="mb-0 text-muted">4185 Michigan Avenue</p>
                                                             </div>
-                                                            <button class="btn btn-link-danger">Logout</button>
+                                                            <button class="btn btn-link-danger">Keluar</button>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -769,76 +811,69 @@
                                         </div>
                                     </div>
                                     <div class="col-12 text-end">
-                                        <button class="btn btn-outline-dark ms-2">Clear</button>
-                                        <button class="btn btn-primary">Update Profile</button>
+                                        <button class="btn btn-outline-dark ms-2">Bersihkan</button>
+                                        <button class="btn btn-primary">Perbarui Profil</button>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="profile-4" role="tabpanel" aria-labelledby="profile-tab-4">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Change Password</h5>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Ubah Kata Sandi</h5>
                                     </div>
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="form-label">Old Password</label>
+                                                    <label class="form-label">Kata Sandi Lama</label>
                                                     <input type="password" class="form-control">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="form-label">New Password</label>
+                                                    <label class="form-label">Kata Sandi Baru</label>
                                                     <input type="password" class="form-control">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="form-label">Confirm Password</label>
+                                                    <label class="form-label">Konfirmasi Kata Sandi</label>
                                                     <input type="password" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
-                                                <h5>New password must contain:</h5>
+                                                <h5>Kata sandi baru harus berisi:</h5>
                                                 <ul class="list-group list-group-flush">
-                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> At least
-                                                        8 characters</li>
-                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> At least
-                                                        1 lower letter (a-z)
+                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> Minimal 8 karakter</li>
+                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> Minimal 1 huruf kecil (a-z)
                                                     </li>
-                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> At least
-                                                        1 uppercase letter
-                                                        (A-Z)</li>
-                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> At least
-                                                        1 number (0-9)</li>
-                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> At least
-                                                        1 special characters
-                                                    </li>
+                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> Minimal 1 huruf besar (A-Z)</li>
+                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> Minimal 1 angka (0-9)</li>
+                                                    <li class="list-group-item"><i class="ti ti-minus me-2"></i> Minimal 1 karakter khusus</li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card-footer text-end btn-page">
-                                        <div class="btn btn-outline-secondary">Cancel</div>
-                                        <div class="btn btn-primary">Update Profile</div>
+                                            <div class="btn btn-outline-secondary">Batal</div>
+                                            <div class="btn btn-primary">Perbarui Profil</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="tab-pane" id="profile-5" role="tabpanel" aria-labelledby="profile-tab-5">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>Invite Team Members</h5>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Undang Anggota Tim</h5>
                                     </div>
                                     <div class="card-body">
-                                        <h4>5/10 <small>members available in your plan.</small></h4>
+                                            <h4>5/10 <small>anggota masih tersedia dalam paket Anda.</small></h4>
                                         <hr class="my-3">
                                         <div class="row">
                                             <div class="col-md-8">
                                                 <div class="form-group">
-                                                    <label class="form-label">Email Address</label>
+                                                        <label class="form-label">Alamat Email</label>
                                                     <div class="row">
                                                         <div class="col">
                                                             <input type="email" class="form-control">
                                                         </div>
                                                         <div class="col-auto">
-                                                            <button class="btn btn-primary">Send</button>
+                                                                <button class="btn btn-primary">Kirim</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -850,8 +885,8 @@
                                             <table class="table mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th>MEMBER</th>
-                                                        <th>ROLE</th>
+                                                        <th>ANGGOTA</th>
+                                                        <th>PERAN</th>
                                                         <th class="text-end">STATUS</th>
                                                         <th></th>
                                                     </tr>
@@ -870,8 +905,8 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-primary">Owner</span></td>
-                                                        <td class="text-end"><span class="badge bg-success">Joined</span>
+                                                        <td><span class="badge bg-primary">Pemilik</span></td>
+                                                        <td class="text-end"><span class="badge bg-success">Bergabung</span>
                                                         </td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
@@ -890,10 +925,10 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-light-info">Manager</span></td>
+                                                        <td><span class="badge bg-light-info">Manajer</span></td>
                                                         <td class="text-end"><a href="#"
-                                                                class="btn btn-link-danger">Resend</a> <span
-                                                                class="badge bg-light-success">Invited</span></td>
+                                                            class="btn btn-link-danger">Kirim Ulang</a> <span
+                                                            class="badge bg-light-success">Diundang</span></td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
                                                                     class="ti ti-dots f-18"></i></a></td>
@@ -911,8 +946,8 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-light-warning">Staff</span></td>
-                                                        <td class="text-end"><span class="badge bg-success">Joined</span>
+                                                        <td><span class="badge bg-light-warning">Staf</span></td>
+                                                        <td class="text-end"><span class="badge bg-success">Bergabung</span>
                                                         </td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
@@ -931,8 +966,8 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-primary">Owner</span></td>
-                                                        <td class="text-end"><span class="badge bg-success">Joined</span>
+                                                        <td><span class="badge bg-primary">Pemilik</span></td>
+                                                        <td class="text-end"><span class="badge bg-success">Bergabung</span>
                                                         </td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
@@ -951,10 +986,10 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-light-info">Manager</span></td>
+                                                        <td><span class="badge bg-light-info">Manajer</span></td>
                                                         <td class="text-end"><a href="#"
-                                                                class="btn btn-link-danger">Resend</a> <span
-                                                                class="badge bg-light-success">Invited</span></td>
+                                                            class="btn btn-link-danger">Kirim Ulang</a> <span
+                                                            class="badge bg-light-success">Diundang</span></td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
                                                                     class="ti ti-dots f-18"></i></a></td>
@@ -972,8 +1007,8 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-light-warning">Staff</span></td>
-                                                        <td class="text-end"><span class="badge bg-success">Joined</span>
+                                                        <td><span class="badge bg-light-warning">Staf</span></td>
+                                                        <td class="text-end"><span class="badge bg-success">Bergabung</span>
                                                         </td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
@@ -992,8 +1027,8 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-primary">Owner</span></td>
-                                                        <td class="text-end"><span class="badge bg-success">Joined</span>
+                                                        <td><span class="badge bg-primary">Pemilik</span></td>
+                                                        <td class="text-end"><span class="badge bg-success">Bergabung</span>
                                                         </td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
@@ -1012,10 +1047,10 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-light-info">Manager</span></td>
+                                                        <td><span class="badge bg-light-info">Manajer</span></td>
                                                         <td class="text-end"><a href="#"
-                                                                class="btn btn-link-danger">Resend</a> <span
-                                                                class="badge bg-light-success">Invited</span></td>
+                                                            class="btn btn-link-danger">Kirim Ulang</a> <span
+                                                            class="badge bg-light-success">Diundang</span></td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
                                                                     class="ti ti-dots f-18"></i></a></td>
@@ -1033,8 +1068,8 @@
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td><span class="badge bg-light-warning">Staff</span></td>
-                                                        <td class="text-end"><span class="badge bg-success">Joined</span>
+                                                        <td><span class="badge bg-light-warning">Staf</span></td>
+                                                        <td class="text-end"><span class="badge bg-success">Bergabung</span>
                                                         </td>
                                                         <td class="text-end"><a href="#"
                                                                 class="avtar avtar-s btn-link-secondary"><i
@@ -1045,8 +1080,8 @@
                                         </div>
                                     </div>
                                     <div class="card-footer text-end btn-page">
-                                        <div class="btn btn-link-danger">Cancel</div>
-                                        <div class="btn btn-primary">Update Profile</div>
+                                        <div class="btn btn-link-danger">Batalkan</div>
+                                        <div class="btn btn-primary">Perbarui Profil</div>
                                     </div>
                                 </div>
                             </div>
@@ -1055,13 +1090,13 @@
                                     <div class="col-md-6">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Email Settings</h5>
+                                                <h5>Pengaturan Email</h5>
                                             </div>
                                             <div class="card-body">
-                                                <h6 class="mb-4">Setup Email Notification</h6>
+                                                <h6 class="mb-4">Atur Notifikasi Email</h6>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Email Notification</p>
+                                                        <p class="text-muted mb-0">Notifikasi Email</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1070,7 +1105,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Send Copy To Personal Email</p>
+                                                        <p class="text-muted mb-0">Kirim Salinan ke Email Pribadi</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1081,14 +1116,13 @@
                                         </div>
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Updates from System Notification</h5>
+                                                <h5>Pembaruan dari Sistem</h5>
                                             </div>
                                             <div class="card-body">
-                                                <h6 class="mb-4">Email you with?</h6>
+                                                <h6 class="mb-4">Email apa yang ingin Anda terima?</h6>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">News about PCT-themes products and
-                                                            feature updates</p>
+                                                        <p class="text-muted mb-0">Berita produk dan pembaruan fitur PCT-themes</p>
                                                     </div>
                                                     <div class="form-check p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1097,7 +1131,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Tips on getting more out of PCT-themes
+                                                        <p class="text-muted mb-0">Tips memaksimalkan penggunaan PCT-themes
                                                         </p>
                                                     </div>
                                                     <div class="form-check p-0">
@@ -1107,8 +1141,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Things you missed since you last logged
-                                                            into PCT-themes</p>
+                                                        <p class="text-muted mb-0">Ringkasan hal yang terlewat sejak terakhir masuk ke PCT-themes</p>
                                                     </div>
                                                     <div class="form-check  p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1117,7 +1150,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">News about products and other services
+                                                        <p class="text-muted mb-0">Berita produk dan layanan lainnya
                                                         </p>
                                                     </div>
                                                     <div class="form-check p-0">
@@ -1127,7 +1160,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Tips and Document business products</p>
+                                                        <p class="text-muted mb-0">Tips dan dokumentasi produk bisnis</p>
                                                     </div>
                                                     <div class="form-check p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1140,13 +1173,13 @@
                                     <div class="col-md-6">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>Activity Related Emails</h5>
+                                                <h5>Email Terkait Aktivitas</h5>
                                             </div>
                                             <div class="card-body">
-                                                <h6 class="mb-4">When to email?</h6>
+                                                <h6 class="mb-4">Kapan kami mengirim email?</h6>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Have new notifications</p>
+                                                        <p class="text-muted mb-0">Ada notifikasi baru</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1155,7 +1188,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">You're sent a direct message</p>
+                                                        <p class="text-muted mb-0">Saat Anda menerima pesan langsung</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1164,7 +1197,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Someone adds you as a connection</p>
+                                                        <p class="text-muted mb-0">Saat seseorang menambahkan Anda sebagai koneksi</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1172,10 +1205,10 @@
                                                     </div>
                                                 </div>
                                                 <hr class="my-4">
-                                                <h6 class="mb-4">When to escalate emails?</h6>
+                                                <h6 class="mb-4">Kapan email diprioritaskan?</h6>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Upon new order</p>
+                                                        <p class="text-muted mb-0">Ketika ada pesanan baru</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1184,7 +1217,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">New membership approval</p>
+                                                        <p class="text-muted mb-0">Persetujuan keanggotaan baru</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1193,7 +1226,7 @@
                                                 </div>
                                                 <div class="d-flex align-items-center justify-content-between mb-1">
                                                     <div>
-                                                        <p class="text-muted mb-0">Member registration</p>
+                                                        <p class="text-muted mb-0">Pendaftaran anggota</p>
                                                     </div>
                                                     <div class="form-check form-switch p-0">
                                                         <input class="m-0 form-check-input h5 position-relative"
@@ -1204,8 +1237,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 text-end btn-page">
-                                        <div class="btn btn-outline-secondary">Cancel</div>
-                                        <div class="btn btn-primary">Update Profile</div>
+                                        <div class="btn btn-outline-secondary">Batal</div>
+                                        <div class="btn btn-primary">Perbarui Profil</div>
                                     </div>
                                 </div>
                             </div>
@@ -1217,4 +1250,4 @@
         </div>
         <!-- [ Main Content ] end -->
     </div>
-@endsection
+--}}

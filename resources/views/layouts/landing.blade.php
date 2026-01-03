@@ -61,7 +61,7 @@
         <nav class="navbar navbar-expand-md navbar-dark top-nav-collapse default py-0">
             <div class="container">
                 <a class="navbar-brand" href="/">
-                    <img width="70" src="{{ asset('assets/images/my/logo-black-tp.png') }}" alt="logo">
+                    <img width="70" src="{{ asset('https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png') }}" alt="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
@@ -102,9 +102,9 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-4">
-                            <img src="{{ asset('assets/images/my/logo-black-tp.png') }}"
-                                alt="Logo Sekolah Harapan Bangsa" class="img-fluid mb-3" style="max-width: 200px;">
-                            <p class="opacity-75">Sekolah Harapan Bangsa berkomitmen untuk mencetak generasi penerus
+                            <img src="{{ asset('https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png') }}"
+                                alt="Logo Sekolah Harapan Bangsa" class="img-fluid mb-3" style="max-width: 115px;">
+                            <p class="opacity-75">SMK ANTARTIKA 1 Sidoarjo berkomitmen untuk mencetak generasi penerus
                                 yang cerdas, kreatif, dan berakhlak mulia melalui pendidikan berkualitas.</p>
                         </div>
                         <div class="col-md-8">
@@ -123,15 +123,15 @@
                                     <ul class="list-unstyled footer-link">
                                         <li class="d-flex">
                                             <i class="ti ti-map-pin me-2 mt-1"></i>
-                                            <span>Jl. Pendidikan No. 123, Jakarta Selatan, Indonesia</span>
+                                            <span>JL. SIWALANPANJI, Kec. Buduran, Kab. Sidoarjo, Prov. Jawa Timur</span>
                                         </li>
                                         <li class="d-flex">
                                             <i class="ti ti-mail me-2 mt-1"></i>
-                                            <span>info@harapanbangsa.sch.id</span>
+                                            <span>smks.antartika1.sda@gmail.com</span>
                                         </li>
                                         <li class="d-flex">
                                             <i class="ti ti-phone me-2 mt-1"></i>
-                                            <span>(021) 123-4567</span>
+                                            <span>0318962851</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -151,16 +151,16 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col my-1">
-                            <p class="text-white mb-0">© {{ date('Y') }} Sekolah Harapan Bangsa. Hak Cipta
+                            <p class="text-white mb-0">© {{ date('Y') }} SMK ANTARTIKA 1 Sidoarjo. Hak Cipta
                                 Dilindungi.</p>
                         </div>
                         <div class="col-auto my-1">
                             <ul class="list-inline footer-sos-link mb-0">
-                                <li class="list-inline-item"><a href="#"><i
+                                <li class="list-inline-item"><a href=""><i
                                             class="ph-duotone ph-facebook-logo f-20"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i
+                                <li class="list-inline-item"><a href="https://www.instagram.com/smkantartika1sda/?hl=id"><i
                                             class="ph-duotone ph-instagram-logo f-20"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i
+                                <li class="list-inline-item"><a href="https://www.youtube.com/@smkantartika1sidoarjo726"><i
                                             class="ph-duotone ph-youtube-logo f-20"></i></a></li>
                             </ul>
                         </div>

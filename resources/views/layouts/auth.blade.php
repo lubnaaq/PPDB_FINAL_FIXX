@@ -50,10 +50,10 @@
         <div class="auth-main">
             <div class="auth-wrapper v3">
                 <div class="auth-form"
-                    style="background-image: url({{ asset('assets/images/my/logo-tp.png') }});background-size:cover;">
+                    style="background-image: url({{ asset('https://smkn1kediri.sch.id/wp-content/uploads/2025/06/Usai-Libur-Panjang-Idul-Adha-Siswa-SMK-Negeri-1-Kota-Kediri-Tetap-Semangat-Menyelesaikan-Asesmen-Akhir-Semester-Genap-1.jpeg') }});background-size:cover;">
                     <div class="auth-header">
                         <a class="navbar-brand" href="/">
-                            <img width="100" src="{{ asset('assets/images/my/logo-tp.png') }}" alt="logo">
+                            <img width="100" src="{{ asset('https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png') }}" alt="logo">
                         </a>
                     </div>
 

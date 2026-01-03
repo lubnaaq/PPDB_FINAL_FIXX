@@ -6,7 +6,7 @@
 @section('content')
     <!-- [ Header ] start -->
     <header id="home" class="d-flex align-items-center"
-        style="position: relative; min-height: 100dvh; background: url('{{ asset('assets/images/my/hero-section.png') }}') no-repeat center center; background-size: cover;">
+        style="position: relative; min-height: 100dvh; background: url('{{ asset('assets/images/widget/image.png') }}') no-repeat center center; background-size: cover;">
         <!-- Overlay -->
         <div
             style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.1));">
@@ -18,7 +18,7 @@
                     <h1 class="mt-sm-3 text-white mb-4 f-w-600 wow fadeInUp" data-wow-delay="0.2s" style="font-size: 3.5rem;">
                         Selamat Datang di PPDB Online
                         <br>
-                        <span class="text-primary">Sekolah Harapan Bangsa</span>
+                        <span class="text-primary">SMK ANTARTIKA 1 SIDOARJO</span>
                     </h1>
                     <h5 class="mb-4 text-white opacity-75 wow fadeInUp" data-wow-delay="0.4s" style="font-size: 1.25rem;">
                         Wujudkan Masa Depan Gemilang Melalui Pendidikan Berkualitas.
@@ -151,7 +151,7 @@
 
     <!-- [ CTA ] start -->
     <section class="cta-block"
-        style="position: relative; padding: 120px 0; background: url('{{ asset('assets/images/my/join-us.png') }}') no-repeat center center; background-size: cover; background-attachment: fixed;">
+        style="position: relative; padding: 120px 0; background: url('{{ asset('https://radarjatim.id/wp-content/uploads/2024/07/WhatsApp-Image-2024-07-15-at-10.48.32.jpeg') }}') no-repeat center center; background-size: cover; background-attachment: fixed;">
         <!-- Overlay -->
         <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.6);">
         </div>
@@ -159,9 +159,8 @@
         <div class="container" style="position: relative; z-index: 2;">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center">
-                    <h2 class="text-white mb-4" style="font-size: 2.8rem; font-weight: 600;">Siap Bergabung dengan <span
-                            class="text-primary">Sekolah Harapan
-                            Bangsa?</span></h2>
+                     <h2 class="text-white mb-4" style="font-size: 2.8rem; font-weight: 600;">Siap Bergabung dengan <span
+                            class="text-primary">SMK ANTARTIKA 1 SIDOARJO</span></h2>
                     <p class="text-white opacity-75 mb-4 lead">Pendaftaran akan segera ditutup. Jangan lewatkan
                         kesempatan untuk
                         menjadi siswa berprestasi di sekolah kami. Klik tombol di bawah untuk memulai proses pendaftaran.
@@ -183,7 +182,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <h2 class="m-0 text-primary">1200+</h2>
+                                    <h2 class="m-0 text-primary">1000</h2>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h4 class="mb-2">Total Pendaftar</h4>
@@ -198,7 +197,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <h2 class="m-0 text-primary">350</h2>
+                                    <h2 class="m-0 text-primary">550</h2>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h4 class="mb-2">Kursi Tersedia</h4>
@@ -213,7 +212,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <h2 class="m-0 text-primary">3</h2>
+                                    <h2 class="m-0 text-primary"></h2>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h4 class="mb-2">Jurusan Unggulan</h4>

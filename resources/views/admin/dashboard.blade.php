@@ -1,292 +1,421 @@
- <div class="row">
-     <!-- [ sample-page ] start -->
-     <div class="col-md-6 col-xl-3">
-         <div class="card">
-             <div class="card-body">
-                 <h6 class="mb-2 f-w-400 text-muted">Total Page Views</h6>
-                 <h4 class="mb-3">4,42,236 <span class="badge bg-light-primary border border-primary"><i
-                             class="ti ti-trending-up"></i> 59.3%</span></h4>
-                 <p class="mb-0 text-muted text-sm">You made an extra <span class="text-primary">35,000</span> this
-                     year
-                 </p>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-6 col-xl-3">
-         <div class="card">
-             <div class="card-body">
-                 <h6 class="mb-2 f-w-400 text-muted">Total Users</h6>
-                 <h4 class="mb-3">78,250 <span class="badge bg-light-success border border-success"><i
-                             class="ti ti-trending-up"></i> 70.5%</span></h4>
-                 <p class="mb-0 text-muted text-sm">You made an extra <span class="text-success">8,900</span> this
-                     year</p>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-6 col-xl-3">
-         <div class="card">
-             <div class="card-body">
-                 <h6 class="mb-2 f-w-400 text-muted">Total Order</h6>
-                 <h4 class="mb-3">18,800 <span class="badge bg-light-warning border border-warning"><i
-                             class="ti ti-trending-down"></i> 27.4%</span></h4>
-                 <p class="mb-0 text-muted text-sm">You made an extra <span class="text-warning">1,943</span> this
-                     year</p>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-6 col-xl-3">
-         <div class="card">
-             <div class="card-body">
-                 <h6 class="mb-2 f-w-400 text-muted">Total Sales</h6>
-                 <h4 class="mb-3">$35,078 <span class="badge bg-light-danger border border-danger"><i
-                             class="ti ti-trending-down"></i> 27.4%</span></h4>
-                 <p class="mb-0 text-muted text-sm">You made an extra <span class="text-danger">$20,395</span> this
-                     year
-                 </p>
-             </div>
-         </div>
-     </div>
+<style>
+    /* BACKGROUND HALAMAN */
+    body {
+        margin: 0;
+        background-image:
+            linear-gradient(rgba(249, 248, 248, 0.55), rgba(0, 0, 0, 0.64)),
+            url('assets/images/user/image.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
 
-     <div class="col-md-12 col-xl-8">
-         <div class="d-flex align-items-center justify-content-between mb-3">
-             <h5 class="mb-0">Unique Visitor</h5>
-             <ul class="nav nav-pills justify-content-end mb-0" id="chart-tab-tab" role="tablist">
-                 <li class="nav-item" role="presentation">
-                     <button class="nav-link" id="chart-tab-home-tab" data-bs-toggle="pill"
-                         data-bs-target="#chart-tab-home" type="button" role="tab" aria-controls="chart-tab-home"
-                         aria-selected="true">Month</button>
-                 </li>
-                 <li class="nav-item" role="presentation">
-                     <button class="nav-link active" id="chart-tab-profile-tab" data-bs-toggle="pill"
-                         data-bs-target="#chart-tab-profile" type="button" role="tab"
-                         aria-controls="chart-tab-profile" aria-selected="false">Week</button>
-                 </li>
-             </ul>
-         </div>
-         <div class="card">
-             <div class="card-body">
-                 <div class="tab-content" id="chart-tab-tabContent">
-                     <div class="tab-pane" id="chart-tab-home" role="tabpanel" aria-labelledby="chart-tab-home-tab"
-                         tabindex="0">
-                         <div id="visitor-chart-1"></div>
-                     </div>
-                     <div class="tab-pane show active" id="chart-tab-profile" role="tabpanel"
-                         aria-labelledby="chart-tab-profile-tab" tabindex="0">
-                         <div id="visitor-chart"></div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-12 col-xl-4">
-         <h5 class="mb-3">Income Overview</h5>
-         <div class="card">
-             <div class="card-body">
-                 <h6 class="mb-2 f-w-400 text-muted">This Week Statistics</h6>
-                 <h3 class="mb-3">$7,650</h3>
-                 <div id="income-overview-chart"></div>
-             </div>
-         </div>
-     </div>
+    .dashboard-wrapper {
+        padding: 40px 30px;
+    }
 
-     <div class="col-md-12 col-xl-8">
-         <h5 class="mb-3">Recent Orders</h5>
-         <div class="card tbl-card">
-             <div class="card-body">
-                 <div class="table-responsive">
-                     <table class="table table-hover table-borderless mb-0">
-                         <thead>
-                             <tr>
-                                 <th>TRACKING NO.</th>
-                                 <th>PRODUCT NAME</th>
-                                 <th>TOTAL ORDER</th>
-                                 <th>STATUS</th>
-                                 <th class="text-end">TOTAL AMOUNT</th>
-                             </tr>
-                         </thead>
-                         <tbody>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Camera Lens</td>
-                                 <td>40</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-danger f-10 m-r-5"></i>Rejected</span>
-                                 </td>
-                                 <td class="text-end">$40,570</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Laptop</td>
-                                 <td>300</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-warning f-10 m-r-5"></i>Pending</span>
-                                 </td>
-                                 <td class="text-end">$180,139</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Mobile</td>
-                                 <td>355</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span>
-                                 </td>
-                                 <td class="text-end">$180,139</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Camera Lens</td>
-                                 <td>40</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-danger f-10 m-r-5"></i>Rejected</span>
-                                 </td>
-                                 <td class="text-end">$40,570</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Laptop</td>
-                                 <td>300</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-warning f-10 m-r-5"></i>Pending</span>
-                                 </td>
-                                 <td class="text-end">$180,139</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Mobile</td>
-                                 <td>355</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span>
-                                 </td>
-                                 <td class="text-end">$180,139</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Camera Lens</td>
-                                 <td>40</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-danger f-10 m-r-5"></i>Rejected</span>
-                                 </td>
-                                 <td class="text-end">$40,570</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Laptop</td>
-                                 <td>300</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-warning f-10 m-r-5"></i>Pending</span>
-                                 </td>
-                                 <td class="text-end">$180,139</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Mobile</td>
-                                 <td>355</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span>
-                                 </td>
-                                 <td class="text-end">$180,139</td>
-                             </tr>
-                             <tr>
-                                 <td><a href="#" class="text-muted">84564564</a></td>
-                                 <td>Mobile</td>
-                                 <td>355</td>
-                                 <td><span class="d-flex align-items-center gap-2"><i
-                                             class="fas fa-circle text-success f-10 m-r-5"></i>Approved</span>
-                                 </td>
-                                 <td class="text-end">$180,139</td>
-                             </tr>
-                         </tbody>
-                     </table>
-                 </div>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-12 col-xl-4">
-         <h5 class="mb-3">Analytics Report</h5>
-         <div class="card">
-             <div class="list-group list-group-flush">
-                 <a href="#"
-                     class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">Company
-                     Finance Growth<span class="h5 mb-0">+45.14%</span></a>
-                 <a href="#"
-                     class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">Company
-                     Expenses Ratio<span class="h5 mb-0">0.58%</span></a>
-                 <a href="#"
-                     class="list-group-item list-group-item-action d-flex align-items-center justify-content-between">Business
-                     Risk Cases<span class="h5 mb-0">Low</span></a>
-             </div>
-             <div class="card-body px-2">
-                 <div id="analytics-report-chart"></div>
-             </div>
-         </div>
-     </div>
+    .shadow-soft {
+        box-shadow: 0 10px 40px rgba(0,0,0,.15);
+        border-radius: 16px;
+        border: none;
+        transition: all 0.3s ease;
+    }
 
-     <div class="col-md-12 col-xl-8">
-         <h5 class="mb-3">Sales Report</h5>
-         <div class="card">
-             <div class="card-body">
-                 <h6 class="mb-2 f-w-400 text-muted">This Week Statistics</h6>
-                 <h3 class="mb-0">$7,650</h3>
-                 <div id="sales-report-chart"></div>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-12 col-xl-4">
-         <h5 class="mb-3">Transaction History</h5>
-         <div class="card">
-             <div class="list-group list-group-flush">
-                 <a href="#" class="list-group-item list-group-item-action">
-                     <div class="d-flex">
-                         <div class="flex-shrink-0">
-                             <div class="avtar avtar-s rounded-circle text-success bg-light-success">
-                                 <i class="ti ti-gift f-18"></i>
-                             </div>
-                         </div>
-                         <div class="flex-grow-1 ms-3">
-                             <h6 class="mb-1">Order #002434</h6>
-                             <p class="mb-0 text-muted">Today, 2:00 AM</P>
-                         </div>
-                         <div class="flex-shrink-0 text-end">
-                             <h6 class="mb-1">+ $1,430</h6>
-                             <p class="mb-0 text-muted">78%</P>
-                         </div>
-                     </div>
-                 </a>
-                 <a href="#" class="list-group-item list-group-item-action">
-                     <div class="d-flex">
-                         <div class="flex-shrink-0">
-                             <div class="avtar avtar-s rounded-circle text-primary bg-light-primary">
-                                 <i class="ti ti-message-circle f-18"></i>
-                             </div>
-                         </div>
-                         <div class="flex-grow-1 ms-3">
-                             <h6 class="mb-1">Order #984947</h6>
-                             <p class="mb-0 text-muted">5 August, 1:45 PM</P>
-                         </div>
-                         <div class="flex-shrink-0 text-end">
-                             <h6 class="mb-1">- $302</h6>
-                             <p class="mb-0 text-muted">8%</P>
-                         </div>
-                     </div>
-                 </a>
-                 <a href="#" class="list-group-item list-group-item-action">
-                     <div class="d-flex">
-                         <div class="flex-shrink-0">
-                             <div class="avtar avtar-s rounded-circle text-danger bg-light-danger">
-                                 <i class="ti ti-settings f-18"></i>
-                             </div>
-                         </div>
-                         <div class="flex-grow-1 ms-3">
-                             <h6 class="mb-1">Order #988784</h6>
-                             <p class="mb-0 text-muted">7 hours ago</P>
-                         </div>
-                         <div class="flex-shrink-0 text-end">
-                             <h6 class="mb-1">- $682</h6>
-                             <p class="mb-0 text-muted">16%</P>
-                         </div>
-                     </div>
-                 </a>
-             </div>
-         </div>
-     </div>
- </div>
+    .shadow-soft:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 50px rgba(0,0,0,.25);
+    }
+
+    /* Stat Cards dengan Gradient */
+    .stat-card {
+        background: linear-gradient(135deg, var(--grad-start) 0%, var(--grad-end) 100%);
+        color: white;
+        border: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200px;
+        height: 200px;
+        background: rgba(255,255,255,.1);
+        border-radius: 50%;
+        transition: all 0.5s ease;
+    }
+
+    .stat-card:hover::before {
+        top: -20%;
+        right: -10%;
+    }
+
+    .stat-card .card-body {
+        position: relative;
+        z-index: 1;
+    }
+
+    .stat-icon {
+        font-size: 2rem;
+        opacity: 0.7;
+        margin-top: 10px;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 15px 0;
+        animation: slideIn 0.6s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .card {
+        border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        padding: 1.5rem;
+    }
+
+    .card-header h5 {
+        margin: 0;
+        color: #333;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .apexcharts-legend {
+        justify-content: center;
+    }
+</style>
+
+<div class="dashboard-wrapper">
+
+    <div class="row g-4">
+
+        <!-- Statistik Utama dengan Gradient -->
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-soft stat-card" style="--grad-start: #4680ff; --grad-end: #2e5ce6;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>Total Pendaftar</small>
+                            <h3 class="stat-value" id="dashTotalPendaftar">0</h3>
+                        </div>
+                        <div class="stat-icon"><i class="feather icon-users"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-soft stat-card" style="--grad-start: #28a745; --grad-end: #1e7e34;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>Sudah Isi Biodata</small>
+                            <h3 class="stat-value" id="dashSudahIsiBiodata">0</h3>
+                        </div>
+                        <div class="stat-icon"><i class="feather icon-check-circle"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-soft stat-card" style="--grad-start: #ffc107; --grad-end: #ff9800;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>Sudah Upload Dokumen</small>
+                            <h3 class="stat-value" id="dashSudahUploadDokumen">0</h3>
+                        </div>
+                        <div class="stat-icon"><i class="feather icon-upload-cloud"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xl-3">
+            <div class="card shadow-soft stat-card" style="--grad-start: #17a2b8; --grad-end: #138496;">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <small>Lulus Seleksi</small>
+                            <h3 class="stat-value" id="dashLulusSeleksi">0</h3>
+                        </div>
+                        <div class="stat-icon"><i class="feather icon-award"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagram: Pendaftaran Harian -->
+        <div class="col-md-12 col-xl-8">
+            <div class="card shadow-soft">
+                <div class="card-header">
+                    <h5><i class="feather icon-trending-up me-2" style="color: #4680ff;"></i>Statistik Pendaftaran Harian (7 Hari)</h5>
+                </div>
+                <div class="card-body">
+                    <div id="dashRegistrationChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagram: Komposisi Gender -->
+        <div class="col-md-12 col-xl-4">
+            <div class="card shadow-soft">
+                <div class="card-header">
+                    <h5><i class="feather icon-pie-chart me-2" style="color: #ff5252;"></i>Komposisi Gender</h5>
+                </div>
+                <div class="card-body">
+                    <div id="dashGenderChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagram: Status Verifikasi -->
+        <div class="col-md-12 col-xl-6">
+            <div class="card shadow-soft">
+                <div class="card-header">
+                    <h5><i class="feather icon-check me-2" style="color: #28a745;"></i>Status Verifikasi Dokumen</h5>
+                </div>
+                <div class="card-body">
+                    <div id="dashStatusVerifikasiChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diagram: Status Seleksi -->
+        <div class="col-md-12 col-xl-6">
+            <div class="card shadow-soft">
+                <div class="card-header">
+                    <h5><i class="feather icon-filter me-2" style="color: #ffc107;"></i>Status Seleksi Biodata</h5>
+                </div>
+                <div class="card-body">
+                    <div id="dashStatusSeleksiChart"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ApexCharts -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const DATA_URL = "{{ route('admin.laporan.data') }}";
+
+        // Initialize empty charts
+        var dashRegistrationChart = null;
+        var dashGenderChart = null;
+        var dashStatusVerifikasiChart = null;
+        var dashStatusSeleksiChart = null;
+
+        async function initAndUpdateCharts() {
+            try {
+                const res = await fetch(DATA_URL);
+                if (!res.ok) return;
+                const data = await res.json();
+
+                // Update stat cards dengan animasi
+                const statElements = {
+                    'dashTotalPendaftar': data.totalPendaftar ?? 0,
+                    'dashSudahIsiBiodata': data.sudahIsiBiodata ?? 0,
+                    'dashSudahUploadDokumen': data.sudahUploadDokumen ?? 0,
+                    'dashLulusSeleksi': data.lulusSeleksi ?? 0
+                };
+
+                for (const [id, value] of Object.entries(statElements)) {
+                    const elem = document.getElementById(id);
+                    if (elem && elem.textContent !== value.toString()) {
+                        animateValue(elem, parseInt(elem.textContent) || 0, value, 800);
+                    }
+                }
+
+                // Pendaftaran Harian Chart
+                const dates = (data.pendaftaranHarian || []).map(d => d.date);
+                const totals = (data.pendaftaranHarian || []).map(d => d.total);
+                
+                if (!dashRegistrationChart) {
+                    const regOptions = {
+                        series: [{ name: 'Pendaftar', data: totals }],
+                        chart: { 
+                            height: 320, 
+                            type: 'area', 
+                            toolbar: { show: false },
+                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                        },
+                        dataLabels: { enabled: false },
+                        stroke: { curve: 'smooth', width: 3 },
+                        fill: { 
+                            type: 'gradient',
+                            gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.45,
+                                opacityTo: 0.05,
+                                stops: [20, 100, 100, 100]
+                            }
+                        },
+                        xaxis: { categories: dates, type: 'datetime' },
+                        tooltip: { 
+                            x: { format: 'dd MMM yyyy' },
+                            theme: 'dark'
+                        },
+                        colors: ['#4680ff']
+                    };
+                    dashRegistrationChart = new ApexCharts(document.querySelector('#dashRegistrationChart'), regOptions);
+                    dashRegistrationChart.render();
+                } else {
+                    dashRegistrationChart.updateOptions({ xaxis: { categories: dates } });
+                    dashRegistrationChart.updateSeries([{ name: 'Pendaftar', data: totals }], true);
+                }
+
+                // Gender Chart dengan animasi
+                const male = data.jenisKelamin && data.jenisKelamin.L ? data.jenisKelamin.L : 0;
+                const female = data.jenisKelamin && data.jenisKelamin.P ? data.jenisKelamin.P : 0;
+                
+                if (!dashGenderChart) {
+                    const genderOptions = {
+                        series: [male, female],
+                        chart: { 
+                            type: 'pie', 
+                            height: 320,
+                            animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                        },
+                        labels: ['Laki-laki', 'Perempuan'],
+                        colors: ['#4680ff', '#ff5252'],
+                        plotOptions: {
+                            pie: {
+                                donut: {
+                                    size: '65%',
+                                    labels: {
+                                        show: true,
+                                        name: { show: true },
+                                        value: { show: true }
+                                    }
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            formatter: (val) => val.toFixed(1) + '%'
+                        },
+                        tooltip: { theme: 'dark' }
+                    };
+                    dashGenderChart = new ApexCharts(document.querySelector('#dashGenderChart'), genderOptions);
+                    dashGenderChart.render();
+                } else {
+                    dashGenderChart.updateSeries([male, female], true);
+                }
+
+                // Status Verifikasi Chart
+                if (data.statusVerifikasi) {
+                    const verifikasiLabels = Object.keys(data.statusVerifikasi);
+                    const verifikasiTotals = Object.values(data.statusVerifikasi);
+                    
+                    if (!dashStatusVerifikasiChart) {
+                        const verifikasiOptions = {
+                            series: [{ data: verifikasiTotals }],
+                            chart: { 
+                                type: 'bar', 
+                                height: 320,
+                                animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                            },
+                            plotOptions: { 
+                                bar: { 
+                                    horizontal: true,
+                                    borderRadius: 6,
+                                    dataLabels: { position: 'top' }
+                                } 
+                            },
+                            dataLabels: { enabled: true, offsetX: 0 },
+                            xaxis: { categories: verifikasiLabels },
+                            colors: ['#28a745', '#ffc107', '#dc3545'],
+                            tooltip: { theme: 'dark' }
+                        };
+                        dashStatusVerifikasiChart = new ApexCharts(document.querySelector('#dashStatusVerifikasiChart'), verifikasiOptions);
+                        dashStatusVerifikasiChart.render();
+                    } else {
+                        dashStatusVerifikasiChart.updateOptions({ xaxis: { categories: verifikasiLabels } });
+                        dashStatusVerifikasiChart.updateSeries([{ data: verifikasiTotals }], true);
+                    }
+                }
+
+                // Status Seleksi Chart
+                if (data.statusSeleksi) {
+                    const seleksiLabels = Object.keys(data.statusSeleksi);
+                    const seleksiTotals = Object.values(data.statusSeleksi);
+                    
+                    if (!dashStatusSeleksiChart) {
+                        const seleksiOptions = {
+                            series: [{ data: seleksiTotals }],
+                            chart: { 
+                                type: 'bar', 
+                                height: 320,
+                                animations: { enabled: true, easing: 'easeinout', speed: 800 }
+                            },
+                            plotOptions: { 
+                                bar: { 
+                                    horizontal: true,
+                                    borderRadius: 6,
+                                    dataLabels: { position: 'top' }
+                                } 
+                            },
+                            dataLabels: { enabled: true, offsetX: 0 },
+                            xaxis: { categories: seleksiLabels },
+                            colors: ['#4680ff', '#28a745', '#dc3545'],
+                            tooltip: { theme: 'dark' }
+                        };
+                        dashStatusSeleksiChart = new ApexCharts(document.querySelector('#dashStatusSeleksiChart'), seleksiOptions);
+                        dashStatusSeleksiChart.render();
+                    } else {
+                        dashStatusSeleksiChart.updateOptions({ xaxis: { categories: seleksiLabels } });
+                        dashStatusSeleksiChart.updateSeries([{ data: seleksiTotals }], true);
+                    }
+                }
+
+            } catch (err) {
+                console.error('Error fetching dashboard data', err);
+            }
+        }
+
+        // Fungsi animasi angka
+        function animateValue(elem, start, end, duration) {
+            let range = end - start;
+            let increment = end > start ? 1 : -1;
+            let current = start;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            let timer = setInterval(() => {
+                current += increment;
+                elem.textContent = current;
+                if (current === end) {
+                    clearInterval(timer);
+                }
+            }, stepTime);
+        }
+
+        // Initial load
+        initAndUpdateCharts();
+
+        // Poll every 30 seconds
+        setInterval(initAndUpdateCharts, 30000);
+    });
+</script>

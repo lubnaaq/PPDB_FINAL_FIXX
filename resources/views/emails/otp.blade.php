@@ -59,7 +59,7 @@
                 padding: 12px 25px;
                 background-color: #2c3e50;
                 /* Changed to header color */
-                color: #ffffff;
+                color: #fbfbfbff;
                 text-decoration: none;
                 border-radius: 5px;
                 font-size: 16px;
