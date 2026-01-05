@@ -85,5 +85,5 @@ Akses aplikasi: http://127.0.0.1:8000
 - ⏳ Pengumuman Hasil
 - ⏳ Dashboard Admin
 
-Author: Lubna Aqila Salsabil
-Repository: https://github.com/lubnaaq/PPDB-FINAL
+###Author: Lubna Aqila Salsabil
+###Repository: https://github.com/lubnaaq/PPDB-FINAL
