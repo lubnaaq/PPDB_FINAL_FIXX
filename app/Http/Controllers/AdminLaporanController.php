@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Biodata;
 use App\Models\Dokumen;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,8 @@ class AdminLaporanController extends Controller
         $sudahIsiBiodata = Biodata::count();
         $sudahUploadDokumen = User::whereHas('dokumens')->count();
         $lulusSeleksi = Biodata::where('status_seleksi', 'lulus')->count();
+        $sudahBayar = Payment::where('status', 'verified')->count();
+        $pembayaranPending = Payment::where('status', 'pending')->count();
 
         // Statistik Jenis Kelamin
         $jenisKelamin = Biodata::select('jenis_kelamin', DB::raw('count(*) as total'))
@@ -46,15 +49,24 @@ class AdminLaporanController extends Controller
             ->latest()
             ->get();
 
+        // Data Pembayaran Terbaru
+        $dataPembayaran = Payment::with('user')
+            ->latest()
+            ->limit(10)
+            ->get();
+
         return view('admin.laporan', compact(
             'totalPendaftar',
             'sudahIsiBiodata',
             'sudahUploadDokumen',
             'lulusSeleksi',
+            'sudahBayar',
+            'pembayaranPending',
             'jenisKelamin',
             'asalSekolah',
             'pendaftaranHarian',
-            'siswaLulus'
+            'siswaLulus',
+            'dataPembayaran'
         ));
     }
 }

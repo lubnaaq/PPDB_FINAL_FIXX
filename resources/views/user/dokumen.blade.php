@@ -64,16 +64,29 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
                                         <label class="form-label">Nama Dokumen <span class="text-danger">*</span></label>
+                                        @php
+                                            $requiredDocuments = [
+                                                'Ijazah' => 'Ijazah / SHUN',
+                                                'NISN' => 'NISN',
+                                                'Kartu Keluarga' => 'Kartu Keluarga',
+                                                'Akta Kelahiran' => 'Akta Kelahiran',
+                                                'Surat Keterangan Domisili' => 'Surat Keterangan Domisili',
+                                                'Foto 3x4' => 'Foto 3x4 (Warna Formal)'
+                                            ];
+                                            
+                                            // Ambil daftar nama dokumen yang sudah diupload
+                                            // Kita asumsikan $dokumens sudah tersedia dari controller
+                                            $uploadedDocuments = $dokumens->pluck('nama_dokumen')->toArray();
+                                        @endphp
                                         <select class="form-control @error('nama_dokumen') is-invalid @enderror" 
                                                 name="nama_dokumen" id="namaDokumen" required>
                                             <option value="">-- Pilih Dokumen --</option>
-                                            <option value="Ijazah">Ijazah / SHUN</option>
-                                            <option value="NISN">NISN</option>
-                                            <option value="Kartu Keluarga">Kartu Keluarga</option>
-                                            <option value="Akta Kelahiran">Akta Kelahiran</option>
-                                            <option value="Surat Keterangan Domisili">Surat Keterangan Domisili</option>
-                                            <option value="Foto 3x4">Foto 3x4 (Warna Formal)</option>
-                                            </select>
+                                            @foreach($requiredDocuments as $value => $label)
+                                                @if(!in_array($value, $uploadedDocuments))
+                                                    <option value="{{ $value }}">{{ $label }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                         @error('nama_dokumen')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
                                         @enderror

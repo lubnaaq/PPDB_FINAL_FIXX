@@ -97,6 +97,38 @@
                 </div>
             </div>
 
+            <!-- Payment Stats -->
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h6 class="m-b-5 text-white">Sudah Bayar</h6>
+                                <h3 class="m-b-0 text-white"><span id="sudahBayar">{{ $sudahBayar }}</span></h3>
+                            </div>
+                            <div class="col-auto">
+                                <i class="feather icon-credit-card f-30"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-secondary text-white">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <h6 class="m-b-5 text-white">Pembayaran Pending</h6>
+                                <h3 class="m-b-0 text-white"><span id="pembayaranPending">{{ $pembayaranPending }}</span></h3>
+                            </div>
+                            <div class="col-auto">
+                                <i class="feather icon-clock f-30"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Charts Row -->
             <div class="col-md-8">
                 <div class="card">
@@ -143,6 +175,53 @@
                                     @empty
                                         <tr>
                                             <td colspan="2" class="text-center">Belum ada data</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Pembayaran Terbaru -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Pembayaran Terbaru</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Pendaftar</th>
+                                        <th>Tanggal</th>
+                                        <th>Metode</th>
+                                        <th>Jumlah</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pembayaranBody">
+                                    @forelse($dataPembayaran as $payment)
+                                        <tr>
+                                            <td>{{ $payment->user->name ?? 'User Deleted' }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d M Y') }}</td>
+                                            <td>{{ ucfirst(str_replace('_', ' ', $payment->payment_method)) }}</td>
+                                            <td>Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
+                                            <td>
+                                                @if($payment->status == 'verified')
+                                                    <span class="badge bg-success">Verified</span>
+                                                @elseif($payment->status == 'rejected')
+                                                    <span class="badge bg-danger">Rejected</span>
+                                                @else
+                                                    <span class="badge bg-warning text-dark">Pending</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">Belum ada data pembayaran</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -252,6 +331,8 @@
                     if(document.getElementById('sudahIsiBiodata')) document.getElementById('sudahIsiBiodata').textContent = data.sudahIsiBiodata ?? 0;
                     if(document.getElementById('sudahUploadDokumen')) document.getElementById('sudahUploadDokumen').textContent = data.sudahUploadDokumen ?? 0;
                     if(document.getElementById('lulusSeleksi')) document.getElementById('lulusSeleksi').textContent = data.lulusSeleksi ?? 0;
+                    if(document.getElementById('sudahBayar')) document.getElementById('sudahBayar').textContent = data.sudahBayar ?? 0;
+                    if(document.getElementById('pembayaranPending')) document.getElementById('pembayaranPending').textContent = data.pembayaranPending ?? 0;
 
                     // Update registration chart
                     const dates = (data.pendaftaranHarian || []).map(d => d.date);
@@ -274,6 +355,40 @@
                             data.asalSekolah.forEach(s => {
                                 const tr = `<tr><td>${s.asal_sekolah || '-'}</td><td class="text-end">${s.total || 0}</td></tr>`;
                                 asalBody.insertAdjacentHTML('beforeend', tr);
+                            });
+                        }
+                    }
+
+                    // Update payment table
+                    const paymentBody = document.getElementById('pembayaranBody');
+                    if (paymentBody) {
+                        paymentBody.innerHTML = '';
+                        if ((data.dataPembayaran || []).length === 0) {
+                            paymentBody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada data pembayaran</td></tr>';
+                        } else {
+                            data.dataPembayaran.forEach(p => {
+                                let statusBadge = '';
+                                if (p.status === 'verified') {
+                                    statusBadge = '<span class="badge bg-success">Verified</span>';
+                                } else if (p.status === 'rejected') {
+                                    statusBadge = '<span class="badge bg-danger">Rejected</span>';
+                                } else {
+                                    statusBadge = '<span class="badge bg-warning text-dark">Pending</span>';
+                                }
+                                
+                                const date = new Date(p.payment_date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+                                const amount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(p.amount);
+                                const method = (p.payment_method || '').replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                                const userName = p.user ? p.user.name : 'User Deleted';
+
+                                const tr = `<tr>
+                                    <td>${userName}</td>
+                                    <td>${date}</td>
+                                    <td>${method}</td>
+                                    <td>${amount}</td>
+                                    <td>${statusBadge}</td>
+                                </tr>`;
+                                paymentBody.insertAdjacentHTML('beforeend', tr);
                             });
                         }
                     }

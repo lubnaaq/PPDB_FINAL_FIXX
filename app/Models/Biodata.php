@@ -21,6 +21,10 @@ class Biodata extends Model
         'kecamatan',
         'kota',
         'provinsi',
+        'provinsi_id',
+        'kabupaten_id',
+        'kecamatan_id',
+        'desa_id',
         'kode_pos',
         'nomor_telepon',
         'email',
@@ -28,6 +32,7 @@ class Biodata extends Model
         'nisn',
         'hobi',
         'keterangan',
+        'jurusan_id',
     ];
 
     protected $casts = [
@@ -42,6 +47,31 @@ class Biodata extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function provinsi()
+    {
+        return $this->belongsTo(Provinsi::class, 'provinsi_id');
+    }
+
+    public function kabupaten()
+    {
+        return $this->belongsTo(Kabupaten::class, 'kabupaten_id');
+    }
+
+    public function kecamatan()
+    {
+        return $this->belongsTo(Kecamatan::class, 'kecamatan_id');
+    }
+
+    public function desa()
+    {
+        return $this->belongsTo(Desa::class, 'desa_id');
+    }
+
+    public function jurusan()
+    {
+        return $this->belongsTo(Jurusan::class);
     }
 }
 

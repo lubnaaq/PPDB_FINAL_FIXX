@@ -68,4 +68,12 @@ class User extends Authenticatable
     {
         return $this->hasOne(Biodata::class);
     }
+
+    /**
+     * Relationship dengan Payment
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

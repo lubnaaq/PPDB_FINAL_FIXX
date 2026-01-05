@@ -26,6 +26,32 @@
             <!-- [ Main Content ] start -->
             <div class="row">
                 <div class="col-md-12">
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong><i class="fas fa-exclamation-triangle me-2"></i>Terjadi Kesalahan:</strong>
+                            <ul class="mb-0 mt-2">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
                     <div class="card">
                         <div class="card-header">
                             <h5>Form Biodata Diri</h5>
@@ -48,15 +74,21 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label class="form-label">Email <span class="text-danger">*</span></label>
-                                              <input type="email" class="form-control" name="email" required 
-                                                  placeholder="contoh@email.com" value="{{ old('email', $biodata->email ?? '') }}">
+                                              <input type="email" class="form-control" name="email" required readonly
+                                                  placeholder="contoh@email.com" value="{{ auth()->user()->email }}">
+                                            <small class="text-muted d-block mt-1">Email tidak dapat diubah (sesuai akun registrasi)</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label class="form-label">No. Telepon/HP <span class="text-danger">*</span></label>
                                               <input type="tel" class="form-control" name="nomor_telepon" required 
-                                                  placeholder="08xxxxxxxxxx" value="{{ old('nomor_telepon', $biodata->nomor_telepon ?? '') }}">
+                                                placeholder="Nomor telepon" 
+                                                inputmode="numeric" 
+                                                pattern="[0-9]*"
+                                                maxlength="20"
+                                                value="{{ old('nomor_telepon', $biodata->nomor_telepon ?? '') }}">
+                                            <small class="text-muted d-block mt-1">Hanya angka (0-9) yang diizinkan</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -111,28 +143,47 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label class="form-label">Provinsi <span class="text-danger">*</span></label>
-                                            <select class="form-select" name="provinsi" required>
+                                            <select class="form-select" id="provinsiSelect" name="provinsi_id" required>
                                                 <option value="">Pilih Provinsi</option>
-                                                <option value="DKI Jakarta" {{ old('provinsi', $biodata->provinsi ?? '') == 'DKI Jakarta' ? 'selected' : '' }}>DKI Jakarta</option>
-                                                <option value="Jawa Barat" {{ old('provinsi', $biodata->provinsi ?? '') == 'Jawa Barat' ? 'selected' : '' }}>Jawa Barat</option>
-                                                <option value="Jawa Tengah" {{ old('provinsi', $biodata->provinsi ?? '') == 'Jawa Tengah' ? 'selected' : '' }}>Jawa Tengah</option>
-                                                <option value="Jawa Timur" {{ old('provinsi', $biodata->provinsi ?? '') == 'Jawa Timur' ? 'selected' : '' }}>Jawa Timur</option>
-                                                <option value="Banten" {{ old('provinsi', $biodata->provinsi ?? '') == 'Banten' ? 'selected' : '' }}>Banten</option>
-                                                <!-- Tambahkan provinsi lain sesuai kebutuhan -->
+                                                @foreach ($provinsis as $prov)
+                                                    <option value="{{ $prov->id }}" {{ old('provinsi_id', $biodata->provinsi_id ?? '') == $prov->id ? 'selected' : '' }}>
+                                                        {{ $prov->nama_provinsi }}
+                                                    </option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
                                             <label class="form-label">Kota/Kabupaten <span class="text-danger">*</span></label>
-                                              <input type="text" class="form-control" name="kota" required 
-                                                  placeholder="Nama kota/kabupaten" value="{{ old('kota', $biodata->kota ?? '') }}">
+                                            <select class="form-select" id="kabupatenSelect" name="kabupaten_id" required disabled>
+                                                <option value="">Pilih Kabupaten</option>
+                                            </select>
+                                            <small class="text-muted d-block mt-1">Pilih Provinsi terlebih dahulu</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
+                                            <label class="form-label">Kecamatan <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="kecamatanSelect" name="kecamatan_id" required disabled>
+                                                <option value="">Pilih Kecamatan</option>
+                                            </select>
+                                            <small class="text-muted d-block mt-1">Pilih Kabupaten terlebih dahulu</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Desa/Kelurahan <span class="text-danger">*</span></label>
+                                            <select class="form-select" id="desaSelect" name="desa_id" required disabled>
+                                                <option value="">Pilih Desa/Kelurahan</option>
+                                            </select>
+                                            <small class="text-muted d-block mt-1">Pilih Kecamatan terlebih dahulu</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" id="kodePosDivParent" style="display: none;">
+                                        <div class="form-group mb-3">
                                             <label class="form-label">Kode Pos<span class="text-danger">*</span></label>
-                                              <input type="text" class="form-control" name="kode_pos" 
+                                              <input type="text" class="form-control" name="kode_pos" id="kodePosInput"
                                                   placeholder="XXXXX" value="{{ old('kode_pos', $biodata->kode_pos ?? '') }}">
                                         </div>
                                     </div>
@@ -153,7 +204,13 @@
                                         <div class="form-group mb-3">
                                             <label class="form-label">NISN<span class="text-danger">*</span></label>
                                             <input type="text" class="form-control" name="nisn" 
-                                                placeholder="Nomor Induk Siswa Nasional" value="{{ old('nisn', $biodata->nisn ?? '') }}">
+                                                placeholder="Nomor Induk Siswa Nasional" 
+                                                inputmode="numeric" 
+                                                pattern="[0-9]*"
+                                                maxlength="20"
+                                                value="{{ old('nisn', $biodata->nisn ?? '') }}"
+                                                required>
+                                            <small class="text-muted d-block mt-1">Hanya angka (0-9) yang diizinkan</small>
                                         </div>
                                     </div>
                                 </div>
@@ -223,8 +280,175 @@
                         alert('Tanggal lahir tidak boleh melebihi tanggal hari ini.');
                         return false;
                     }
+
+                    // Validasi dropdown ID terisi
+                    const provinsiId = document.getElementById('provinsiSelect').value;
+                    const kabupatenId = document.getElementById('kabupatenSelect').value;
+                    const kecamatanId = document.getElementById('kecamatanSelect').value;
+                    const desaId = document.getElementById('desaSelect').value;
+
+                    console.log('Form submission data:', {
+                        provinsiId, kabupatenId, kecamatanId, desaId
+                    });
+
+                    if (!provinsiId || !kabupatenId || !kecamatanId || !desaId) {
+                        e.preventDefault();
+                        alert('Pastikan semua wilayah (Provinsi, Kabupaten, Kecamatan, Desa) sudah dipilih!');
+                        return false;
+                    }
                     
                     return true;
+                });
+
+                // Validasi NISN hanya angka (real-time)
+                document.querySelector('input[name="nisn"]').addEventListener('input', function(e) {
+                    // Hapus semua karakter non-angka
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+
+                // Cascading Dropdown Logic using EMSIFA API
+                const provinsiSelect = document.getElementById('provinsiSelect');
+                const kabupatenSelect = document.getElementById('kabupatenSelect');
+                const kecamatanSelect = document.getElementById('kecamatanSelect');
+                const desaSelect = document.getElementById('desaSelect');
+                const kodePosDiv = document.getElementById('kodePosDivParent');
+                const kodePosInput = document.getElementById('kodePosInput');
+
+                // Data lama untuk restore saat edit/validasi error
+                const oldData = {
+                    provinsi: "{{ old('provinsi_id', $biodata->provinsi_id ?? '') }}",
+                    kabupaten: "{{ old('kabupaten_id', $biodata->kabupaten_id ?? '') }}",
+                    kecamatan: "{{ old('kecamatan_id', $biodata->kecamatan_id ?? '') }}",
+                    desa: "{{ old('desa_id', $biodata->desa_id ?? '') }}"
+                };
+
+                // Helper function untuk fetch data wilayah
+                async function fetchWilayah(url, targetSelect, placeholder, selectedValue = null) {
+                    // Set loading state
+                    targetSelect.innerHTML = `<option value="">Loading...</option>`;
+                    targetSelect.setAttribute('disabled', 'disabled');
+
+                    try {
+                        console.log(`Fetching data from: ${url}`);
+                        const response = await fetch(url);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        console.log('Data received:', data);
+
+                        targetSelect.innerHTML = `<option value="">${placeholder}</option>`;
+                        
+                        if (Array.isArray(data)) {
+                            data.forEach(item => {
+                                const option = document.createElement('option');
+                                option.value = item.id;
+                                option.text = item.name;
+                                option.setAttribute('data-name', item.name); // Store name in data attribute
+                                targetSelect.appendChild(option);
+                            });
+                        }
+
+                        // Enable dropdown
+                        targetSelect.removeAttribute('disabled');
+
+                        // Restore value jika ada
+                        if (selectedValue) {
+                            const exists = Array.from(targetSelect.options).some(opt => opt.value == selectedValue);
+                            if (exists) {
+                                targetSelect.value = selectedValue;
+                                targetSelect.dispatchEvent(new Event('change'));
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error fetching data:', error);
+                        targetSelect.innerHTML = `<option value="">Gagal memuat data (Cek Koneksi)</option>`;
+                        // Tetap enable supaya user tahu ada error
+                        targetSelect.removeAttribute('disabled');
+                    }
+                }
+
+                // Load Provinsi on Start
+                fetchWilayah('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', provinsiSelect, 'Pilih Provinsi', oldData.provinsi);
+
+                // Event Listener: Provinsi -> Kabupaten
+                provinsiSelect.addEventListener('change', function() {
+                    const id = this.value;
+                    console.log('Provinsi changed. ID:', id);
+
+                    // Reset child dropdowns
+                    kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten</option>';
+                    kabupatenSelect.setAttribute('disabled', 'disabled');
+                    
+                    kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                    kecamatanSelect.setAttribute('disabled', 'disabled');
+                    
+                    desaSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                    desaSelect.setAttribute('disabled', 'disabled');
+                    
+                    kodePosDiv.style.display = 'none';
+
+                    if (id) {
+                        const shouldRestore = (id == oldData.provinsi);
+                        const valueToRestore = shouldRestore ? oldData.kabupaten : null;
+                        
+                        fetchWilayah(`https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id}.json`, kabupatenSelect, 'Pilih Kabupaten', valueToRestore);
+                    }
+                });
+
+                // Event Listener: Kabupaten -> Kecamatan
+                kabupatenSelect.addEventListener('change', function() {
+                    const id = this.value;
+                    console.log('Kabupaten changed. ID:', id);
+
+                    kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                    kecamatanSelect.setAttribute('disabled', 'disabled');
+                    
+                    desaSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                    desaSelect.setAttribute('disabled', 'disabled');
+                    
+                    kodePosDiv.style.display = 'none';
+
+                    if (id) {
+                        const shouldRestore = (id == oldData.kabupaten);
+                        const valueToRestore = shouldRestore ? oldData.kecamatan : null;
+                        
+                        fetchWilayah(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/${id}.json`, kecamatanSelect, 'Pilih Kecamatan', valueToRestore);
+                    }
+                });
+
+                // Event Listener: Kecamatan -> Desa
+                kecamatanSelect.addEventListener('change', function() {
+                    const id = this.value;
+                    console.log('Kecamatan changed. ID:', id);
+
+                    desaSelect.innerHTML = '<option value="">Pilih Desa/Kelurahan</option>';
+                    desaSelect.setAttribute('disabled', 'disabled');
+                    
+                    kodePosDiv.style.display = 'none';
+
+                    if (id) {
+                        const shouldRestore = (id == oldData.kecamatan);
+                        const valueToRestore = shouldRestore ? oldData.desa : null;
+                        
+                        fetchWilayah(`https://www.emsifa.com/api-wilayah-indonesia/api/villages/${id}.json`, desaSelect, 'Pilih Desa/Kelurahan', valueToRestore);
+                    }
+                });
+
+                // Event Listener: Desa -> Kode Pos
+                desaSelect.addEventListener('change', function() {
+                    const id = this.value;
+                    console.log('Desa changed. ID:', id);
+
+                    if (id) {
+                        kodePosDiv.style.display = 'block';
+                        kodePosInput.setAttribute('required', 'required');
+                    } else {
+                        kodePosDiv.style.display = 'none';
+                        kodePosInput.removeAttribute('required');
+                    }
                 });
 
                 // Preview image (opsional)
@@ -268,6 +492,15 @@
                     confirmButtonColor: '#d33',
                 });
             @endif
+
+            // Validasi input nomor telepon - hanya angka
+            const nomorTeleponInput = document.querySelector('input[name="nomor_telepon"]');
+            if (nomorTeleponInput) {
+                nomorTeleponInput.addEventListener('input', function(e) {
+                    // Hapus semua karakter yang bukan angka
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            }
         });
     </script>
 @endsection

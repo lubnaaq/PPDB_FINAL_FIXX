@@ -103,12 +103,91 @@
                             </a>
                         @endif
                     </div>
-                    <div class="card-footer text-muted">
-                        Panitia PPDB SMK Tahun 2026
+                    <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+                        <span>Panitia PPDB SMK Tahun 2026</span>
+                        <button class="btn btn-outline-primary print-button" onclick="window.print()">
+                            <i class="feather icon-printer me-2"></i> Cetak
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         <!-- [ Main Content ] end -->
     </div>
+
+    <style>
+        @media print {
+            /* Sembunyikan elemen yang tidak perlu dicetak */
+            .breadcrumb,
+            .print-button,
+            .btn-secondary,
+            .btn-primary:not(.print-content),
+            a[href*="daftar_ulang"],
+            a[href*="dashboard"] {
+                display: none !important;
+            }
+
+            /* Styling untuk halaman cetak */
+            body {
+                background: white;
+                color: #333;
+            }
+
+            .pc-content {
+                padding: 0;
+            }
+
+            .page-header-title {
+                margin-bottom: 20px;
+            }
+
+            .card {
+                border: none;
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+
+            .card-header {
+                background-color: #f8f9fa;
+                border-bottom: 2px solid #dee2e6;
+                page-break-after: avoid;
+            }
+
+            .card-body {
+                padding: 40px 20px;
+            }
+
+            /* Tampilkan tombol lanjut hanya saat cetak jika diperlukan */
+            .print-content {
+                display: block;
+            }
+
+            /* Hapus warna latar belakang */
+            .alert {
+                border: 1px solid #999;
+                background-color: #f5f5f5 !important;
+            }
+
+            /* Pastikan ikon tercetak dengan baik */
+            i.feather {
+                font-size: 60px !important;
+            }
+
+            /* Margin dan padding untuk print */
+            .row {
+                margin-right: 0;
+                margin-left: 0;
+            }
+        }
+
+        .print-button {
+            white-space: nowrap;
+        }
+
+        @media print {
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
 @endsection

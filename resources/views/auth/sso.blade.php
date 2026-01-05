@@ -1,4 +1,4 @@
- <div class="row">
+ {{-- <div class="row">
      <div class="col-3 col-md-12 ">
          <div class="d-grid">
              <a href="{{ route('sso.redirect', ['provider' => 'google']) }}" type="submit"
@@ -36,4 +36,4 @@
          </div>
      </div>
 
- </div>
+ </div> --}}

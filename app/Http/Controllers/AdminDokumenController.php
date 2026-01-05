@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dokumen;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,15 +15,18 @@ class AdminDokumenController extends Controller
     public function index(Request $request)
     {
         $query = Dokumen::with('user')->orderBy('created_at', 'desc');
+        $paymentQuery = Payment::with('user')->orderBy('created_at', 'desc');
 
         // Filter by status
         if ($request->has('status') && $request->status) {
             $query->where('status_verifikasi', $request->status);
+            $paymentQuery->where('status', $request->status);
         }
 
-        $dokumens = $query->paginate(15);
+        $dokumens = $query->paginate(15, ['*'], 'dokumen_page');
+        $payments = $paymentQuery->paginate(15, ['*'], 'payment_page');
 
-        return view('admin.verifikasi', compact('dokumens'));
+        return view('admin.verifikasi', compact('dokumens', 'payments'));
     }
 
     /**
@@ -74,5 +78,42 @@ class AdminDokumenController extends Controller
                 'user' => $dokumen->user,
             ]
         ]);
+    }
+
+    /**
+     * Update payment status
+     */
+    public function updatePaymentStatus(Request $request, Payment $payment)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:pending,verified,rejected',
+            'notes' => 'nullable|string|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $payment->update([
+                'status' => $request->status,
+                'notes' => $request->notes ?? null,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status pembayaran berhasil diperbarui'
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui status: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }
