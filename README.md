@@ -63,7 +63,8 @@ Akses aplikasi: http://127.0.0.1:8000
 
 - Node.js & NPM (untuk assets)
 
-```📁 Struktur Project
+📁 Struktur Project
+```
 ├── app/
 │   ├── Http/Controllers/
 │   ├── Models/
@@ -77,12 +78,12 @@ Akses aplikasi: http://127.0.0.1:8000
 ```
 ###📊 Status Development
 
-✅ SSO Login (Selesai)
-✅ Basic Auth
-✅ Form Pendaftaran
-⏳ Verifikasi Dokumen
-⏳ Pengumuman Hasil
-⏳ Dashboard Admin
+- ✅ SSO Login (Selesai)
+- ✅ Basic Auth
+- ✅ Form Pendaftaran
+- ⏳ Verifikasi Dokumen
+- ⏳ Pengumuman Hasil
+- ⏳ Dashboard Admin
 
 Author: Lubna Aqila Salsabil
 Repository: https://github.com/lubnaaq/PPDB-FINAL
