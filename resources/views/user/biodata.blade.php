@@ -9,7 +9,7 @@
                     <div class="row align-items-center">
                         <div class="col-md-12">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                                 <li class="breadcrumb-item" aria-current="page">Isi Biodata</li>
                             </ul>
                         </div>
@@ -58,6 +58,122 @@
                             <p class="text-muted mb-0">Silakan lengkapi data diri Anda dengan benar</p>
                         </div>
                         <div class="card-body">
+                            <div class="print-container">
+                             <!-- Print Header (Only visible when printing) -->
+                            <div class="print-header">
+                                <table style="width: 100%; border: none;">
+                                    <tr style="border: none;">
+                                        <td style="width: 80px; border: none; vertical-align: top;">
+                                            <img src="https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png" alt="Logo" style="width: 80px; height: auto;">
+                                        </td>
+                                        <td style="border: none; text-align: center; padding-left: 20px;">
+                                            <h2 style="margin: 0; font-size: 18pt; font-weight: bold;">SMK ANTARTIKA 1 SIDOARJO</h2>
+                                            <h3 style="margin: 5px 0; font-size: 10pt; font-weight: bold;">TANDA TERIMA PENDAFTARAN PESERTA DIDIK BARU</h3>
+                                            <p style="margin: 2px 0; font-size: 8pt;">Jl. Siwalan Panji, Bedrek, Siwalanpanji, Kec. Sidoarjo, Kab. Sidoarjo, Jawa Timur 61252</p>
+                                            <p style="margin: 2px 0; font-size: 8pt;">Telp:  (031) 8962851 | Email: info@smkantartika1.sch.id | Website: www.smkantartika1.sch.id</p>
+                                        </td>
+                                        <td style="width: 80px; border: none;"></td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                             <!-- Print Info (Only visible when printing) -->
+                            <div class="print-info">
+                                <h3 style="text-align: center; margin: 20px 0 30px 0; font-size: 16pt; font-weight: bold; text-decoration: underline;">
+                                    BUKTI PENDAFTARAN
+                                </h3>
+
+                                <table style="border: none; width: auto; margin: 0 auto 20px auto;">
+                                    <tr style="border: none;">
+                                        <td style="width: 150px; border: none; padding: 3px 0;">Nomor Pendaftaran</td>
+                                        <td style="width: 20px; border: none; padding: 3px 0;">:</td>
+                                        <td style="border: none; padding: 3px 0; font-weight: bold; font-size: 12pt;">{{ str_pad(Auth::user()->id, 6, '0', STR_PAD_LEFT) }}</td>
+                                    </tr>
+                                    <tr style="border: none;">
+                                        <td style="width: 150px; border: none; padding: 3px 0;">Tanggal Daftar</td>
+                                        <td style="width: 20px; border: none; padding: 3px 0;">:</td>
+                                        <td style="border: none; padding: 3px 0;">{{ \Carbon\Carbon::parse(Auth::user()->created_at)->translatedFormat('d F Y') }}</td>
+                                    </tr>
+                                </table>
+
+                                <p style="margin: 20px 0 10px 0; text-align: justify; font-size: 11pt; line-height: 1.6;">
+                                    Telah diterima data pendaftaran Penerimaan Peserta Didik Baru (PPDB) Tahun Ajaran {{ date('Y') }}/{{ date('Y')+1 }} dari calon siswa:
+                                </p>
+                                
+                                <table style="border: none; width: 100%; margin: 10px 0 20px 20px;">
+                                    <tr style="border: none;">
+                                        <td style="width: 200px; border: none; padding: 5px 0;">Nama Lengkap</td>
+                                        <td style="width: 20px; border: none; padding: 5px 0;">:</td>
+                                        <td style="border: none; padding: 5px 0; font-weight: bold;">{{ strtoupper(Auth::user()->name) }}</td>
+                                    </tr>
+                                    <tr style="border: none;">
+                                        <td style="border: none; padding: 5px 0;">Jenis Kelamin</td>
+                                        <td style="border: none; padding: 5px 0;">:</td>
+                                        <td style="border: none; padding: 5px 0;">{{ $biodata->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
+                                    </tr>
+                                    <tr style="border: none;">
+                                        <td style="border: none; padding: 5px 0;">Tempat, Tanggal Lahir</td>
+                                        <td style="border: none; padding: 5px 0;">:</td>
+                                        <td style="border: none; padding: 5px 0;">{{ $biodata->tempat_lahir }}, {{ \Carbon\Carbon::parse($biodata->tanggal_lahir)->translatedFormat('d F Y') }}</td>
+                                    </tr>
+                                    <tr style="border: none;">
+                                        <td style="border: none; padding: 5px 0;">Asal Sekolah</td>
+                                        <td style="border: none; padding: 5px 0;">:</td>
+                                        <td style="border: none; padding: 5px 0;">{{ $biodata->asal_sekolah ?? '-' }}</td>
+                                    </tr>
+                                    <tr style="border: none;">
+                                         <td style="border: none; padding: 5px 0;">Pilihan Jurusan</td>
+                                        <td style="border: none; padding: 5px 0;">:</td>
+                                        <td style="border: none; padding: 5px 0;"><strong>{{ $biodata->jurusan->nama_jurusan ?? '-' }}</strong></td>
+                                    </tr>
+                                     <tr style="border: none;">
+                                         <td style="border: none; padding: 5px 0;">Alamat</td>
+                                        <td style="border: none; padding: 5px 0;">:</td>
+                                        <td style="border: none; padding: 5px 0;">{{ $biodata->alamat ?? '-' }}</td>
+                                    </tr>
+                                </table>
+
+                                 <div style="border: 2px dashed #000; padding: 15px; margin: 30px 0;">
+                                    <p style="margin: 0; font-weight: bold; text-align: center;">CATATAN PENTING:</p>
+                                    <ul style="margin: 10px 0 0 0; padding-left: 20px;">
+                                        <li>Simpan tanda terima ini sebagai bukti pendaftaran yang sah.</li>
+                                        <li>Cek secara berkala status seleksi Anda melalui menu <strong>Pengumuman</strong> di dashboard.</li>
+                                        <li>Dokumen ini wajib dibawa saat melakukan <strong>Daftar Ulang</strong> jika dinyatakan Lulus.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                             <!-- Print Signature Section (Only visible when printing) -->
+                            <div class="print-signature">
+                                <table class="signature-table" style="border: none; width: 100%; margin-top: 30px;">
+                                    <tr style="border: none;">
+                                        <td style="width: 50%; border: none; text-align: center; vertical-align: top;">
+                                            <p style="margin: 0 0 60px 0; font-weight: bold;">Tanda Tangan Pendaftar</p>
+                                            <p style="margin: 0; font-weight: bold; text-decoration: underline;">{{ strtoupper(Auth::user()->name) }}</p>
+                                        </td>
+                                        <td style="width: 50%; border: none; text-align: center; vertical-align: top;">
+                                            <p style="margin: 0; font-size: 11pt;">Sidoarjo, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                                            <p style="margin: 5px 0 0 0; font-weight: bold; font-size: 11pt;">Panitia PPDB</p>
+                                            
+                                            <!-- Signature Space / Image -->
+                                            <div style="height: 80px; position: relative; display: flex; justify-content: center; align-items: flex-end;">
+                                                 <!-- Optional: Panitia Signature -->
+                                            </div>
+
+                                            <p style="margin: 0; font-weight: bold; text-decoration: underline; font-size: 11pt;">Panitia Penerimaan</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <!-- Print Footer (Only visible when printing) -->
+                            <div class="print-footer">
+                                <p style="margin: 0; font-size: 8pt;">Dokumen ini dicetak secara otomatis dari Sistem PPDB SMK Antartika 1 Sidoarjo</p>
+                                <p style="margin: 2px 0 0 0; font-size: 8pt;">Dicetak pada: {{ \Carbon\Carbon::now()->format('d/m/Y H:i') }}</p>
+                            </div>
+                            </div>
+
+                            <div class="screen-only">
                             <form id="biodataForm" action="{{ route('biodata.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 
@@ -254,6 +370,7 @@
                                             </button>
                                         </div>
                                     </div>
+                            </div>
                                 </div>
                             </form>
                         </div>
@@ -503,4 +620,158 @@
             }
         });
     </script>
+    <style>
+        /* Default: Hide print container on screen */
+        .print-container {
+            display: none;
+        }
+
+        /* Print Styles matching daftar_ulang and hasil_pengumuman */
+        @media print {
+            /* Hide non-printable elements */
+            body {
+                background: white !important;
+                background-image: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                color: #000 !important;
+            }
+
+            .breadcrumb,
+            .page-header,
+            .alert,
+            .pc-sidebar,
+            .pc-header,
+            .pc-footer,
+            .card-header,
+            .card-footer,
+            .screen-only,
+            nav,
+            #biodataForm, 
+            .btn {
+                display: none !important;
+            }
+
+            .pc-content {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            /* Make sure the print container is visible */
+            .print-container {
+                display: block !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 9999;
+                background: white;
+            }
+
+            .card {
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .card-body {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            /* Show print header */
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 30px;
+                padding-bottom: 20px;
+                border-bottom: 3px solid #000;
+            }
+
+            .print-header h2 {
+                margin: 5px 0;
+                font-size: 18pt;
+                font-weight: bold;
+                text-transform: uppercase;
+                color: #000;
+            }
+
+            .print-header h3 {
+                margin: 5px 0;
+                font-size: 16pt;
+                font-weight: bold;
+                color: #000;
+            }
+
+            .print-header p {
+                margin: 2px 0;
+                font-size: 11pt;
+                color: #000;
+            }
+
+            /* Document info */
+            .print-info {
+                display: block !important;
+                margin: 20px 0 30px 0;
+                color: #000;
+            }
+
+            .print-info table {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .print-info td {
+                padding: 5px;
+                font-size: 11pt;
+            }
+
+            /* Signature section */
+            .print-signature {
+                display: block !important;
+                margin-top: 50px;
+                page-break-inside: avoid;
+            }
+
+            .print-signature p {
+                margin: 5px 0;
+                color: #000;
+            }
+
+            .signature-table {
+                width: 100%;
+                border: none;
+                margin-top: 40px;
+            }
+
+            .signature-table td {
+                border: none !important;
+                padding: 0 !important;
+                text-align: center;
+                vertical-align: top;
+                padding-top: 0 !important;
+            }
+
+            /* Print footer */
+            .print-footer {
+                display: block !important;
+                text-align: center;
+                margin-top: 50px;
+                font-size: 9pt;
+                color: #666;
+                border-top: 1px solid #ccc;
+                padding-top: 10px;
+                position: fixed;
+                bottom: 20px;
+                left: 0;
+                right: 0;
+            }
+
+            @page {
+                size: A4;
+                margin: 20mm;
+            }
+        }
+    </style>
 @endsection

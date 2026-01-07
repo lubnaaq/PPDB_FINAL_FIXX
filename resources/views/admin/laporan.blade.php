@@ -242,9 +242,7 @@
                 <tr style="border: none;">
                     <td style="width: 80px; border: none; vertical-align: top;">
                         <!-- Logo placeholder - Ganti dengan logo sekolah Anda -->
-                        <div style="width: 80px; height: 80px; border: 2px solid #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">
-                            LOGO
-                        </div>
+                        <img src="https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png" alt="Logo" style="width: 80px; height: auto;">
                     </td>
                     <td style="border: none; text-align: center; padding-left: 20px;">
                         <h2 style="margin: 0; font-size: 18pt; font-weight: bold;">SMK ANTARTIKA 1 SIDOARJO</h2>
@@ -322,7 +320,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item" aria-current="page">Laporan PPDB</li>
                         </ul>
                     </div>
@@ -552,7 +550,6 @@
                                         <th>Nama Lengkap</th>
                                         <th>Jenis Kelamin</th>
                                         <th>Asal Sekolah</th>
-                                        <th>Nilai Rata-rata</th> <!-- Placeholder -->
                                         <th>Status</th>
                                     </tr>
                                 </thead>
@@ -563,12 +560,11 @@
                                             <td>{{ $siswa->nama_lengkap }}</td>
                                             <td>{{ $siswa->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                             <td>{{ $siswa->asal_sekolah ?? '-' }}</td>
-                                            <td>-</td>
                                             <td><span class="badge bg-success">LULUS</span></td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center py-4">Belum ada siswa yang dinyatakan lulus.</td>
+                                            <td colspan="5" class="text-center py-4">Belum ada siswa yang dinyatakan lulus.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -734,11 +730,11 @@
                     if (siswaBody) {
                         siswaBody.innerHTML = '';
                         if ((data.siswaLulus || []).length === 0) {
-                            siswaBody.innerHTML = '<tr><td colspan="6" class="text-center py-4">Belum ada siswa yang dinyatakan lulus.</td></tr>';
+                            siswaBody.innerHTML = '<tr><td colspan="5" class="text-center py-4">Belum ada siswa yang dinyatakan lulus.</td></tr>';
                         } else {
                             data.siswaLulus.forEach((s, i) => {
                                 const jenis = s.jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';
-                                const tr = `<tr><td>${i+1}</td><td>${s.nama_lengkap}</td><td>${jenis}</td><td>${s.asal_sekolah || '-'}</td><td>-</td><td><span class="badge bg-success">LULUS</span></td></tr>`;
+                                const tr = `<tr><td>${i+1}</td><td>${s.nama_lengkap}</td><td>${jenis}</td><td>${s.asal_sekolah || '-'}</td><td><span class="badge bg-success">LULUS</span></td></tr>`;
                                 siswaBody.insertAdjacentHTML('beforeend', tr);
                             });
                         }

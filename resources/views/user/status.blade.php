@@ -8,7 +8,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item" aria-current="page">Status Seleksi</li>
                         </ul>
                     </div>
@@ -152,6 +152,7 @@
                         <p class="text-muted mb-0">Tahapan dan jadwal seleksi</p>
                     </div>
                     <div class="card-body">
+                        <!-- Step 1: Pendaftaran -->
                         <div class="timeline-item">
                             <div class="timeline-item-start">
                                 <div class="timeline-icon bg-success text-white">
@@ -159,36 +160,94 @@
                                 </div>
                             </div>
                             <div class="timeline-item-content">
-                                <h6 class="mb-1">Pendaftaran</h6>
-                                <p class="text-muted mb-0 small">3 Januari 2026</p>
+                                <h6 class="mb-1">Pendaftaran Akun</h6>
+                                <p class="text-muted mb-0 small">{{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
                                 <small class="text-success"><i class="feather icon-check-circle"></i> Selesai</small>
                             </div>
                         </div>
 
+                        <!-- Step 2: Verifikasi Berkas -->
+                        @php
+                            $verifStatus = 'pending';
+                            $verifClass = 'warning';
+                            $verifIcon = 'clock';
+                            $verifText = 'Sedang Berlangsung';
+
+                            if ($statusBerkas['status'] == 'semua_disetujui') {
+                                $verifStatus = 'completed';
+                                $verifClass = 'success';
+                                $verifIcon = 'check-circle';
+                                $verifText = 'Selesai';
+                            } elseif ($statusBerkas['status'] == 'belum_upload') {
+                                $verifStatus = 'not_started';
+                                $verifClass = 'secondary';
+                                $verifIcon = 'circle';
+                                $verifText = 'Belum Dimulai';
+                            } elseif ($statusBerkas['status'] == 'ada_ditolak') {
+                                $verifStatus = 'rejected';
+                                $verifClass = 'danger';
+                                $verifIcon = 'alert-triangle';
+                                $verifText = 'Perbaikan Diperlukan';
+                            }
+                        @endphp
                         <div class="timeline-item">
                             <div class="timeline-item-start">
-                                <div class="timeline-icon bg-warning text-dark">
-                                    <i class="feather icon-clock"></i>
+                                <div class="timeline-icon bg-{{ $verifClass == 'secondary' ? 'secondary' : ($verifClass == 'success' ? 'success text-white' : ($verifClass == 'danger' ? 'danger text-white' : 'warning text-dark')) }}">
+                                    <i class="feather icon-{{ $verifStatus == 'not_started' ? 'file-text' : ($verifStatus == 'completed' ? 'check' : 'loader') }}"></i>
                                 </div>
                             </div>
                             <div class="timeline-item-content">
                                 <h6 class="mb-1">Verifikasi Berkas</h6>
-                                <p class="text-muted mb-0 small">3 - 7 Januari 2026</p>
-                                <small class="text-warning"><i class="feather icon-clock"></i> Sedang Berlangsung</small>
+                                <p class="text-muted mb-0 small">Proses Validasi Dokumen</p>
+                                <small class="text-{{ $verifClass }}">
+                                    <i class="feather icon-{{ $verifIcon }}"></i> {{ $verifText }}
+                                </small>
                             </div>
                         </div>
 
+                        <!-- Step 3: Pengumuman -->
+                        @php
+                            $announcementOpen = \App\Models\Setting::where('key', 'announcement_open')->value('value');
+                            $announcementDate = \App\Models\Setting::where('key', 'announcement_date')->value('value');
+                            
+                            $announceStatus = 'pending';
+                            $announceClass = 'secondary';
+                            $announceIcon = 'lock';
+                            $announceText = 'Menunggu Jadwal';
+                            $announceDateText = $announcementDate ? \Carbon\Carbon::parse($announcementDate)->translatedFormat('d F Y') : 'Belum ditentukan';
+
+                            if ($announcementOpen) {
+                                if ($biodata && $biodata->status_seleksi == 'lulus') {
+                                    $announceStatus = 'lulus';
+                                    $announceClass = 'success';
+                                    $announceIcon = 'check-circle';
+                                    $announceText = 'LULUS SELEKSI';
+                                } elseif ($biodata && $biodata->status_seleksi == 'tidak_lulus') {
+                                    $announceStatus = 'gagal';
+                                    $announceClass = 'danger';
+                                    $announceIcon = 'x-circle';
+                                    $announceText = 'TIDAK LULUS';
+                                } else {
+                                    $announceStatus = 'open';
+                                    $announceClass = 'info';
+                                    $announceIcon = 'info';
+                                    $announceText = 'Pengumuman Dibuka (Cek Hasil)';
+                                }
+                            }
+                        @endphp
                         <div class="timeline-item">
                             <div class="timeline-item-start">
-                                <div class="timeline-icon bg-secondary">
-                                    <i class="feather icon-arrow-right"></i>
+                                <div class="timeline-icon bg-{{ $announceClass == 'secondary' ? 'secondary' : ($announceClass == 'success' ? 'success text-white' : ($announceClass == 'danger' ? 'danger text-white' : 'info text-white')) }}">
+                                    <i class="feather icon-{{ $announceStatus == 'pending' ? 'calendar' : ($announceStatus == 'lulus' ? 'award' : 'mic') }}"></i>
                                 </div>
                             </div>
                            
                             <div class="timeline-item-content">
                                 <h6 class="mb-1">Pengumuman Hasil</h6>
-                                <p class="text-muted mb-0 small">15 Januari 2026</p>
-                                <small class="text-muted"><i class="feather icon-arrow-right"></i> Menunggu</small>
+                                <p class="text-muted mb-0 small">{{ $announceDateText }}</p>
+                                <small class="text-{{ $announceClass }}">
+                                    <i class="feather icon-{{ $announceIcon }}"></i> {{ $announceText }}
+                                </small>
                             </div>
                         </div>
                     </div>

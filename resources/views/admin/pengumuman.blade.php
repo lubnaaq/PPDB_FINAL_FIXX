@@ -194,9 +194,7 @@
             <table style="width: 100%; border: none;">
                 <tr style="border: none;">
                     <td style="width: 80px; border: none; vertical-align: top;">
-                        <div style="width: 80px; height: 80px; border: 2px solid #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold;">
-                            LOGO
-                        </div>
+                         <img src="https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png" alt="Logo" style="width: 80px; height: auto;">
                     </td>
                     <td style="border: none; text-align: center; padding-left: 20px;">
                         <h2 style="margin: 0; font-size: 18pt; font-weight: bold;">SMK ANTARTIKA 1 SIDOARJO</h2>
@@ -245,7 +243,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item" aria-current="page">Pengaturan Pengumuman</li>
                         </ul>
                     </div>

@@ -49,7 +49,7 @@
         <nav class="pc-sidebar">
             <div class="navbar-wrapper">
                 <div class="m-header justify-content-center">
-                    <a href="/" class="b-brand text-dark text-capitalize fw-bold">
+                    <a href="{{ route('dashboard') }}" class="b-brand text-dark text-capitalize fw-bold">
                         <!-- ========   Change your logo from here   ============ -->
                         <span class="fs-4">{{ auth()->user()->role }} Dashboard</span>
                     </a>
@@ -57,7 +57,7 @@
                 <div class="navbar-content">
                     <ul class="pc-navbar">
                         <li class="pc-item {{ request()->is('dashboard') ? 'active' : '' }}">
-                            <a href="/dashboard" class="pc-link">
+                            <a href="{{ route('dashboard') }}" class="pc-link">
                                 <span class="pc-micon"><i class="ti ti-dashboard"></i></span>
                                 <span class="pc-mtext">Dashboard</span>
                             </a>

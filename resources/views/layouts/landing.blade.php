@@ -75,7 +75,7 @@
                         </li>
                         <li class="nav-item pe-1">
                             <a class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}"
-                                href="/dashboard">Dashboard</a>
+                                href="{{ route('dashboard') }}">Dashboard</a>
                         </li>
                         <li class="nav-item pe-1">
                             <a class="nav-link {{ request()->is('contact-us') ? 'active' : '' }}"

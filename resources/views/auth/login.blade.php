@@ -54,8 +54,7 @@
                     <button type="submit" class="btn btn-primary">Login</button>
                 </div>
                 <div class="saprator mt-3">
-                    <span>Login with</span>
-                </div>
+                   </div>
                 @include('auth.sso')
             </div>
         </form>

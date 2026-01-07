@@ -101,15 +101,15 @@ Route::middleware(['auth', 'web'])->group(function () {
                 }
 
                 // Asal sekolah top 5
-                $asalSekolah = \App\Models\Biodata::select('instansi', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
-                    ->groupBy('instansi')
+                $asalSekolah = \App\Models\Biodata::select('asal_sekolah', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+                    ->groupBy('asal_sekolah')
                     ->orderByDesc('total')
                     ->limit(5)
                     ->get();
 
                 // Siswa lulus (daftar singkat)
                 $siswaLulus = \App\Models\Biodata::where('status_seleksi', 'lulus')
-                    ->select('id', 'nama_lengkap', 'jenis_kelamin', 'instansi')
+                    ->select('id', 'nama_lengkap', 'jenis_kelamin', 'asal_sekolah')
                     ->limit(50)
                     ->get();
 
