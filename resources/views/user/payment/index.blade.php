@@ -34,13 +34,15 @@
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
                         @if (session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
                         <!-- Alert Messages -->
@@ -52,206 +54,263 @@
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 
-                        @if(isset($jurusan) && $jurusan)
+                        @if (isset($jurusan) && $jurusan)
                             <div class="alert alert-primary d-flex align-items-center" role="alert">
                                 <i class="feather icon-info me-2 f-20"></i>
                                 <div>
                                     <h5 class="alert-heading mb-1">Informasi Biaya Jurusan</h5>
                                     <p class="mb-0">Jurusan: <strong>{{ $jurusan->nama }}</strong></p>
-                                    <p class="mb-0">Gelombang saat ini: <strong id="gelombangText">Mendeteksi...</strong></p>
+                                    <p class="mb-0">Gelombang saat ini: <strong id="gelombangText">Mendeteksi...</strong>
+                                    </p>
                                     <p class="mb-0">Biaya yang harus dibayar: <strong id="biayaText">Rp 0</strong></p>
                                 </div>
                             </div>
                         @endif
 
-                        <!-- Informasi Rekening Pembayaran -->
-                        <div class="card bg-light-primary mb-4">
-                            <div class="card-body">
-                                <h5 class="card-title text-primary mb-3"><i class="fas fa-wallet me-2"></i>Metode Pembayaran Tersedia</h5>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-university fa-2x text-primary"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Bank BRI</h6>
-                                                <p class="mb-0 fw-bold fs-5">1234-5678-9012-3456</p>
-                                                <small class="text-muted">a.n. SMK Unggulan</small>
-                                            </div>
-                                            <button class="btn btn-sm btn-light-primary" onclick="copyToClipboard('1234567890123456')" title="Salin No. Rekening"><i class="far fa-copy"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-university fa-2x text-info"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Bank Mandiri</h6>
-                                                <p class="mb-0 fw-bold fs-5">123-45-6789012-3</p>
-                                                <small class="text-muted">a.n. SMK Unggulan</small>
-                                            </div>
-                                            <button class="btn btn-sm btn-light-primary" onclick="copyToClipboard('1234567890123')" title="Salin No. Rekening"><i class="far fa-copy"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-university fa-2x text-success"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">Bank BSI</h6>
-                                                <p class="mb-0 fw-bold fs-5">7123456789</p>
-                                                <small class="text-muted">a.n. SMK Unggulan</small>
-                                            </div>
-                                            <button class="btn btn-sm btn-light-primary" onclick="copyToClipboard('7123456789')" title="Salin No. Rekening"><i class="far fa-copy"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
-                                            <div class="flex-shrink-0">
-                                                <i class="fas fa-wallet fa-2x text-warning"></i>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="mb-1">DANA / OVO / GoPay</h6>
-                                                <p class="mb-0 fw-bold fs-5">0812-3456-7890</p>
-                                                <small class="text-muted">a.n. Bendahara Sekolah</small>
-                                            </div>
-                                            <button class="btn btn-sm btn-light-primary" onclick="copyToClipboard('081234567890')" title="Salin Nomor"><i class="far fa-copy"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="alert alert-warning mb-0 mt-2">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    <small>Harap transfer sesuai dengan nominal yang tertera. Simpan bukti transfer untuk diupload pada form di bawah ini.</small>
+                        @php
+                            $isLunas =
+                                $payments->where('payment_method', 'lunas')->where('status', 'verified')->count() > 0;
+                            $isPending = $payments->where('status', 'pending')->count() > 0;
+                        @endphp
+
+                        @if ($isLunas)
+                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                                <i class="fas fa-check-circle fa-2x me-3"></i>
+                                <div>
+                                    <h4 class="alert-heading">Pembayaran Lunas</h4>
+                                    <p class="mb-0">Terima kasih, pembayaran Anda telah lunas. Tidak perlu melakukan
+                                        upload lagi.</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Upload Form -->
-                        <form id="paymentForm" method="POST" action="{{ route('payment.store') }}" enctype="multipart/form-data">
-                            @csrf
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-12">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Total Biaya Pendaftaran <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control" id="totalBiaya" readonly>
+                        @elseif ($isPending)
+                            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                <i class="fas fa-clock fa-2x me-3"></i>
+                                <div>
+                                    <h4 class="alert-heading">Menunggu Verifikasi</h4>
+                                    <p class="mb-0">Pembayaran Anda sedang diverifikasi. Mohon tunggu sebelum melakukan
+                                        upload ulang.</p>
+                                </div>
+                            </div>
+                        @else
+                            <!-- Informasi Rekening Pembayaran -->
+                            <div class="card bg-light-primary mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary mb-3"><i class="fas fa-wallet me-2"></i>Metode
+                                        Pembayaran Tersedia</h5>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
+                                                <div class="flex-shrink-0">
+                                                    <i class="fas fa-university fa-2x text-primary"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="mb-1">Bank BRI</h6>
+                                                    <p class="mb-0 fw-bold fs-5">1234-5678-9012-3456</p>
+                                                    <small class="text-muted">a.n. SMK Unggulan</small>
+                                                </div>
+                                                <button class="btn btn-sm btn-light-primary"
+                                                    onclick="copyToClipboard('1234567890123456')"
+                                                    title="Salin No. Rekening"><i class="far fa-copy"></i></button>
+                                            </div>
                                         </div>
-                                        <small class="form-text text-muted d-block mt-2">
-                                            <i class="feather icon-info"></i> Total biaya berdasarkan jurusan dan gelombang yang dipilih
-                                        </small>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
+                                                <div class="flex-shrink-0">
+                                                    <i class="fas fa-university fa-2x text-info"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="mb-1">Bank Mandiri</h6>
+                                                    <p class="mb-0 fw-bold fs-5">123-45-6789012-3</p>
+                                                    <small class="text-muted">a.n. SMK Unggulan</small>
+                                                </div>
+                                                <button class="btn btn-sm btn-light-primary"
+                                                    onclick="copyToClipboard('1234567890123')" title="Salin No. Rekening"><i
+                                                        class="far fa-copy"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
+                                                <div class="flex-shrink-0">
+                                                    <i class="fas fa-university fa-2x text-success"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="mb-1">Bank BSI</h6>
+                                                    <p class="mb-0 fw-bold fs-5">7123456789</p>
+                                                    <small class="text-muted">a.n. SMK Unggulan</small>
+                                                </div>
+                                                <button class="btn btn-sm btn-light-primary"
+                                                    onclick="copyToClipboard('7123456789')" title="Salin No. Rekening"><i
+                                                        class="far fa-copy"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="d-flex align-items-center p-3 bg-white rounded shadow-sm">
+                                                <div class="flex-shrink-0">
+                                                    <i class="fas fa-wallet fa-2x text-warning"></i>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <h6 class="mb-1">DANA / OVO / GoPay</h6>
+                                                    <p class="mb-0 fw-bold fs-5">0812-3456-7890</p>
+                                                    <small class="text-muted">a.n. Bendahara Sekolah</small>
+                                                </div>
+                                                <button class="btn btn-sm btn-light-primary"
+                                                    onclick="copyToClipboard('081234567890')" title="Salin Nomor"><i
+                                                        class="far fa-copy"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-warning mb-0 mt-2">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <small>Harap transfer sesuai dengan nominal yang tertera. Simpan bukti transfer
+                                            untuk diupload pada form di bawah ini.</small>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Metode Pembayaran <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('payment_method') is-invalid @enderror" 
+                            <!-- Upload Form -->
+                            <form id="paymentForm" method="POST" action="{{ route('payment.store') }}"
+                                enctype="multipart/form-data">
+                                @csrf
+
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Total Biaya Pendaftaran <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rp</span>
+                                                <input type="text" class="form-control" id="totalBiaya" readonly>
+                                            </div>
+                                            <small class="form-text text-muted d-block mt-2">
+                                                <i class="feather icon-info"></i> Total biaya berdasarkan jurusan dan
+                                                gelombang yang dipilih
+                                            </small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Metode Pembayaran <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control @error('payment_method') is-invalid @enderror"
                                                 name="payment_method" id="payment_method" required>
-                                            <option value="">-- Pilih Metode --</option>
-                                            <option value="lunas">Lunas (Bayar Penuh)</option>
-                                            <option value="angsuran">Angsuran (Cicilan)</option>
-                                        </select>
-                                        @error('payment_method')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
+                                                <option value="">-- Pilih Metode --</option>
+                                                <option value="lunas">Lunas (Bayar Penuh)</option>
+                                                <option value="angsuran">Angsuran (Cicilan)</option>
+                                            </select>
+                                            @error('payment_method')
+                                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="col-md-6" id="angsuranOptions" style="display: none;">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Jumlah Angsuran <span class="text-danger">*</span></label>
-                                        <select class="form-control @error('installment_count') is-invalid @enderror" 
+                                    <div class="col-md-6" id="angsuranOptions" style="display: none;">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Jumlah Angsuran <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control @error('installment_count') is-invalid @enderror"
                                                 name="installment_count" id="installment_count">
-                                            <option value="">-- Pilih Angsuran --</option>
-                                            <option value="2">2 Bulan</option>
-                                            <option value="3">3 Bulan</option>
-                                            <option value="4">4 Bulan</option>
-                                        </select>
-                                        @error('installment_count')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- Ringkasan Angsuran -->
-                                <div class="col-md-12" id="installmentSummary" style="display: none;">
-                                    <div class="alert alert-info">
-                                        <h6 class="alert-heading"><i class="feather icon-calendar"></i> Rincian Angsuran</h6>
-                                        <div id="installmentDetails"></div>
-                                        <p class="mb-0 mt-2"><strong>Pembayaran pertama (saat ini):</strong> <span id="firstInstallment">Rp 0</span></p>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Jumlah Pembayaran Saat Ini (Rp) <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control @error('amount') is-invalid @enderror" 
-                                                   name="amount" id="amount" value="{{ old('amount') }}" required min="1000" readonly>
-                                            <span class="input-group-text" id="amountFormatted">0</span>
+                                                <option value="">-- Pilih Angsuran --</option>
+                                                <option value="2">2 Bulan</option>
+                                                <option value="3">3 Bulan</option>
+                                                <option value="4">4 Bulan</option>
+                                            </select>
+                                            @error('installment_count')
+                                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                        <small class="form-text text-muted d-block mt-2">
-                                            <i class="feather icon-info"></i> Jumlah yang harus dibayar saat ini
-                                        </small>
-                                        @error('amount')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
                                     </div>
-                                </div>
 
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Tanggal Pembayaran <span class="text-danger">*</span></label>
-                                        <input type="date" class="form-control @error('payment_date') is-invalid @enderror" 
-                                               name="payment_date" id="payment_date" value="{{ old('payment_date', \Carbon\Carbon::today()->format('Y-m-d')) }}" required>
-                                        @error('payment_date')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <!-- Hidden fields untuk angsuran -->
-                                <input type="hidden" name="total_amount" id="total_amount" value="0">
-                                <input type="hidden" name="installment_number" id="installment_number" value="1">
-
-                                <div class="col-md-12">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Bukti Pembayaran <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <input type="file" class="form-control @error('proof_file') is-invalid @enderror" 
-                                                   name="proof_file" id="proof_file" accept=".pdf,.jpg,.jpeg,.png" required>
-                                            <span class="input-group-text">
-                                                <i class="feather icon-upload-cloud"></i>
-                                            </span>
+                                    <!-- Ringkasan Angsuran -->
+                                    <div class="col-md-12" id="installmentSummary" style="display: none;">
+                                        <div class="alert alert-info">
+                                            <h6 class="alert-heading"><i class="feather icon-calendar"></i> Rincian
+                                                Angsuran</h6>
+                                            <div id="installmentDetails"></div>
+                                            <p class="mb-0 mt-2"><strong>Pembayaran pertama (saat ini):</strong> <span
+                                                    id="firstInstallment">Rp 0</span></p>
                                         </div>
-                                        <small class="form-text text-muted d-block mt-2">
-                                            <i class="feather icon-info"></i> Format: PDF, JPG, JPEG, PNG (Maksimal 2MB)
-                                        </small>
-                                        @error('proof_file')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Jumlah Pembayaran Saat Ini (Rp) <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">Rp</span>
+                                                <input type="number"
+                                                    class="form-control @error('amount') is-invalid @enderror"
+                                                    name="amount" id="amount" value="{{ old('amount') }}" required
+                                                    min="1000" readonly>
+                                                <span class="input-group-text" id="amountFormatted">0</span>
+                                            </div>
+                                            <small class="form-text text-muted d-block mt-2">
+                                                <i class="feather icon-info"></i> Jumlah yang harus dibayar saat ini
+                                            </small>
+                                            @error('amount')
+                                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Tanggal Pembayaran <span
+                                                    class="text-danger">*</span></label>
+                                            <input type="date"
+                                                class="form-control @error('payment_date') is-invalid @enderror"
+                                                name="payment_date" id="payment_date"
+                                                value="{{ old('payment_date', \Carbon\Carbon::today()->format('Y-m-d')) }}"
+                                                required>
+                                            @error('payment_date')
+                                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden fields untuk angsuran -->
+                                    <input type="hidden" name="total_amount" id="total_amount" value="0">
+                                    <input type="hidden" name="installment_number" id="installment_number"
+                                        value="1">
+
+                                    <div class="col-md-12">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Bukti Pembayaran <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input type="file"
+                                                    class="form-control @error('proof_file') is-invalid @enderror"
+                                                    name="proof_file" id="proof_file" accept=".pdf,.jpg,.jpeg,.png"
+                                                    required>
+                                                <span class="input-group-text">
+                                                    <i class="feather icon-upload-cloud"></i>
+                                                </span>
+                                            </div>
+                                            <small class="form-text text-muted d-block mt-2">
+                                                <i class="feather icon-info"></i> Format: PDF, JPG, JPEG, PNG (Maksimal
+                                                2MB)
+                                            </small>
+                                            @error('proof_file')
+                                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="feather icon-upload"></i> Upload Bukti
-                                    </button>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="feather icon-upload"></i> Upload Bukti
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -286,19 +345,21 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>
-                                                    @if($payment->payment_method === 'angsuran')
+                                                    @if ($payment->payment_method === 'angsuran')
                                                         <span class="badge bg-info">Angsuran</span>
                                                     @else
                                                         <span class="badge bg-success">Lunas</span>
                                                     @endif
                                                 </td>
                                                 <td>Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d/m/Y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($payment->payment_date)->format('d/m/Y') }}
+                                                </td>
                                                 <td>
                                                     <small>{{ $payment->notes ?? '-' }}</small>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ asset('storage/'.$payment->proof_file_path) }}" target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                                    <a href="{{ asset('storage/' . $payment->proof_file_path) }}"
+                                                        target="_blank" class="btn btn-sm btn-info">Lihat</a>
                                                 </td>
                                                 <td>
                                                     @if ($payment->status === 'pending')
@@ -312,9 +373,63 @@
                                                 <td>{{ $payment->created_at->format('d/m/Y H:i') }}</td>
                                                 <td>
                                                     @if ($payment->status === 'verified')
-                                                        <a href="{{ route('payment.receipt', $payment->id) }}" target="_blank" class="btn btn-sm btn-secondary" title="Cetak Kuitansi">
+                                                        <a href="{{ route('payment.receipt', $payment->id) }}"
+                                                            target="_blank" class="btn btn-sm btn-secondary"
+                                                            title="Cetak Kuitansi">
                                                             <i class="feather icon-printer"></i>
                                                         </a>
+                                                    @elseif ($payment->status === 'pending' || $payment->status === 'rejected')
+                                                        <button type="button" class="btn btn-sm btn-warning"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editPaymentModal{{ $payment->id }}"
+                                                            title="Ganti Bukti">
+                                                            <i class="feather icon-edit"></i>
+                                                        </button>
+
+                                                        <!-- Modal Edit -->
+                                                        <div class="modal fade" id="editPaymentModal{{ $payment->id }}"
+                                                            tabindex="-1" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <form
+                                                                        action="{{ route('payment.update', $payment->id) }}"
+                                                                        method="POST" enctype="multipart/form-data">
+                                                                        @csrf
+                                                                        @method('PUT')
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Ganti Bukti
+                                                                                Pembayaran</h5>
+                                                                            <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>Upload ulang bukti pembayaran untuk mengganti
+                                                                                file sebelumnya.</p>
+                                                                            <div class="mb-3">
+                                                                                <label
+                                                                                    for="proof_file_{{ $payment->id }}"
+                                                                                    class="form-label">Bukti Baru <span
+                                                                                        class="text-danger">*</span></label>
+                                                                                <input type="file" class="form-control"
+                                                                                    id="proof_file_{{ $payment->id }}"
+                                                                                    name="proof_file"
+                                                                                    accept=".pdf,.jpg,.jpeg,.png" required>
+                                                                                <small class="text-muted">Format: JPG,
+                                                                                    JPEG, PNG, PDF. Max 2MB.</small>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-bs-dismiss="modal">Batal</button>
+                                                                            <button type="submit"
+                                                                                class="btn btn-primary">Simpan</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     @endif
                                                 </td>
                                             </tr>
@@ -347,16 +462,16 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             const jurusan = @json($jurusan ?? null);
-            
+
             if (jurusan) {
                 // Gunakan tanggal dari device user
                 const today = new Date();
-                
+
                 // Tentukan batas akhir Gelombang 1
                 // Contoh: 31 Mei 2026
                 // Format: YYYY-MM-DD
-                const cutoffDate = new Date('2026-05-31'); 
-                
+                const cutoffDate = new Date('2026-05-31');
+
                 let price = 0;
                 let gelombang = '';
 
@@ -428,7 +543,7 @@
                         installmentSummary.style.display = 'none';
                         installmentCountSelect.required = false;
                         installmentCountSelect.value = '';
-                        
+
                         // Set kembali ke harga penuh
                         if (amountInput) {
                             amountInput.value = totalPrice;
@@ -448,7 +563,7 @@
             if (installmentCountSelect) {
                 installmentCountSelect.addEventListener('change', function() {
                     const count = parseInt(this.value);
-                    
+
                     if (count > 0 && totalPrice > 0) {
                         calculateInstallments(count, totalPrice);
                         installmentSummary.style.display = 'block';
@@ -467,7 +582,7 @@
 
             // Hitung angsuran per bulan
             const perMonth = Math.ceil(total / count);
-            
+
             // Hitung sisa untuk pembayaran terakhir (jika ada selisih karena pembulatan)
             const lastPayment = total - (perMonth * (count - 1));
 

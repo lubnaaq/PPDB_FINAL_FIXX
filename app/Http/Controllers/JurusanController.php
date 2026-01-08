@@ -17,12 +17,19 @@ class JurusanController extends Controller
         $biodata = $user->biodata;
         $selectedJurusanId = $biodata ? $biodata->jurusan_id : null;
 
+        // Cek apakah user sudah verifikasi email
+        // Prioritaskan check is_verified karena AuthController menggunakan flag ini
+        $isVerified = $user->is_verified == 1 || $user->email_verified_at !== null;
+
+        // Cek kelengkapan biodata (simple check: apakah record ada)
+        $hasBiodata = $biodata !== null;
+
         // Cek apakah user sudah melakukan pembayaran (pending atau verified)
         $hasPayment = Payment::where('user_id', $user->id)
             ->whereIn('status', ['pending', 'verified'])
             ->exists();
 
-        return view('user.jurusan', compact('jurusans', 'selectedJurusanId', 'hasPayment'));
+        return view('user.jurusan', compact('jurusans', 'selectedJurusanId', 'hasPayment', 'isVerified', 'hasBiodata'));
     }
 
     public function store(Request $request)
@@ -32,6 +39,13 @@ class JurusanController extends Controller
         ]);
 
         $user = Auth::user();
+        
+        // Enforce validations
+        // Check both is_verified flag and email_verified_at timestamp
+        if ($user->is_verified != 1 && $user->email_verified_at === null) {
+             return redirect()->route('user.jurusan')->with('error', 'Silakan verifikasi akun email Anda terlebih dahulu.');
+        }
+
         $biodata = $user->biodata;
 
         if (!$biodata) {

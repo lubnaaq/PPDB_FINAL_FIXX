@@ -25,16 +25,37 @@
         <!-- [ Main Content ] start -->
         <div class="row">
             <div class="col-md-12">
-                @if(session('success'))
+                @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ session('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
-                @if(session('error'))
+                @if (session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         {{ session('error') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if (!$isVerified)
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading"><i class="feather icon-alert-triangle"></i> Akun Belum Terverifikasi</h4>
+                        <p>Silakan verifikasi email Anda terlebih dahulu untuk dapat memilih jurusan.</p>
+                        <hr>
+                        <p class="mb-0"><a href="{{ route('dashboard') }}" class="alert-link">Klik di sini untuk mengirim
+                                ulang email verifikasi</a> (jika tersedia di Dashboard).</p>
+                    </div>
+                @endif
+
+                @if (!$hasBiodata)
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading"><i class="feather icon-file-text"></i> Biodata Belum Lengkap</h4>
+                        <p>Anda belum mengisi biodata diri. Mohon lengkapi biodata Anda terlebih dahulu sebelum memilih
+                            jurusan.</p>
+                        <hr>
+                        <p class="mb-0"><a href="{{ route('user.biodata') }}" class="alert-link">Isi Biodata Sekarang</a>
+                        </p>
                     </div>
                 @endif
 
@@ -46,83 +67,99 @@
                     <div class="card-body">
                         <form id="jurusanForm" action="{{ route('user.jurusan.store') }}" method="POST">
                             @csrf
-                            <div class="row">
-                                @forelse($jurusans as $jurusan)
-                                    <div class="col-md-6 col-xl-4 mb-4">
-                                        <div class="card h-100 border {{ $selectedJurusanId == $jurusan->id ? 'border-primary bg-light-primary' : '' }}">
-                                            <div class="card-body">
-                                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                                    <h5 class="card-title">{{ $jurusan->nama }}</h5>
-                                                    @if($selectedJurusanId == $jurusan->id)
-                                                        <span class="badge bg-primary">Dipilih</span>
-                                                    @endif
-                                                </div>
-                                                <h6 class="card-subtitle mb-2 text-muted">{{ $jurusan->kode }}</h6>
-                                                <p class="card-text">{{ $jurusan->deskripsi }}</p>
-                                                
-                                                <div class="mt-3 mb-3">
-                                                    <h6 class="mb-2">Biaya Pendidikan:</h6>
-                                                    <ul class="list-group list-group-flush small">
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
-                                                            Gelombang 1
-                                                            <span class="fw-bold text-primary">Rp {{ number_format($jurusan->harga_gelombang_1, 0, ',', '.') }}</span>
-                                                        </li>
-                                                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
-                                                            Gelombang 2
-                                                            <span class="fw-bold text-danger">Rp {{ number_format($jurusan->harga_gelombang_2, 0, ',', '.') }}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+                            <fieldset {{ !$isVerified || !$hasBiodata ? 'disabled' : '' }}>
+                                <div class="row">
+                                    @forelse($jurusans as $jurusan)
+                                        <div class="col-md-6 col-xl-4 mb-4">
+                                            <div
+                                                class="card h-100 border {{ $selectedJurusanId == $jurusan->id ? 'border-primary bg-light-primary' : '' }}">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                                        <h5 class="card-title">{{ $jurusan->nama }}</h5>
+                                                        @if ($selectedJurusanId == $jurusan->id)
+                                                            <span class="badge bg-primary">Dipilih</span>
+                                                        @endif
+                                                    </div>
+                                                    <h6 class="card-subtitle mb-2 text-muted">{{ $jurusan->kode }}</h6>
+                                                    <p class="card-text">{{ $jurusan->deskripsi }}</p>
 
-                                                <div class="mt-3">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="jurusan_id" id="jurusan_{{ $jurusan->id }}" value="{{ $jurusan->id }}" {{ $selectedJurusanId == $jurusan->id ? 'checked' : '' }}>
-                                                        <label class="form-check-label" for="jurusan_{{ $jurusan->id }}">
-                                                            Pilih Jurusan Ini
-                                                        </label>
+                                                    <div class="mt-3 mb-3">
+                                                        <h6 class="mb-2">Biaya Pendidikan:</h6>
+                                                        <ul class="list-group list-group-flush small">
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
+                                                                Gelombang 1
+                                                                <span class="fw-bold text-primary">Rp
+                                                                    {{ number_format($jurusan->harga_gelombang_1, 0, ',', '.') }}</span>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
+                                                                Gelombang 2
+                                                                <span class="fw-bold text-danger">Rp
+                                                                    {{ number_format($jurusan->harga_gelombang_2, 0, ',', '.') }}</span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <div class="mt-3">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="jurusan_id"
+                                                                id="jurusan_{{ $jurusan->id }}"
+                                                                value="{{ $jurusan->id }}"
+                                                                {{ $selectedJurusanId == $jurusan->id ? 'checked' : '' }}>
+                                                            <label class="form-check-label"
+                                                                for="jurusan_{{ $jurusan->id }}">
+                                                                Pilih Jurusan Ini
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="card-footer bg-transparent border-top-0">
-                                                <small class="text-muted">Kuota: {{ $jurusan->kuota }} Siswa</small>
+                                                <div class="card-footer bg-transparent border-top-0">
+                                                    <small class="text-muted">Kuota: {{ $jurusan->kuota }} Siswa</small>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @empty
-                                    <div class="col-12">
-                                        <div class="alert alert-info">Belum ada data jurusan.</div>
-                                    </div>
-                                @endforelse
-                            </div>
+                                    @empty
+                                        <div class="col-12">
+                                            <div class="alert alert-info">Belum ada data jurusan.</div>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </fieldset>
                         </form>
-                            
-                            @if($jurusans->count() > 0)
-                                <div class="row mt-3">
-                                    <div class="col-12 text-end">
-                                        @if($selectedJurusanId)
-                                            @if(isset($hasPayment) && $hasPayment)
-                                                <div class="d-inline-block me-2">
-                                                    <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Anda sudah melakukan pembayaran, tidak dapat membatalkan jurusan.">
-                                                        <button type="button" class="btn btn-danger" disabled>
-                                                            <i class="feather icon-x me-2"></i> Batalkan Pilihan
-                                                        </button>
-                                                    </span>
-                                                </div>
-                                            @else
-                                                <form id="cancelJurusanForm" action="{{ route('user.jurusan.cancel') }}" method="POST" style="display: inline-block; margin-right: 10px;">
-                                                    @csrf
+
+                        @if ($jurusans->count() > 0)
+                            <div class="row mt-3">
+                                <div class="col-12 text-end">
+                                    @if ($selectedJurusanId)
+                                        @if (isset($hasPayment) && $hasPayment)
+                                            <div class="d-inline-block me-2">
+                                                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip"
+                                                    title="Anda sudah melakukan pembayaran, tidak dapat membatalkan jurusan.">
+                                                    <button type="button" class="btn btn-danger" disabled>
+                                                        <i class="feather icon-x me-2"></i> Batalkan Pilihan
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        @else
+                                            <form id="cancelJurusanForm" action="{{ route('user.jurusan.cancel') }}"
+                                                method="POST" style="display: inline-block; margin-right: 10px;">
+                                                @csrf
+                                                <fieldset {{ !$isVerified || !$hasBiodata ? 'disabled' : '' }}>
                                                     <button type="button" class="btn btn-danger" id="btnCancelJurusan">
                                                         <i class="feather icon-x me-2"></i> Batalkan Pilihan
                                                     </button>
-                                                </form>
-                                            @endif
+                                                </fieldset>
+                                            </form>
                                         @endif
-                                        <button type="submit" form="jurusanForm" class="btn btn-primary">
-                                            <i class="feather icon-check me-2"></i> Simpan Pilihan
-                                        </button>
-                                    </div>
+                                    @endif
+                                    <button type="submit" form="jurusanForm" class="btn btn-primary"
+                                        {{ !$isVerified || !$hasBiodata ? 'disabled' : '' }}>
+                                        <i class="feather icon-check me-2"></i> Simpan Pilihan
+                                    </button>
                                 </div>
-                            @endif
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

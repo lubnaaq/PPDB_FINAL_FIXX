@@ -193,6 +193,7 @@ Route::middleware(['auth', 'web'])->group(function () {
 
         Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('user.payment.index');
         Route::post('/payment', [App\Http\Controllers\PaymentController::class, 'store'])->name('payment.store');
+        Route::put('/payment/{payment}', [App\Http\Controllers\PaymentController::class, 'update'])->name('payment.update');
         Route::get('/payment/{payment}/receipt', [App\Http\Controllers\PaymentController::class, 'printReceipt'])->name('payment.receipt');
     });
 });

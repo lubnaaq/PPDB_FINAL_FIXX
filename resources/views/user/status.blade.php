@@ -38,7 +38,8 @@
                                     <label class="form-label mb-0">Kelengkapan Biodata</label>
                                     <span class="badge bg-success">{{ $biodataPercentage }}%</span>
                                 </div>
-                                <div class="progress" role="progressbar" aria-valuenow="{{ $biodataPercentage }}" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress" role="progressbar" aria-valuenow="{{ $biodataPercentage }}"
+                                    aria-valuemin="0" aria-valuemax="100">
                                     <div class="progress-bar bg-success" style="width: {{ $biodataPercentage }}%"></div>
                                 </div>
                                 <small class="text-muted d-block mt-2">
@@ -55,16 +56,20 @@
                             <div class="col-12">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <label class="form-label mb-0">Kelengkapan Dokumen</label>
-                                    <span class="badge {{ $dokumenPercentage >= 100 ? 'bg-success' : ($dokumenPercentage >= 50 ? 'bg-warning text-dark' : 'bg-danger') }}">{{ $dokumenPercentage }}%</span>
+                                    <span
+                                        class="badge {{ $dokumenPercentage >= 100 ? 'bg-success' : ($dokumenPercentage >= 50 ? 'bg-warning text-dark' : 'bg-danger') }}">{{ $dokumenPercentage }}%</span>
                                 </div>
-                                <div class="progress" role="progressbar" aria-valuenow="{{ $dokumenPercentage }}" aria-valuemin="0" aria-valuemax="100">
-                                    <div class="progress-bar {{ $dokumenPercentage >= 100 ? 'bg-success' : ($dokumenPercentage >= 50 ? 'bg-warning' : 'bg-danger') }}" style="width: {{ $dokumenPercentage }}%"></div>
+                                <div class="progress" role="progressbar" aria-valuenow="{{ $dokumenPercentage }}"
+                                    aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar {{ $dokumenPercentage >= 100 ? 'bg-success' : ($dokumenPercentage >= 50 ? 'bg-warning' : 'bg-danger') }}"
+                                        style="width: {{ $dokumenPercentage }}%"></div>
                                 </div>
                                 <small class="text-muted d-block mt-2">
                                     @if ($dokumenPercentage === 0)
                                         <i class="feather icon-alert-triangle"></i> Belum ada dokumen yang diupload
                                     @elseif ($dokumenPercentage < 100)
-                                        <i class="feather icon-info"></i> Upload {{ count($missingDocuments) }} dokumen lagi: <strong>{{ implode(', ', $missingDocuments) }}</strong>
+                                        <i class="feather icon-info"></i> Upload {{ count($missingDocuments) }} dokumen
+                                        lagi: <strong>{{ implode(', ', $missingDocuments) }}</strong>
                                     @else
                                         <i class="feather icon-check-circle"></i> Semua dokumen wajib sudah diupload
                                     @endif
@@ -112,7 +117,8 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <small class="text-muted">
-                                    <i class="feather icon-info"></i> Lengkapi semua data dan dokumen untuk proses seleksi lebih cepat
+                                    <i class="feather icon-info"></i> Lengkapi semua data dan dokumen untuk proses seleksi
+                                    lebih cepat
                                 </small>
                             </div>
                         </div>
@@ -123,7 +129,8 @@
                                     <h6 class="mb-3">Dokumen yang Masih Diperlukan:</h6>
                                     <div class="checklist">
                                         @foreach ($requiredDocuments as $doc)
-                                            <div class="checklist-item {{ in_array($doc, $uploadedDocuments) ? 'completed' : '' }}">
+                                            <div
+                                                class="checklist-item {{ in_array($doc, $uploadedDocuments) ? 'completed' : '' }}">
                                                 <div class="checklist-icon">
                                                     @if (in_array($doc, $uploadedDocuments))
                                                         <i class="feather icon-check-circle text-success"></i>
@@ -161,7 +168,9 @@
                             </div>
                             <div class="timeline-item-content">
                                 <h6 class="mb-1">Pendaftaran Akun</h6>
-                                <p class="text-muted mb-0 small">{{ Auth::user()->created_at->translatedFormat('d F Y') }}</p>
+                                <p class="text-muted mb-0 small">
+                                    {{ Auth::user()->created_at ? Auth::user()->created_at->translatedFormat('d F Y') : '-' }}
+                                </p>
                                 <small class="text-success"><i class="feather icon-check-circle"></i> Selesai</small>
                             </div>
                         </div>
@@ -192,8 +201,10 @@
                         @endphp
                         <div class="timeline-item">
                             <div class="timeline-item-start">
-                                <div class="timeline-icon bg-{{ $verifClass == 'secondary' ? 'secondary' : ($verifClass == 'success' ? 'success text-white' : ($verifClass == 'danger' ? 'danger text-white' : 'warning text-dark')) }}">
-                                    <i class="feather icon-{{ $verifStatus == 'not_started' ? 'file-text' : ($verifStatus == 'completed' ? 'check' : 'loader') }}"></i>
+                                <div
+                                    class="timeline-icon bg-{{ $verifClass == 'secondary' ? 'secondary' : ($verifClass == 'success' ? 'success text-white' : ($verifClass == 'danger' ? 'danger text-white' : 'warning text-dark')) }}">
+                                    <i
+                                        class="feather icon-{{ $verifStatus == 'not_started' ? 'file-text' : ($verifStatus == 'completed' ? 'check' : 'loader') }}"></i>
                                 </div>
                             </div>
                             <div class="timeline-item-content">
@@ -209,12 +220,14 @@
                         @php
                             $announcementOpen = \App\Models\Setting::where('key', 'announcement_open')->value('value');
                             $announcementDate = \App\Models\Setting::where('key', 'announcement_date')->value('value');
-                            
+
                             $announceStatus = 'pending';
                             $announceClass = 'secondary';
                             $announceIcon = 'lock';
                             $announceText = 'Menunggu Jadwal';
-                            $announceDateText = $announcementDate ? \Carbon\Carbon::parse($announcementDate)->translatedFormat('d F Y') : 'Belum ditentukan';
+                            $announceDateText = $announcementDate
+                                ? \Carbon\Carbon::parse($announcementDate)->translatedFormat('d F Y')
+                                : 'Belum ditentukan';
 
                             if ($announcementOpen) {
                                 if ($biodata && $biodata->status_seleksi == 'lulus') {
@@ -237,11 +250,13 @@
                         @endphp
                         <div class="timeline-item">
                             <div class="timeline-item-start">
-                                <div class="timeline-icon bg-{{ $announceClass == 'secondary' ? 'secondary' : ($announceClass == 'success' ? 'success text-white' : ($announceClass == 'danger' ? 'danger text-white' : 'info text-white')) }}">
-                                    <i class="feather icon-{{ $announceStatus == 'pending' ? 'calendar' : ($announceStatus == 'lulus' ? 'award' : 'mic') }}"></i>
+                                <div
+                                    class="timeline-icon bg-{{ $announceClass == 'secondary' ? 'secondary' : ($announceClass == 'success' ? 'success text-white' : ($announceClass == 'danger' ? 'danger text-white' : 'info text-white')) }}">
+                                    <i
+                                        class="feather icon-{{ $announceStatus == 'pending' ? 'calendar' : ($announceStatus == 'lulus' ? 'award' : 'mic') }}"></i>
                                 </div>
                             </div>
-                           
+
                             <div class="timeline-item-content">
                                 <h6 class="mb-1">Pengumuman Hasil</h6>
                                 <p class="text-muted mb-0 small">{{ $announceDateText }}</p>
@@ -282,15 +297,20 @@
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td><strong>{{ $dokumen->nama_dokumen }}</strong></td>
-                                            <td><span class="badge bg-secondary">{{ strtoupper($dokumen->file_type) }}</span></td>
+                                            <td><span
+                                                    class="badge bg-secondary">{{ strtoupper($dokumen->file_type) }}</span>
+                                            </td>
                                             <td>{{ $dokumen->created_at->format('d M Y H:i') }}</td>
                                             <td>
                                                 @if ($dokumen->status_verifikasi === 'pending')
-                                                    <span class="badge bg-warning text-dark"><i class="feather icon-clock"></i> Pending</span>
+                                                    <span class="badge bg-warning text-dark"><i
+                                                            class="feather icon-clock"></i> Pending</span>
                                                 @elseif ($dokumen->status_verifikasi === 'disetujui')
-                                                    <span class="badge bg-success"><i class="feather icon-check-circle"></i> Disetujui</span>
+                                                    <span class="badge bg-success"><i
+                                                            class="feather icon-check-circle"></i> Disetujui</span>
                                                 @else
-                                                    <span class="badge bg-danger"><i class="feather icon-x-circle"></i> Ditolak</span>
+                                                    <span class="badge bg-danger"><i class="feather icon-x-circle"></i>
+                                                        Ditolak</span>
                                                 @endif
                                             </td>
                                             <td>{{ $dokumen->catatan_verifikasi ?? '-' }}</td>
@@ -298,7 +318,8 @@
                                     @empty
                                         <tr>
                                             <td colspan="7" class="text-center text-muted py-4">
-                                                <i class="feather icon-inbox"></i> Belum ada dokumen yang diupload. <a href="{{ route('user.dokumen') }}">Upload dokumen sekarang</a>
+                                                <i class="feather icon-inbox"></i> Belum ada dokumen yang diupload. <a
+                                                    href="{{ route('user.dokumen') }}">Upload dokumen sekarang</a>
                                             </td>
                                         </tr>
                                     @endforelse
@@ -321,12 +342,14 @@
                     <div class="card-body">
                         <div class="alert alert-info" role="alert">
                             <h6 class="alert-heading"><i class="feather icon-info"></i> Pengumuman</h6>
-                            <p class="mb-0">Verifikasi berkas berlangsung hingga 7 Januari 2026. Pastikan semua dokumen sudah Anda upload sebelum batas waktu.</p>
+                            <p class="mb-0">Verifikasi berkas berlangsung hingga 7 Januari 2026. Pastikan semua dokumen
+                                sudah Anda upload sebelum batas waktu.</p>
                         </div>
 
                         <div class="alert alert-warning" role="alert">
                             <h6 class="alert-heading"><i class="feather icon-alert-triangle"></i> Perhatian</h6>
-                            <p class="mb-0">Jika ada dokumen yang ditolak, Anda dapat melakukan upload ulang maksimal 2 kali.</p>
+                            <p class="mb-0">Jika ada dokumen yang ditolak, Anda dapat melakukan upload ulang maksimal 2
+                                kali.</p>
                         </div>
                     </div>
                 </div>

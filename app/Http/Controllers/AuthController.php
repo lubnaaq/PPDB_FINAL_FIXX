@@ -153,6 +153,11 @@ class AuthController extends Controller
 
     public function verify(Request $request)
     {
+        // Ubah input array otp menjadi string tunggal
+        if (is_array($request->otp)) {
+            $request->merge(['otp' => implode('', $request->otp)]);
+        }
+
         $request->validate([
             'otp' => 'required|numeric|digits:6',
         ]);

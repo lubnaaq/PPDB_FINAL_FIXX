@@ -69,6 +69,51 @@ class PaymentController extends Controller
         }
     }
 
+    public function update(Request $request, Payment $payment)
+    {
+        // Validasi user
+        if ($payment->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Validasi status payment
+        if ($payment->status === 'verified') {
+            return back()->with('error', 'Pembayaran yang sudah diverifikasi tidak dapat diubah.');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'proof_file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        try {
+            if ($request->hasFile('proof_file')) {
+                // Hapus file lama jika ada
+                if ($payment->proof_file_path && Storage::disk('public')->exists($payment->proof_file_path)) {
+                    Storage::disk('public')->delete($payment->proof_file_path);
+                }
+
+                // Upload file baru
+                $file = $request->file('proof_file');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('payments', $fileName, 'public');
+
+                $payment->update([
+                    'proof_file_path' => $filePath,
+                    // Jika status sebelumnya 'rejected', kembalikan ke 'pending' agar bisa dicek ulang
+                    'status' => 'pending', 
+                ]);
+            }
+
+            return redirect()->route('user.payment.index')->with('success', 'Bukti pembayaran berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal memperbarui bukti pembayaran: ' . $e->getMessage());
+        }
+    }
+
     public function printReceipt(Payment $payment)
     {
         // Pastikan pembayaran milik user yang sedang login
