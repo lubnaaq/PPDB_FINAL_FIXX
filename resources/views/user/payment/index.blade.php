@@ -497,190 +497,159 @@
         const angsuranKe = {{ $angsuranKe ?? 1 }};
 
         document.addEventListener('DOMContentLoaded', function() {
-                const jurusan = @json($jurusan ?? null);
+            const jurusan = @json($jurusan ?? null);
 
-                if (jurusan) {
-                    // Gunakan tanggal dari device user
-                    const today = new Date();
+            if (jurusan) {
+                // Gunakan tanggal dari device user
+                const today = new Date();
 
-                    // Tentukan batas akhir Gelombang 1
-                    // Contoh: 31 Mei 2026
-                    // Format: YYYY-MM-DD
-                    const cutoffDate = new Date('2026-05-31');
+                // Tentukan batas akhir Gelombang 1
+                // Contoh: 31 Mei 2026
+                // Format: YYYY-MM-DD
+                const cutoffDate = new Date('2026-05-31');
 
-                    let price = 0;
-                    let gelombang = '';
+                let price = 0;
+                let gelombang = '';
 
-                    // Bandingkan tanggal hari ini dengan batas akhir gelombang 1
-                    if (today <= cutoffDate) {
-                        price = parseFloat(jurusan.harga_gelombang_1);
-                        gelombang = 'Gelombang 1 (s/d 31 Mei 2026)';
-                    } else {
-                        price = parseFloat(jurusan.harga_gelombang_2);
-                        gelombang = 'Gelombang 2 (Mulai 1 Juni 2026)';
-                    }
-
-                    totalPrice = price;
-
-                    // Jika sudah ada pembayaran, total yang harus dibayar sekarang adalah sisa tagihan
-                    let currentPayable = price;
-                    if (angsuranKe > 1) {
-                        currentPayable = sisaTagihan;
-                    }
-
-                    // Update UI Elements
-                    const totalBiaya = document.getElementById('totalBiaya');
-                    const amountInput = document.getElementById('amount');
-                    const amountFormatted = document.getElementById('amountFormatted');
-                    const gelombangText = document.getElementById('gelombangText');
-                    const biayaText = document.getElementById('biayaText');
-                    const totalAmountInput = document.getElementById('total_amount');
-
-                    // Set total biaya
-                    if (totalBiaya) {
-                        totalBiaya.value = formatCurrency(price);
-                    }
-
-                    // Set nilai default
-                    if (amountInput) {
-                        amountInput.value = currentPayable;
-                        amountInput.readOnly = true; // Default lunas/sisa lunas
-                    }
-
-                    if (totalAmountInput) {
-                        totalAmountInput.value = price;
-                    }
-
-                    // Update tampilan format currency
-                    if (amountFormatted) {
-                        amountFormatted.textContent = formatCurrency(currentPayable);
-                    }
-
-                    if (gelombangText) {
-                        gelombangText.textContent = gelombang;
-                    }
-
-                    if (biayaText) {
-                        biayaText.textContent = 'Rp ' + formatCurrency(price);
-                    }
+                // Bandingkan tanggal hari ini dengan batas akhir gelombang 1
+                if (today <= cutoffDate) {
+                    price = parseFloat(jurusan.harga_gelombang_1);
+                    gelombang = 'Gelombang 1 (s/d 31 Mei 2026)';
+                } else {
+                    price = parseFloat(jurusan.harga_gelombang_2);
+                    gelombang = 'Gelombang 2 (Mulai 1 Juni 2026)';
                 }
 
-                // Handle metode pembayaran change
-                const paymentMethodSelect = document.getElementById('payment_method');
-                // const angsuranInfo = document.getElementById('angsuranInfo');
-                const angsuranOptions = document.getElementById('angsuranOptions');
-                const installmentCountSelect = document.getElementById('installment_count');
-                const installmentSummary = document.getElementById('installmentSummary');
+                totalPrice = price;
 
-                function updateAmount() {
-                    const method = paymentMethodSelect.value;
-                    const amountInput = document.getElementById('amount');
-                    const amountFormatted = document.getElementById('amountFormatted');
+                // Jika sudah ada pembayaran, total yang harus dibayar sekarang adalah sisa tagihan
+                let currentPayable = price;
+                if (angsuranKe > 1) {
+                    currentPayable = sisaTagihan;
+                }
 
-                    if (method === 'angsuran') {
-                        const months = parseInt(installmentCountSelect.value);
-                        if (months) {
-                            let monthlyAmount = Math.ceil(totalPrice / months);
+                // Update UI Elements
+                const totalBiaya = document.getElementById('totalBiaya');
+                const amountInput = document.getElementById('amount');
+                const amountFormatted = document.getElementById('amountFormatted');
+                const gelombangText = document.getElementById('gelombangText');
+                const biayaText = document.getElementById('biayaText');
+                const totalAmountInput = document.getElementById('total_amount');
 
-                            // Cap at sisaTagihan
-                            if (monthlyAmount > sisaTagihan) {
-                                monthlyAmount = sisaTagihan;
-                            }
+                // Set total biaya
+                if (totalBiaya) {
+                    totalBiaya.value = formatCurrency(price);
+                }
 
-                            if (amountInput) {
-                                amountInput.value = monthlyAmount;
-                            }
-                            if (amountFormatted) {
-                                amountFormatted.textContent = formatCurrency(monthlyAmount);
-                            }
-                        } else {
-                            // Reset if no month selected
-                            if (amountInput) amountInput.value = 0;
-                            if (amountFormatted) amountFormatted.textContent = 0;
+                // Set nilai default
+                if (amountInput) {
+                    amountInput.value = currentPayable;
+                    amountInput.readOnly = true; // Default lunas/sisa lunas
+                }
+
+                if (totalAmountInput) {
+                    totalAmountInput.value = price;
+                }
+
+                // Update tampilan format currency
+                if (amountFormatted) {
+                    amountFormatted.textContent = formatCurrency(currentPayable);
+                }
+
+                if (gelombangText) {
+                    gelombangText.textContent = gelombang;
+                }
+
+                if (biayaText) {
+                    biayaText.textContent = 'Rp ' + formatCurrency(price);
+                }
+            }
+
+            // Handle metode pembayaran change
+            const paymentMethodSelect = document.getElementById('payment_method');
+            // const angsuranInfo = document.getElementById('angsuranInfo');
+            const angsuranOptions = document.getElementById('angsuranOptions');
+            const installmentCountSelect = document.getElementById('installment_count');
+            const installmentSummary = document.getElementById('installmentSummary');
+
+            function updateAmount() {
+                const method = paymentMethodSelect.value;
+                const amountInput = document.getElementById('amount');
+                const amountFormatted = document.getElementById('amountFormatted');
+
+                if (method === 'angsuran') {
+                    const months = parseInt(installmentCountSelect.value);
+                    if (months) {
+                        let monthlyAmount = Math.ceil(totalPrice / months);
+
+                        // Cap at sisaTagihan
+                        if (monthlyAmount > sisaTagihan) {
+                            monthlyAmount = sisaTagihan;
                         }
-                    } else if (method === 'lunas') {
-                        let payAmount = (angsuranKe > 1) ? sisaTagihan : totalPrice;
+
                         if (amountInput) {
-                            amountInput.value = payAmount;
+                            amountInput.value = monthlyAmount;
                         }
                         if (amountFormatted) {
-                            amountFormatted.textContent = formatCurrency(payAmount);
+                            amountFormatted.textContent = formatCurrency(monthlyAmount);
                         }
+                    } else {
+                        // Reset if no month selected
+                        if (amountInput) amountInput.value = 0;
+                        if (amountFormatted) amountFormatted.textContent = 0;
+                    }
+                } else if (method === 'lunas') {
+                    let payAmount = (angsuranKe > 1) ? sisaTagihan : totalPrice;
+                    if (amountInput) {
+                        amountInput.value = payAmount;
+                    }
+                    if (amountFormatted) {
+                        amountFormatted.textContent = formatCurrency(payAmount);
                     }
                 }
+            }
 
-                if (paymentMethodSelect) {
-                    paymentMethodSelect.addEventListener('change', function() {
-                        const method = this.value;
+            if (paymentMethodSelect) {
+                paymentMethodSelect.addEventListener('change', function() {
+                    const method = this.value;
+                    // Simplify logic: 
+                    // Show options ONLY if Angsuran AND First Installment (angsuranKe == 1).
+                    // If angsuranKe > 1, options are hidden because plan is locked/irrelevant.
 
-                        if (method === 'angsuran') {
-                            if (angsuranOptions) angsuranOptions.style.display = 'block';
-                            if (installmentCountSelect) {
-                                installmentCountSelect.required = true;
-                                if(angsuranKe > 1) {
-                                   installmentCountSelect.required = false;
-                                   if(angsuranOptions) angsuranOptions.style.display = 'none';
-                                }
-                            }
-                            
-                            if (angsuranKe > 1) {
-                                 const amountInput = document.getElementById('amount');
-                                 const amountFormatted = document.getElementById('amountFormatted');
-                                 if (amountInput) amountInput.value = sisaTagihan;
-                                 if (amountFormatted) amountFormatted.textContent = formatCurrency(sisaTagihan);
+                    const showOptions = (method === 'angsuran' && angsuranKe === 1);
 
-                            } else {
-                                updateAmount(); 
-                            }
+                    if (angsuranOptions) {
+                        angsuranOptions.style.display = showOptions ? 'block' : 'none';
+                    }
 
-                        } else if (method === 'lunas') {
-                            if (angsuranOptions) angsuranOptions.style.display = 'none';
-                            installmentSummary.style.display = 'none';
-                            if (installmentCountSelect) {
-                                installmentCountSelect.required = false;
-                                installmentCountSelect.value = '';
-                            }
-
-                            updateAmount();
-                        } else {
-                            if (angsuranOptions) angsuranOptions.style.display = 'none';
-                            installmentSummary.style.display = 'none';
-                            if (installmentCountSelect) installmentCountSelect.required = false;
+                    if (installmentCountSelect) {
+                        installmentCountSelect.required = showOptions;
+                        if (!showOptions && method !== 'angsuran') {
+                            installmentCountSelect.value = ""; // Reset if not angsuran
                         }
-                    });
-                }
+                    }
 
-                if (installmentCountSelect) {
-                    installmentCountSelect.addEventListener('change', updateAmount);
-                }
-            }
-        });
-            const lastPayment = total - (perMonth * (count - 1));
+                    if (installmentSummary) {
+                        installmentSummary.style.display = 'none';
+                    }
 
-            // Set nilai untuk pembayaran pertama
-            if (amountInput) {
-                amountInput.value = perMonth;
-            }
-            if (amountFormatted) {
-                amountFormatted.textContent = formatCurrency(perMonth);
-            }
-            if (firstInstallment) {
-                firstInstallment.textContent = 'Rp ' + formatCurrency(perMonth);
+                    // Amount Calculation Handling
+                    if (method === 'angsuran' && angsuranKe > 1) {
+                        // Payment for existing installment plan (Sisa Tagihan)
+                        const amountInput = document.getElementById('amount');
+                        const amountFormatted = document.getElementById('amountFormatted');
+                        if (amountInput) amountInput.value = sisaTagihan;
+                        if (amountFormatted) amountFormatted.textContent = formatCurrency(sisaTagihan);
+                    } else {
+                        // Lunas OR First Installment (calculation handled by updateAmount)
+                        updateAmount();
+                    }
+                });
             }
 
-            // Buat detail angsuran
-            let detailsHTML = '<ul class="mb-0">';
-            for (let i = 1; i <= count; i++) {
-                const amount = (i === count) ? lastPayment : perMonth;
-                const status = (i === 1) ? ' <span class="badge bg-warning">Bayar Sekarang</span>' : '';
-                detailsHTML += `<li>Angsuran ke-${i}: Rp ${formatCurrency(amount)}${status}</li>`;
+            if (installmentCountSelect) {
+                installmentCountSelect.addEventListener('change', updateAmount);
             }
-            detailsHTML += '</ul>';
-            detailsHTML += `<hr><p class="mb-0"><strong>Total:</strong> Rp ${formatCurrency(total)}</p>`;
-
-            if (installmentDetails) {
-                installmentDetails.innerHTML = detailsHTML;
-            }
-        }
+        }); // Closing DOMContentLoaded
     </script>
 @endsection
