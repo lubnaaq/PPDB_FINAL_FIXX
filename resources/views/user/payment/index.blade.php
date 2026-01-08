@@ -59,6 +59,18 @@
                             </div>
                         @endif
 
+                        @if (!$jurusan)
+                            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                                <i class="fas fa-exclamation-triangle fa-2x me-3"></i>
+                                <div>
+                                    <h4 class="alert-heading">Jurusan Belum Dipilih</h4>
+                                    <p class="mb-0">Anda belum memilih jurusan. Silakan lengkapi biodata dan pilih jurusan
+                                        terlebih dahulu sebelum melakukan pembayaran.</p>
+                                    <a href="{{ route('user.biodata') }}" class="btn btn-danger mt-2">Lengkapi Biodata</a>
+                                </div>
+                            </div>
+                        @endif
+
                         @if (isset($jurusan) && $jurusan)
                             <div class="alert alert-primary d-flex align-items-center" role="alert">
                                 <i class="feather icon-info me-2 f-20"></i>
@@ -72,31 +84,46 @@
                             </div>
                         @endif
 
-                        @php
-                            $isLunas =
-                                $payments->where('payment_method', 'lunas')->where('status', 'verified')->count() > 0;
-                            $isPending = $payments->where('status', 'pending')->count() > 0;
-                        @endphp
-
                         @if ($isLunas)
                             <div class="alert alert-success d-flex align-items-center" role="alert">
                                 <i class="fas fa-check-circle fa-2x me-3"></i>
                                 <div>
                                     <h4 class="alert-heading">Pembayaran Lunas</h4>
-                                    <p class="mb-0">Terima kasih, pembayaran Anda telah lunas. Tidak perlu melakukan
-                                        upload lagi.</p>
+                                    <p class="mb-0">Terima kasih, pembayaran Anda telah lunas. Total Biaya:
+                                        <strong>Rp {{ number_format($totalBiaya, 0, ',', '.') }}</strong>
+                                    </p>
                                 </div>
                             </div>
-                        @elseif ($isPending)
+                        @elseif ($hasPending)
                             <div class="alert alert-warning d-flex align-items-center" role="alert">
                                 <i class="fas fa-clock fa-2x me-3"></i>
                                 <div>
                                     <h4 class="alert-heading">Menunggu Verifikasi</h4>
-                                    <p class="mb-0">Pembayaran Anda sedang diverifikasi. Mohon tunggu sebelum melakukan
-                                        upload ulang.</p>
+                                    <p class="mb-0">Pembayaran Anda sedang diverifikasi. Mohon tunggu.
+                                        Jika ada kesalahan, Anda dapat mengedit bukti pembayaran di tabel riwayat di bawah.
+                                    </p>
                                 </div>
                             </div>
                         @else
+                            <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+                                <i class="fas fa-wallet fa-2x me-3"></i>
+                                <div>
+                                    <h5 class="alert-heading">Status Pembayaran</h5>
+                                    <ul class="mb-0 ps-3">
+                                        <li>Total Biaya: <strong>Rp {{ number_format($totalBiaya, 0, ',', '.') }}</strong>
+                                        </li>
+                                        <li>Sudah Terbayar: <strong class="text-success">Rp
+                                                {{ number_format($totalTerbayar, 0, ',', '.') }}</strong></li>
+                                        <li>Sisa Tagihan: <strong class="text-danger">Rp
+                                                {{ number_format($sisaTagihan, 0, ',', '.') }}</strong></li>
+                                        @if ($angsuranKe > 1)
+                                            <li>Pembayaran Selanjutnya: <strong>Angsuran ke-{{ $angsuranKe }}</strong>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+
                             <!-- Informasi Rekening Pembayaran -->
                             <div class="card bg-light-primary mb-4">
                                 <div class="card-body">
@@ -184,7 +211,8 @@
                                                     class="text-danger">*</span></label>
                                             <div class="input-group">
                                                 <span class="input-group-text">Rp</span>
-                                                <input type="text" class="form-control" id="totalBiaya" readonly>
+                                                <input type="text" class="form-control" id="totalBiaya" readonly
+                                                    value="{{ number_format($totalBiaya, 0, ',', '.') }}">
                                             </div>
                                             <small class="form-text text-muted d-block mt-2">
                                                 <i class="feather icon-info"></i> Total biaya berdasarkan jurusan dan
@@ -211,15 +239,19 @@
 
                                     <div class="col-md-6" id="angsuranOptions" style="display: none;">
                                         <div class="form-group mb-3">
-                                            <label class="form-label">Jumlah Angsuran <span
+                                            <label class="form-label">Rencana Angsuran <span
                                                     class="text-danger">*</span></label>
                                             <select class="form-control @error('installment_count') is-invalid @enderror"
                                                 name="installment_count" id="installment_count">
-                                                <option value="">-- Pilih Angsuran --</option>
-                                                <option value="2">2 Bulan</option>
-                                                <option value="3">3 Bulan</option>
-                                                <option value="4">4 Bulan</option>
+                                                <option value="">-- Pilih Lama Angsuran --</option>
+                                                <option value="2">2 Bulan (2x Pembayaran)</option>
+                                                <option value="3">3 Bulan (3x Pembayaran)</option>
+                                                <option value="4">4 Bulan (4x Pembayaran)</option>
+                                                <option value="5">5 Bulan (5x Pembayaran)</option>
+                                                <option value="6">6 Bulan (6x Pembayaran)</option>
                                             </select>
+                                            <small class="text-muted">Pilih berapa kali pembayaran yang diinginkan (Max 6
+                                                bulan).</small>
                                             @error('installment_count')
                                                 <span class="invalid-feedback d-block">{{ $message }}</span>
                                             @enderror
@@ -245,9 +277,11 @@
                                                 <span class="input-group-text">Rp</span>
                                                 <input type="number"
                                                     class="form-control @error('amount') is-invalid @enderror"
-                                                    name="amount" id="amount" value="{{ old('amount') }}" required
-                                                    min="1000" readonly>
-                                                <span class="input-group-text" id="amountFormatted">0</span>
+                                                    name="amount" id="amount"
+                                                    value="{{ old('amount', $angsuranKe > 1 ? $sisaTagihan : $totalBiaya) }}"
+                                                    required min="1000" readonly>
+                                                <span class="input-group-text"
+                                                    id="amountFormatted">{{ number_format($angsuranKe > 1 ? $sisaTagihan : $totalBiaya, 0, ',', '.') }}</span>
                                             </div>
                                             <small class="form-text text-muted d-block mt-2">
                                                 <i class="feather icon-info"></i> Jumlah yang harus dibayar saat ini
@@ -276,7 +310,7 @@
                                     <!-- Hidden fields untuk angsuran -->
                                     <input type="hidden" name="total_amount" id="total_amount" value="0">
                                     <input type="hidden" name="installment_number" id="installment_number"
-                                        value="1">
+                                        value="{{ $angsuranKe ?? 1 }}">
 
                                     <div class="col-md-12">
                                         <div class="form-group mb-3">
@@ -459,131 +493,168 @@
         }
 
         let totalPrice = 0;
+        const sisaTagihan = {{ $sisaTagihan ?? 0 }};
+        const angsuranKe = {{ $angsuranKe ?? 1 }};
 
         document.addEventListener('DOMContentLoaded', function() {
-            const jurusan = @json($jurusan ?? null);
+                const jurusan = @json($jurusan ?? null);
 
-            if (jurusan) {
-                // Gunakan tanggal dari device user
-                const today = new Date();
+                if (jurusan) {
+                    // Gunakan tanggal dari device user
+                    const today = new Date();
 
-                // Tentukan batas akhir Gelombang 1
-                // Contoh: 31 Mei 2026
-                // Format: YYYY-MM-DD
-                const cutoffDate = new Date('2026-05-31');
+                    // Tentukan batas akhir Gelombang 1
+                    // Contoh: 31 Mei 2026
+                    // Format: YYYY-MM-DD
+                    const cutoffDate = new Date('2026-05-31');
 
-                let price = 0;
-                let gelombang = '';
+                    let price = 0;
+                    let gelombang = '';
 
-                // Bandingkan tanggal hari ini dengan batas akhir gelombang 1
-                if (today <= cutoffDate) {
-                    price = parseFloat(jurusan.harga_gelombang_1);
-                    gelombang = 'Gelombang 1 (s/d 31 Mei 2026)';
-                } else {
-                    price = parseFloat(jurusan.harga_gelombang_2);
-                    gelombang = 'Gelombang 2 (Mulai 1 Juni 2026)';
+                    // Bandingkan tanggal hari ini dengan batas akhir gelombang 1
+                    if (today <= cutoffDate) {
+                        price = parseFloat(jurusan.harga_gelombang_1);
+                        gelombang = 'Gelombang 1 (s/d 31 Mei 2026)';
+                    } else {
+                        price = parseFloat(jurusan.harga_gelombang_2);
+                        gelombang = 'Gelombang 2 (Mulai 1 Juni 2026)';
+                    }
+
+                    totalPrice = price;
+
+                    // Jika sudah ada pembayaran, total yang harus dibayar sekarang adalah sisa tagihan
+                    let currentPayable = price;
+                    if (angsuranKe > 1) {
+                        currentPayable = sisaTagihan;
+                    }
+
+                    // Update UI Elements
+                    const totalBiaya = document.getElementById('totalBiaya');
+                    const amountInput = document.getElementById('amount');
+                    const amountFormatted = document.getElementById('amountFormatted');
+                    const gelombangText = document.getElementById('gelombangText');
+                    const biayaText = document.getElementById('biayaText');
+                    const totalAmountInput = document.getElementById('total_amount');
+
+                    // Set total biaya
+                    if (totalBiaya) {
+                        totalBiaya.value = formatCurrency(price);
+                    }
+
+                    // Set nilai default
+                    if (amountInput) {
+                        amountInput.value = currentPayable;
+                        amountInput.readOnly = true; // Default lunas/sisa lunas
+                    }
+
+                    if (totalAmountInput) {
+                        totalAmountInput.value = price;
+                    }
+
+                    // Update tampilan format currency
+                    if (amountFormatted) {
+                        amountFormatted.textContent = formatCurrency(currentPayable);
+                    }
+
+                    if (gelombangText) {
+                        gelombangText.textContent = gelombang;
+                    }
+
+                    if (biayaText) {
+                        biayaText.textContent = 'Rp ' + formatCurrency(price);
+                    }
                 }
 
-                totalPrice = price;
+                // Handle metode pembayaran change
+                const paymentMethodSelect = document.getElementById('payment_method');
+                // const angsuranInfo = document.getElementById('angsuranInfo');
+                const angsuranOptions = document.getElementById('angsuranOptions');
+                const installmentCountSelect = document.getElementById('installment_count');
+                const installmentSummary = document.getElementById('installmentSummary');
 
-                // Update UI Elements
-                const totalBiaya = document.getElementById('totalBiaya');
-                const amountInput = document.getElementById('amount');
-                const amountFormatted = document.getElementById('amountFormatted');
-                const gelombangText = document.getElementById('gelombangText');
-                const biayaText = document.getElementById('biayaText');
-                const totalAmountInput = document.getElementById('total_amount');
-
-                // Set total biaya
-                if (totalBiaya) {
-                    totalBiaya.value = formatCurrency(price);
-                }
-
-                // Set nilai default (lunas)
-                if (amountInput) {
-                    amountInput.value = price;
-                    amountInput.readOnly = true;
-                }
-
-                if (totalAmountInput) {
-                    totalAmountInput.value = price;
-                }
-
-                // Update tampilan format currency
-                if (amountFormatted) {
-                    amountFormatted.textContent = formatCurrency(price);
-                }
-
-                if (gelombangText) {
-                    gelombangText.textContent = gelombang;
-                }
-
-                if (biayaText) {
-                    biayaText.textContent = 'Rp ' + formatCurrency(price);
-                }
-            }
-
-            // Handle metode pembayaran change
-            const paymentMethodSelect = document.getElementById('payment_method');
-            const angsuranOptions = document.getElementById('angsuranOptions');
-            const installmentCountSelect = document.getElementById('installment_count');
-            const installmentSummary = document.getElementById('installmentSummary');
-
-            if (paymentMethodSelect) {
-                paymentMethodSelect.addEventListener('change', function() {
-                    const method = this.value;
+                function updateAmount() {
+                    const method = paymentMethodSelect.value;
                     const amountInput = document.getElementById('amount');
                     const amountFormatted = document.getElementById('amountFormatted');
 
                     if (method === 'angsuran') {
-                        angsuranOptions.style.display = 'block';
-                        installmentCountSelect.required = true;
-                    } else if (method === 'lunas') {
-                        angsuranOptions.style.display = 'none';
-                        installmentSummary.style.display = 'none';
-                        installmentCountSelect.required = false;
-                        installmentCountSelect.value = '';
+                        const months = parseInt(installmentCountSelect.value);
+                        if (months) {
+                            let monthlyAmount = Math.ceil(totalPrice / months);
 
-                        // Set kembali ke harga penuh
+                            // Cap at sisaTagihan
+                            if (monthlyAmount > sisaTagihan) {
+                                monthlyAmount = sisaTagihan;
+                            }
+
+                            if (amountInput) {
+                                amountInput.value = monthlyAmount;
+                            }
+                            if (amountFormatted) {
+                                amountFormatted.textContent = formatCurrency(monthlyAmount);
+                            }
+                        } else {
+                            // Reset if no month selected
+                            if (amountInput) amountInput.value = 0;
+                            if (amountFormatted) amountFormatted.textContent = 0;
+                        }
+                    } else if (method === 'lunas') {
+                        let payAmount = (angsuranKe > 1) ? sisaTagihan : totalPrice;
                         if (amountInput) {
-                            amountInput.value = totalPrice;
+                            amountInput.value = payAmount;
                         }
                         if (amountFormatted) {
-                            amountFormatted.textContent = formatCurrency(totalPrice);
+                            amountFormatted.textContent = formatCurrency(payAmount);
                         }
-                    } else {
-                        angsuranOptions.style.display = 'none';
-                        installmentSummary.style.display = 'none';
-                        installmentCountSelect.required = false;
                     }
-                });
-            }
+                }
 
-            // Handle installment count change
-            if (installmentCountSelect) {
-                installmentCountSelect.addEventListener('change', function() {
-                    const count = parseInt(this.value);
+                if (paymentMethodSelect) {
+                    paymentMethodSelect.addEventListener('change', function() {
+                        const method = this.value;
 
-                    if (count > 0 && totalPrice > 0) {
-                        calculateInstallments(count, totalPrice);
-                        installmentSummary.style.display = 'block';
-                    } else {
-                        installmentSummary.style.display = 'none';
-                    }
-                });
+                        if (method === 'angsuran') {
+                            if (angsuranOptions) angsuranOptions.style.display = 'block';
+                            if (installmentCountSelect) {
+                                installmentCountSelect.required = true;
+                                if(angsuranKe > 1) {
+                                   installmentCountSelect.required = false;
+                                   if(angsuranOptions) angsuranOptions.style.display = 'none';
+                                }
+                            }
+                            
+                            if (angsuranKe > 1) {
+                                 const amountInput = document.getElementById('amount');
+                                 const amountFormatted = document.getElementById('amountFormatted');
+                                 if (amountInput) amountInput.value = sisaTagihan;
+                                 if (amountFormatted) amountFormatted.textContent = formatCurrency(sisaTagihan);
+
+                            } else {
+                                updateAmount(); 
+                            }
+
+                        } else if (method === 'lunas') {
+                            if (angsuranOptions) angsuranOptions.style.display = 'none';
+                            installmentSummary.style.display = 'none';
+                            if (installmentCountSelect) {
+                                installmentCountSelect.required = false;
+                                installmentCountSelect.value = '';
+                            }
+
+                            updateAmount();
+                        } else {
+                            if (angsuranOptions) angsuranOptions.style.display = 'none';
+                            installmentSummary.style.display = 'none';
+                            if (installmentCountSelect) installmentCountSelect.required = false;
+                        }
+                    });
+                }
+
+                if (installmentCountSelect) {
+                    installmentCountSelect.addEventListener('change', updateAmount);
+                }
             }
         });
-
-        function calculateInstallments(count, total) {
-            const amountInput = document.getElementById('amount');
-            const amountFormatted = document.getElementById('amountFormatted');
-            const installmentDetails = document.getElementById('installmentDetails');
-            const firstInstallment = document.getElementById('firstInstallment');
-
-            // Hitung angsuran per bulan
-            const perMonth = Math.ceil(total / count);
-
-            // Hitung sisa untuk pembayaran terakhir (jika ada selisih karena pembulatan)
             const lastPayment = total - (perMonth * (count - 1));
 
             // Set nilai untuk pembayaran pertama

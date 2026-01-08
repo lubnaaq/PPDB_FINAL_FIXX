@@ -49,7 +49,7 @@
                     <button type="submit" class="btn btn-primary">Create Account</button>
                 </div>
                 <div class="saprator mt-3">
-                    <span>Sign up with</span>
+                    
                 </div>
                 @include('auth.sso')
 

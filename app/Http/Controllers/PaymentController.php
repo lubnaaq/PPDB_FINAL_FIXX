@@ -18,7 +18,48 @@ class PaymentController extends Controller
         $biodata = $user->biodata;
         $jurusan = $biodata ? $biodata->jurusan : null;
 
-        return view('user.payment.index', compact('payments', 'jurusan'));
+        // Hitung total biaya (disamakan dengan logic JS: cutoff 31 Mei 2026)
+        $totalBiaya = 0;
+        $cutoffDate = \Carbon\Carbon::create(2026, 5, 31, 23, 59, 59);
+        $now = \Carbon\Carbon::now();
+
+        if ($jurusan) {
+            if ($now->lte($cutoffDate)) {
+                $totalBiaya = $jurusan->harga_gelombang_1;
+            } else {
+                $totalBiaya = $jurusan->harga_gelombang_2;
+            }
+        }
+
+        // Hitung yang sudah dibayar (hanya verified)
+        // Jika ada installment, kita sum amount
+        $totalTerbayar = $payments->where('status', 'verified')->sum('amount');
+        
+        // Sisa tagihan
+        $sisaTagihan = max(0, $totalBiaya - $totalTerbayar);
+        
+        // Cek status kepemilikan
+        // Lunas jika sisa <= 0 dan ada pembayaran/tagihan > 0
+        $isLunas = ($sisaTagihan <= 0 && $totalBiaya > 0);
+        
+        // Pending jika ada pembayaran status pending
+        $hasPending = $payments->where('status', 'pending')->count() > 0;
+
+        // Angsuran ke berapa (verified + 1)
+        // Jika status rejected, user bisa upload ulang (dianggap angsuran ke-X yang sama, atau bisa edit)
+        // Tapi jika form muncul, berarti ini entry baru, jadi count + 1
+        $angsuranKe = $payments->where('status', 'verified')->count() + 1;
+
+        return view('user.payment.index', compact(
+            'payments', 
+            'jurusan', 
+            'totalBiaya', 
+            'totalTerbayar', 
+            'sisaTagihan', 
+            'isLunas', 
+            'hasPending',
+            'angsuranKe'
+        ));
     }
 
     public function store(Request $request)
@@ -27,7 +68,7 @@ class PaymentController extends Controller
             'amount' => 'required|numeric|min:1000',
             'payment_date' => 'required|date',
             'payment_method' => 'required|in:lunas,angsuran',
-            'installment_count' => 'nullable|integer|min:2|max:4',
+            'installment_count' => 'nullable|integer|min:2|max:6',
             'total_amount' => 'required|numeric',
             'installment_number' => 'nullable|integer',
             'proof_file' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
