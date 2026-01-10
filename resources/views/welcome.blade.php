@@ -212,7 +212,7 @@
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <h2 class="m-0 text-primary"></h2>
+                                    <h2 class="m-0 text-primary">5</h2>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h4 class="mb-2">Jurusan Unggulan</h4>
