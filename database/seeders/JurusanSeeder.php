@@ -14,7 +14,7 @@ class JurusanSeeder extends Seeder
                 'nama' => 'Teknik Permesinan',
                 'kode' => 'TPM',
                 'deskripsi' => 'Mempelajari proses produksi logam, pengoperasian mesin bubut, frais, gerinda, dan CNC.',
-                'kuota' => 72,
+                'kuota' => 180, // 5 Kelas x 36
                 'harga_gelombang_1' => 4280000,
                 'harga_gelombang_2' => 4480000,
             ],
@@ -22,7 +22,7 @@ class JurusanSeeder extends Seeder
                 'nama' => 'Teknik Kendaraan Ringan',
                 'kode' => 'TKR',
                 'deskripsi' => 'Mempelajari perawatan dan perbaikan kendaraan ringan (mobil), sistem mesin, kelistrikan, dan chasis.',
-                'kuota' => 72,
+                'kuota' => 216, // 6 Kelas x 36
                 'harga_gelombang_1' => 4430000,
                 'harga_gelombang_2' => 4655000,
             ],

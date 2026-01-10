@@ -77,7 +77,13 @@
                                                     <div class="d-flex justify-content-between align-items-start mb-3">
                                                         <h5 class="card-title">{{ $jurusan->nama }}</h5>
                                                         @if ($selectedJurusanId == $jurusan->id)
-                                                            <span class="badge bg-primary">Dipilih</span>
+                                                            <div class="d-flex flex-column align-items-end">
+                                                                <span class="badge bg-primary mb-1">Dipilih</span>
+                                                                @if (isset($biodata) && $biodata->kelas)
+                                                                    <span class="badge bg-success">Kelas:
+                                                                        {{ $biodata->kelas->nama_kelas }}</span>
+                                                                @endif
+                                                            </div>
                                                         @endif
                                                     </div>
                                                     <h6 class="card-subtitle mb-2 text-muted">{{ $jurusan->kode }}</h6>

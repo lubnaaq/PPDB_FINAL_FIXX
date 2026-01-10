@@ -37,6 +37,8 @@
             border: none;
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            text-decoration: none;
         }
 
         .stat-card::before {
@@ -228,7 +230,7 @@
 
                 <!-- Statistik Utama dengan Gradient -->
                 <div class="col-md-6 col-xl-3 mb-3">
-                    <div class="card shadow-soft stat-card h-100" id="cardTotalPendaftar"
+                    <a href="{{ route('admin.pendaftar') }}" class="card shadow-soft stat-card h-100" id="cardTotalPendaftar"
                         style="--grad-start: #4680ff; --grad-end: #2e5ce6;">
                         <div class="card-update-badge">UPDATED</div>
                         <div class="card-body">
@@ -240,7 +242,7 @@
                                 <div class="stat-icon"><i class="feather icon-users"></i></div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="col-md-6 col-xl-3 mb-3">
@@ -260,8 +262,8 @@
                 </div>
 
                 <div class="col-md-6 col-xl-3 mb-3">
-                    <div class="card shadow-soft stat-card h-100" id="cardSudahUploadDokumen"
-                        style="--grad-start: #ffc107; --grad-end: #ff9800;">
+                    <a href="{{ route('admin.verifikasi') }}" class="card shadow-soft stat-card h-100"
+                        id="cardSudahUploadDokumen" style="--grad-start: #ffc107; --grad-end: #ff9800;">
                         <div class="card-update-badge">UPDATED</div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start">
@@ -272,11 +274,11 @@
                                 <div class="stat-icon"><i class="feather icon-upload-cloud"></i></div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="col-md-6 col-xl-3 mb-3">
-                    <div class="card shadow-soft stat-card h-100" id="cardLulusSeleksi"
+                    <a href="{{ route('admin.seleksi') }}" class="card shadow-soft stat-card h-100" id="cardLulusSeleksi"
                         style="--grad-start: #17a2b8; --grad-end: #138496;">
                         <div class="card-update-badge">UPDATED</div>
                         <div class="card-body">
@@ -288,7 +290,7 @@
                                 <div class="stat-icon"><i class="feather icon-award"></i></div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 

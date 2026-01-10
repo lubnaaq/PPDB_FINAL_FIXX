@@ -204,7 +204,7 @@ class StatusController extends Controller
     public function pengumuman()
     {
         $user = Auth::user();
-        $biodata = Biodata::where('user_id', $user->id)->first();
+        $biodata = Biodata::with('kelas', 'jurusan')->where('user_id', $user->id)->first();
         
         $announcementOpen = Setting::where('key', 'announcement_open')->value('value');
         $announcementDate = Setting::where('key', 'announcement_date')->value('value');
@@ -225,6 +225,6 @@ class StatusController extends Controller
             }
         }
 
-        return view('user.hasil_pengumuman', compact('status_kelulusan', 'announcementDate'));
+        return view('user.hasil_pengumuman', compact('status_kelulusan', 'announcementDate', 'biodata'));
     }
 }

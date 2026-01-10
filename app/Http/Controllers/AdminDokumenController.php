@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dokumen;
 use App\Models\Payment;
+use App\Models\Jurusan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,19 +15,17 @@ class AdminDokumenController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Dokumen::with('user')->orderBy('created_at', 'desc');
-        $paymentQuery = Payment::with('user')->orderBy('created_at', 'desc');
+        // Eager load user and their payments to avoid N+1 in the view
+        $query = Dokumen::with(['user.payments', 'user.biodata.kelas'])->orderBy('created_at', 'desc');
 
         // Filter by status
         if ($request->has('status') && $request->status) {
             $query->where('status_verifikasi', $request->status);
-            $paymentQuery->where('status', $request->status);
         }
 
         $dokumens = $query->paginate(15, ['*'], 'dokumen_page');
-        $payments = $paymentQuery->paginate(15, ['*'], 'payment_page');
 
-        return view('admin.verifikasi', compact('dokumens', 'payments'));
+        return view('admin.verifikasi', compact('dokumens'));
     }
 
     /**
@@ -99,6 +98,28 @@ class AdminDokumenController extends Controller
         }
 
         try {
+            // Check logic for quota decrement
+            if ($request->status === 'verified' && $payment->status !== 'verified') {
+                $user = $payment->user;
+                if ($user && $user->biodata && $user->biodata->jurusan_id) {
+                    $jurusan = Jurusan::find($user->biodata->jurusan_id);
+                    if ($jurusan && $jurusan->kuota > 0) {
+                        $jurusan->decrement('kuota');
+                    }
+                }
+            }
+            
+            // Logic for quota rollback (optional but good consistency)
+            if ($payment->status === 'verified' && $request->status !== 'verified') {
+                 $user = $payment->user;
+                 if ($user && $user->biodata && $user->biodata->jurusan_id) {
+                    $jurusan = Jurusan::find($user->biodata->jurusan_id);
+                    if ($jurusan) {
+                        $jurusan->increment('kuota');
+                    }
+                }
+            }
+
             $payment->update([
                 'status' => $request->status,
                 'notes' => $request->notes ?? null,

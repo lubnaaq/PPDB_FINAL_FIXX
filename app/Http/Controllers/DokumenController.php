@@ -130,4 +130,23 @@ class DokumenController extends Controller
 
         return Storage::disk('public')->download($dokumen->file_path);
     }
+
+    /**
+     * View document inline
+     */
+    public function viewFile(Dokumen $dokumen)
+    {
+        // Check if user owns this document
+        if ($dokumen->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        if (!Storage::disk('public')->exists($dokumen->file_path)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        $file = Storage::disk('public')->path($dokumen->file_path);
+        
+        return response()->file($file);
+    }
 }

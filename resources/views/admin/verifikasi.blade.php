@@ -5,7 +5,7 @@
         body {
             background-image:
                 linear-gradient(rgba(249, 248, 248, 0.55), rgba(0, 0, 0, 0.64)),
-                url('{{ asset("assets/images/user/image.png") }}');
+                url('{{ asset('assets/images/user/image.png') }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -34,85 +34,13 @@
         <!-- [ breadcrumb ] end -->
 
         <!-- [ Main Content ] start -->
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h5>Daftar Pembayaran Pendaftar</h5>
-                        <p class="text-muted mb-0">Verifikasi bukti pembayaran yang diupload oleh pendaftar</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Nama Pendaftar</th>
-                                        <th>Jumlah</th>
-                                        <th>Tanggal Bayar</th>
-                                        <th>Status</th>
-                                        <th>Bukti</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($payments as $i => $pay)
-                                        <tr>
-                                            <td>{{ ($payments->currentPage() - 1) * $payments->perPage() + $i + 1 }}</td>
-                                            <td>{{ $pay->user->name ?? '-' }}</td>
-                                            <td>Rp {{ number_format($pay->amount, 0, ',', '.') }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($pay->payment_date)->format('d/m/Y') }}</td>
-                                            <td>
-                                                @if ($pay->status === 'pending')
-                                                    <span class="badge bg-warning text-dark">Menunggu</span>
-                                                @elseif ($pay->status === 'verified')
-                                                    <span class="badge bg-success">Terverifikasi</span>
-                                                @else
-                                                    <span class="badge bg-danger">Ditolak</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ asset('storage/'.$pay->proof_file_path) }}" target="_blank" class="btn btn-sm btn-info">
-                                                    <i class="feather icon-eye"></i> Lihat
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-sm btn-success" onclick="setujuiPayment({{ $pay->id }})">
-                                                        <i class="feather icon-check"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-danger" onclick="tolakPayment({{ $pay->id }})">
-                                                        <i class="feather icon-x"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center text-muted py-5">
-                                                <i class="feather icon-info"></i> Belum ada data pembayaran.
-                                            </td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                        @if (method_exists($payments, 'links'))
-                            <div class="mt-3">
-                                {{ $payments->links() }}
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <h5>Daftar Dokumen Pendaftar</h5>
-                        <p class="text-muted mb-0">Verifikasi dokumen yang diupload oleh pendaftar (Dikelompokkan per User)</p>
+                        <p class="text-muted mb-0">Verifikasi dokumen yang diupload oleh pendaftar (Dikelompokkan per User)
+                        </p>
                     </div>
                     <div class="card-body">
                         <!-- Filter Status -->
@@ -146,21 +74,33 @@
                                         $dokumensByUser = $dokumens->groupBy('user_id');
                                         $counter = 1;
                                     @endphp
-                                    
+
                                     @forelse ($dokumensByUser as $userId => $userDokumens)
                                         @php
                                             $user = $userDokumens->first()->user;
                                             $totalDocs = $userDokumens->count();
-                                            $pendingDocs = $userDokumens->where('status_verifikasi', 'pending')->count();
-                                            $disetujuiDocs = $userDokumens->where('status_verifikasi', 'disetujui')->count();
-                                            $ditolakDocs = $userDokumens->where('status_verifikasi', 'ditolak')->count();
-                                            
-                                            $paymentStatus = $user->payments->sortByDesc('created_at')->first()?->status ?? 'none';
+                                            $pendingDocs = $userDokumens
+                                                ->where('status_verifikasi', 'pending')
+                                                ->count();
+                                            $disetujuiDocs = $userDokumens
+                                                ->where('status_verifikasi', 'disetujui')
+                                                ->count();
+                                            $ditolakDocs = $userDokumens
+                                                ->where('status_verifikasi', 'ditolak')
+                                                ->count();
+
+                                            $paymentStatus =
+                                                $user->payments->sortByDesc('created_at')->first()?->status ?? 'none';
                                         @endphp
                                         <tr>
                                             <td>{{ $counter++ }}</td>
                                             <td>
                                                 <strong>{{ $user->name ?? '-' }}</strong>
+                                                @if (optional(optional($user)->biodata)->kelas)
+                                                    <br>
+                                                    <small
+                                                        class="text-success fw-bold">{{ $user->biodata->kelas->nama_kelas }}</small>
+                                                @endif
                                             </td>
                                             <td><small>{{ $user->email ?? '-' }}</small></td>
                                             <td class="text-center">
@@ -168,13 +108,14 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex flex-wrap gap-1">
-                                                    @if($pendingDocs > 0)
-                                                        <span class="badge bg-warning text-dark">{{ $pendingDocs }} Menunggu</span>
+                                                    @if ($pendingDocs > 0)
+                                                        <span class="badge bg-warning text-dark">{{ $pendingDocs }}
+                                                            Menunggu</span>
                                                     @endif
-                                                    @if($disetujuiDocs > 0)
+                                                    @if ($disetujuiDocs > 0)
                                                         <span class="badge bg-success">{{ $disetujuiDocs }} Disetujui</span>
                                                     @endif
-                                                    @if($ditolakDocs > 0)
+                                                    @if ($ditolakDocs > 0)
                                                         <span class="badge bg-danger">{{ $ditolakDocs }} Ditolak</span>
                                                     @endif
                                                 </div>
@@ -191,7 +132,8 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-primary w-100" onclick="toggleDetails({{ $userId }})">
+                                                <button type="button" class="btn btn-sm btn-primary w-100"
+                                                    onclick="toggleDetails({{ $userId }})">
                                                     <i class="feather icon-chevron-down" id="icon-{{ $userId }}"></i>
                                                 </button>
                                             </td>
@@ -202,7 +144,7 @@
                                                 <div class="bg-light border-top border-bottom">
                                                     <div class="p-4">
                                                         <h6 class="mb-3">
-                                                            <i class="feather icon-file-text text-primary"></i> 
+                                                            <i class="feather icon-file-text text-primary"></i>
                                                             <strong>Daftar Dokumen {{ $user->name }}</strong>
                                                         </h6>
                                                         <div class="table-responsive">
@@ -220,34 +162,56 @@
                                                                 <tbody>
                                                                     @foreach ($userDokumens as $index => $dok)
                                                                         <tr>
-                                                                            <td class="text-center">{{ $index + 1 }}</td>
+                                                                            <td class="text-center">{{ $index + 1 }}
+                                                                            </td>
                                                                             <td>{{ $dok->nama_dokumen }}</td>
                                                                             <td class="text-center">
-                                                                                <span class="badge bg-secondary">{{ strtoupper($dok->file_type) }}</span>
+                                                                                <span
+                                                                                    class="badge bg-secondary">{{ strtoupper($dok->file_type) }}</span>
                                                                             </td>
-                                                                            <td class="text-center">
+                                                                            <td class="text-center"
+                                                                                id="status-cell-{{ $dok->id }}">
                                                                                 @if ($dok->status_verifikasi === 'pending')
-                                                                                    <span class="badge bg-warning text-dark">Menunggu</span>
+                                                                                    <span
+                                                                                        class="badge bg-warning text-dark">Menunggu</span>
                                                                                 @elseif ($dok->status_verifikasi === 'disetujui')
-                                                                                    <span class="badge bg-success">Disetujui</span>
+                                                                                    <span
+                                                                                        class="badge bg-success">Disetujui</span>
                                                                                 @else
-                                                                                    <span class="badge bg-danger">Ditolak</span>
+                                                                                    <span
+                                                                                        class="badge bg-danger">Ditolak</span>
                                                                                 @endif
                                                                             </td>
-                                                                            <td class="text-center">{{ $dok->created_at->format('d/m/Y H:i') }}</td>
                                                                             <td class="text-center">
+                                                                                {{ $dok->created_at->format('d/m/Y H:i') }}
+                                                                            </td>
+                                                                            <td class="text-center"
+                                                                                id="action-cell-{{ $dok->id }}">
                                                                                 <div class="btn-group" role="group">
-                                                                                    <a href="{{ asset('storage/'.$dok->file_path) }}" target="_blank" class="btn btn-sm btn-info" title="Lihat Dokumen">
-                                                                                        <i class="feather icon-eye"></i> Lihat
+                                                                                    <a href="{{ route('dokumen.view', $dok->id) }}"
+                                                                                        target="_blank"
+                                                                                        class="btn btn-sm btn-info"
+                                                                                        title="Lihat Dokumen">
+                                                                                        <i class="feather icon-eye"></i>
+                                                                                        Lihat
                                                                                     </a>
-                                                                                    @if($dok->status_verifikasi !== 'disetujui')
-                                                                                        <button type="button" class="btn btn-sm btn-success" onclick="setujui({{ $dok->id }})" title="Setujui">
-                                                                                            <i class="feather icon-check"></i> Setujui
+                                                                                    @if ($dok->status_verifikasi !== 'disetujui')
+                                                                                        <button type="button"
+                                                                                            class="btn btn-sm btn-success"
+                                                                                            onclick="setujui({{ $dok->id }})"
+                                                                                            title="Setujui">
+                                                                                            <i
+                                                                                                class="feather icon-check"></i>
+                                                                                            Setujui
                                                                                         </button>
                                                                                     @endif
-                                                                                    @if($dok->status_verifikasi !== 'ditolak')
-                                                                                        <button type="button" class="btn btn-sm btn-danger" onclick="tolak({{ $dok->id }})" title="Tolak">
-                                                                                            <i class="feather icon-x"></i> Tolak
+                                                                                    @if ($dok->status_verifikasi !== 'ditolak')
+                                                                                        <button type="button"
+                                                                                            class="btn btn-sm btn-danger"
+                                                                                            onclick="tolak({{ $dok->id }})"
+                                                                                            title="Tolak">
+                                                                                            <i class="feather icon-x"></i>
+                                                                                            Tolak
                                                                                         </button>
                                                                                     @endif
                                                                                 </div>
@@ -282,7 +246,8 @@
         </div>
 
         <!-- [ Modal Verifikasi ] start -->
-        <div class="modal fade" id="modalVerifikasi" tabindex="-1" role="dialog" aria-labelledby="modalVerifikasiLabel" aria-hidden="true">
+        <div class="modal fade" id="modalVerifikasi" tabindex="-1" role="dialog"
+            aria-labelledby="modalVerifikasiLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -305,7 +270,8 @@
         <!-- [ Modal Verifikasi ] end -->
 
         <!-- [ Modal Catatan ] start -->
-        <div class="modal fade" id="modalCatatan" tabindex="-1" role="dialog" aria-labelledby="modalCatatanLabel" aria-hidden="true">
+        <div class="modal fade" id="modalCatatan" tabindex="-1" role="dialog" aria-labelledby="modalCatatanLabel"
+            aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -332,7 +298,7 @@
         function toggleDetails(userId) {
             const detailRow = document.getElementById('user-docs-' + userId);
             const icon = document.getElementById('icon-' + userId);
-            
+
             if (detailRow.style.display === 'none') {
                 detailRow.style.display = 'table-row';
                 icon.className = 'feather icon-chevron-up';
@@ -344,60 +310,72 @@
 
         function updateStatus(id, status, catatan = null) {
             fetch(`/dokumen/${id}/status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ status_verifikasi: status, catatan_verifikasi: catatan })
-            })
-            .then(r => r.json())
-            .then(d => {
-                if (d.success) {
-                    location.reload();
-                } else {
-                    alert(d.message || 'Gagal memperbarui status');
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Terjadi kesalahan saat memperbarui status');
-            });
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ||
+                            '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        status_verifikasi: status,
+                        catatan_verifikasi: catatan
+                    })
+                })
+                .then(r => r.json())
+                .then(d => {
+                    if (d.success) {
+                        // Update Status Badge
+                        const statusCell = document.getElementById('status-cell-' + id);
+                        if (statusCell) {
+                            if (status === 'disetujui') {
+                                statusCell.innerHTML = '<span class="badge bg-success">Disetujui</span>';
+                            } else if (status === 'ditolak') {
+                                statusCell.innerHTML = '<span class="badge bg-danger">Ditolak</span>';
+                            } else {
+                                statusCell.innerHTML = '<span class="badge bg-warning text-dark">Menunggu</span>';
+                            }
+                        }
+
+                        // Update Action Buttons
+                        const actionCell = document.getElementById('action-cell-' + id);
+                        if (actionCell) {
+                            let buttons = `<div class="btn-group" role="group">
+                                            <a href="/dokumen/${id}/view" target="_blank" class="btn btn-sm btn-info" title="Lihat Dokumen">
+                                                <i class="feather icon-eye"></i> Lihat
+                                            </a>`;
+
+                            if (status !== 'disetujui') {
+                                buttons += `<button type="button" class="btn btn-sm btn-success" onclick="setujui(${id})" title="Setujui">
+                                                <i class="feather icon-check"></i> Setujui
+                                            </button>`;
+                            }
+
+                            if (status !== 'ditolak') {
+                                buttons += `<button type="button" class="btn btn-sm btn-danger" onclick="tolak(${id})" title="Tolak">
+                                                <i class="feather icon-x"></i> Tolak
+                                            </button>`;
+                            }
+
+                            buttons += `</div>`;
+                            actionCell.innerHTML = buttons;
+                        }
+                    } else {
+                        alert(d.message || 'Gagal memperbarui status');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Terjadi kesalahan saat memperbarui status');
+                });
         }
 
-        function setujui(id) { updateStatus(id, 'disetujui'); }
+        function setujui(id) {
+            updateStatus(id, 'disetujui');
+        }
+
         function tolak(id) {
             const catatan = prompt('Masukkan catatan/alasan penolakan (opsional)');
             updateStatus(id, 'ditolak', catatan || null);
-        }
-
-        function updatePaymentStatus(id, status, notes = null) {
-            fetch(`/payment/${id}/status`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ status: status, notes: notes })
-            })
-            .then(r => r.json())
-            .then(d => {
-                if (d.success) {
-                    location.reload();
-                } else {
-                    alert(d.message || 'Gagal memperbarui status pembayaran');
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Terjadi kesalahan saat memperbarui status pembayaran');
-            });
-        }
-
-        function setujuiPayment(id) { updatePaymentStatus(id, 'verified'); }
-        function tolakPayment(id) {
-            const notes = prompt('Masukkan alasan penolakan pembayaran (opsional)');
-            updatePaymentStatus(id, 'rejected', notes || null);
         }
     </script>
 @endsection

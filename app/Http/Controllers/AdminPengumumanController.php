@@ -14,7 +14,7 @@ class AdminPengumumanController extends Controller
         $announcementOpen = Setting::where('key', 'announcement_open')->value('value');
         $announcementDate = Setting::where('key', 'announcement_date')->value('value');
 
-        // Statistik
+        // Statistic
         $stats = [
             'total' => Biodata::count(),
             'lulus' => Biodata::where('status_seleksi', 'lulus')->count(),
@@ -23,7 +23,7 @@ class AdminPengumumanController extends Controller
         ];
 
         // Daftar siswa yang lulus (untuk preview/cetak)
-        $lulusStudents = Biodata::where('status_seleksi', 'lulus')->get();
+        $lulusStudents = Biodata::with('kelas', 'jurusan')->where('status_seleksi', 'lulus')->get();
 
         return view('admin.pengumuman', compact('announcementOpen', 'announcementDate', 'stats', 'lulusStudents'));
     }

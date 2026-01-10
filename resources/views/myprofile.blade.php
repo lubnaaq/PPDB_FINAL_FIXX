@@ -30,12 +30,14 @@
                     <div class="card-header pb-0">
                         <ul class="nav nav-tabs profile-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="true">
+                                <a class="nav-link active" id="profile-tab-1" data-bs-toggle="tab" href="#profile-1"
+                                    role="tab" aria-selected="true">
                                     <i class="ti ti-user me-2"></i>Profil
                                 </a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab" aria-selected="false">
+                                <a class="nav-link" id="profile-tab-2" data-bs-toggle="tab" href="#profile-2" role="tab"
+                                    aria-selected="false">
                                     <i class="ti ti-file-text me-2"></i>Data Pribadi
                                 </a>
                             </li>
@@ -44,18 +46,21 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <!-- Tab 1: Profil Singkat -->
-                            <div class="tab-pane active show" id="profile-1" role="tabpanel" aria-labelledby="profile-tab-1">
+                            <div class="tab-pane active show" id="profile-1" role="tabpanel"
+                                aria-labelledby="profile-tab-1">
                                 <div class="row">
                                     <div class="col-lg-4 col-xxl-3 text-center">
                                         <div class="card-body">
                                             <div class="chat-avtar d-inline-flex mx-auto">
-                                                <img class="rounded-circle img-fluid wid-70" src="{{ asset('assets/images/user/avatar-1.jpg') }}" alt="User image">
+                                                <img class="rounded-circle img-fluid wid-70"
+                                                    src="{{ asset('assets/images/user/avatar-1.jpg') }}" alt="User image">
                                             </div>
                                             <h5 class="mb-0 mt-3">{{ auth()->user()->name }}</h5>
                                             <p class="text-muted text-sm">{{ auth()->user()->email }}</p>
                                             <hr class="my-3">
                                             <div class="d-inline-block">
-                                                <span class="badge bg-light-primary">{{ ucfirst(auth()->user()->role) }}</span>
+                                                <span
+                                                    class="badge bg-light-primary">{{ ucfirst(auth()->user()->role) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +77,8 @@
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="col-md-4 font-weight-bold">Bergabung Sejak</div>
-                                                <div class="col-md-8">{{ optional(auth()->user()->created_at)->format('d F Y') ?? '-' }}</div>
+                                                <div class="col-md-8">
+                                                    {{ optional(auth()->user()->created_at)->format('d F Y') ?? '-' }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -89,7 +95,7 @@
                                                 $biodata = auth()->user()->biodata;
                                             @endphp
 
-                                            @if($biodata)
+                                            @if ($biodata)
                                                 <div class="row mb-3">
                                                     <label class="col-md-3 col-form-label fw-bold">NISN</label>
                                                     <div class="col-md-9">
@@ -103,15 +109,40 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-md-3 col-form-label fw-bold">Jenis Kelamin</label>
+                                                    <label class="col-md-3 col-form-label fw-bold">Jurusan</label>
                                                     <div class="col-md-9">
-                                                        <p class="form-control-plaintext">{{ $biodata->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
+                                                        <p class="form-control-plaintext">
+                                                            {{ optional($biodata->jurusan)->nama ?? '-' }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
-                                                    <label class="col-md-3 col-form-label fw-bold">Tempat, Tanggal Lahir</label>
+                                                    <label class="col-md-3 col-form-label fw-bold">Kelas</label>
                                                     <div class="col-md-9">
-                                                        <p class="form-control-plaintext">{{ $biodata->tempat_lahir }}, {{ $biodata->tanggal_lahir ? \Carbon\Carbon::parse($biodata->tanggal_lahir)->format('d F Y') : '-' }}</p>
+                                                        <p class="form-control-plaintext">
+                                                            @if ($biodata->kelas)
+                                                                <span
+                                                                    class="badge bg-success">{{ $biodata->kelas->nama_kelas }}</span>
+                                                            @else
+                                                                <span class="text-muted fst-italic">Belum ditentukan</span>
+                                                            @endif
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Jenis Kelamin</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">
+                                                            {{ $biodata->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Tempat, Tanggal
+                                                        Lahir</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">{{ $biodata->tempat_lahir }},
+                                                            {{ $biodata->tanggal_lahir ? \Carbon\Carbon::parse($biodata->tanggal_lahir)->format('d F Y') : '-' }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
@@ -123,18 +154,21 @@
                                                 <div class="row mb-3">
                                                     <label class="col-md-3 col-form-label fw-bold">Asal Sekolah</label>
                                                     <div class="col-md-9">
-                                                        <p class="form-control-plaintext">{{ $biodata->asal_sekolah ?? '-' }}</p>
+                                                        <p class="form-control-plaintext">
+                                                            {{ $biodata->asal_sekolah ?? '-' }}</p>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <label class="col-md-3 col-form-label fw-bold">No. Telepon</label>
                                                     <div class="col-md-9">
-                                                        <p class="form-control-plaintext">{{ $biodata->nomor_telepon }}</p>
+                                                        <p class="form-control-plaintext">{{ $biodata->nomor_telepon }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             @else
                                                 <div class="alert alert-warning" role="alert">
-                                                    Anda belum mengisi biodata. Silakan isi biodata terlebih dahulu di menu <a href="{{ route('user.biodata') }}" class="alert-link">Biodata</a>.
+                                                    Anda belum mengisi biodata. Silakan isi biodata terlebih dahulu di menu
+                                                    <a href="{{ route('user.biodata') }}" class="alert-link">Biodata</a>.
                                                 </div>
                                             @endif
                                         </div>

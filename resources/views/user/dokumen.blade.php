@@ -34,13 +34,15 @@
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
                         @if (session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                                 {{ session('error') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
                         <!-- Alert Messages -->
@@ -52,78 +54,126 @@
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 
-                        <!-- Upload Form -->
-                        <form id="dokumentForm" method="POST" action="{{ route('dokumen.store') }}" enctype="multipart/form-data">
-                            @csrf
-                            
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">Nama Dokumen <span class="text-danger">*</span></label>
-                                        @php
-                                            $requiredDocuments = [
-                                                'Ijazah' => 'Ijazah / SHUN',
-                                                'NISN' => 'NISN',
-                                                'Kartu Keluarga' => 'Kartu Keluarga',
-                                                'Akta Kelahiran' => 'Akta Kelahiran',
-                                                'Surat Keterangan Domisili' => 'Surat Keterangan Domisili',
-                                                'Foto 3x4' => 'Foto 3x4 (Warna Formal)'
-                                            ];
-                                            
-                                            // Ambil daftar nama dokumen yang sudah diupload
-                                            // Kita asumsikan $dokumens sudah tersedia dari controller
-                                            $uploadedDocuments = $dokumens->pluck('nama_dokumen')->toArray();
-                                        @endphp
-                                        <select class="form-control @error('nama_dokumen') is-invalid @enderror" 
+                        @php
+                            $requiredDocuments = [
+                                'Ijazah' => 'Ijazah / SHUN',
+                                'NISN' => 'NISN',
+                                'Kartu Keluarga' => 'Kartu Keluarga',
+                                'Akta Kelahiran' => 'Akta Kelahiran',
+                                'Surat Keterangan Domisili' => 'Surat Keterangan Domisili',
+                                'Foto 3x4' => 'Foto 3x4 (Warna Formal)',
+                            ];
+
+                            // Ambil daftar nama dokumen yang sudah diupload
+                            $uploadedDocuments = $dokumens->pluck('nama_dokumen')->toArray();
+
+                            // Cek dokumen yang disetujui
+                            $approvedDocuments = $dokumens
+                                ->where('status_verifikasi', 'disetujui')
+                                ->pluck('nama_dokumen')
+                                ->toArray();
+
+                            // Hitung kelengkapan (Harus upload semua required dan statusnya disetujui)
+                            $allUploaded =
+                                count(array_intersect(array_keys($requiredDocuments), $uploadedDocuments)) ===
+                                count($requiredDocuments);
+                            $allApproved =
+                                count(array_intersect(array_keys($requiredDocuments), $approvedDocuments)) ===
+                                count($requiredDocuments);
+                        @endphp
+
+                        @if ($allApproved)
+                            <div class="alert alert-success d-flex align-items-center" role="alert">
+                                <i class="fas fa-check-circle fa-2x me-3"></i>
+                                <div>
+                                    <h4 class="alert-heading">Dokumen Lengkap & Terverifikasi!</h4>
+                                    <p class="mb-0">Selamat! Seluruh dokumen persyaratan pendaftaran Anda telah lengkap
+                                        dan disetujui oleh panitia.</p>
+                                </div>
+                            </div>
+                        @elseif($allUploaded)
+                            <div class="alert alert-info d-flex align-items-center" role="alert">
+                                <i class="fas fa-clock fa-2x me-3"></i>
+                                <div>
+                                    <h4 class="alert-heading">Menunggu Verifikasi</h4>
+                                    <p class="mb-0">Terima kasih telah mengunggah seluruh dokumen. Mohon menunggu proses
+                                        verifikasi oleh panitia.</p>
+                                </div>
+                            </div>
+                        @else
+                            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                <i class="fas fa-info-circle fa-2x me-3"></i>
+                                <div>
+                                    <h4 class="alert-heading">Lengkapi Dokumen</h4>
+                                    <p class="mb-0">Silakan lengkapi
+                                        {{ count($requiredDocuments) - count($uploadedDocuments) }} dokumen lagi yang belum
+                                        diunggah.</p>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if (!$allApproved)
+                            <!-- Upload Form -->
+                            <form id="dokumentForm" method="POST" action="{{ route('dokumen.store') }}"
+                                enctype="multipart/form-data">
+                                @csrf
+
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">Nama Dokumen <span
+                                                    class="text-danger">*</span></label>
+                                            <select class="form-control @error('nama_dokumen') is-invalid @enderror"
                                                 name="nama_dokumen" id="namaDokumen" required>
-                                            <option value="">-- Pilih Dokumen --</option>
-                                            @foreach($requiredDocuments as $value => $label)
-                                                @if(!in_array($value, $uploadedDocuments))
-                                                    <option value="{{ $value }}">{{ $label }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        @error('nama_dokumen')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label class="form-label">File Dokumen <span class="text-danger">*</span></label>
-                                        <div class="input-group">
-                                            <input type="file" class="form-control @error('file') is-invalid @enderror" 
-                                                   name="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required>
-                                            <span class="input-group-text">
-                                                <i class="feather icon-upload-cloud"></i>
-                                            </span>
+                                                <option value="">-- Pilih Dokumen --</option>
+                                                @foreach ($requiredDocuments as $value => $label)
+                                                    @if (!in_array($value, $uploadedDocuments))
+                                                        <option value="{{ $value }}">{{ $label }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                            @error('nama_dokumen')
+                                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                        <small class="form-text text-muted d-block mt-2">
-                                            <i class="feather icon-info"></i> Format: PDF, JPG, JPEG, PNG (Maksimal 5MB)
-                                        </small>
-                                        @error('file')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label class="form-label">File Dokumen <span
+                                                    class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <input type="file"
+                                                    class="form-control @error('file') is-invalid @enderror" name="file"
+                                                    id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required>
+                                                <span class="input-group-text">
+                                                    <i class="feather icon-upload-cloud"></i>
+                                                </span>
+                                            </div>
+                                            <small class="form-text text-muted d-block mt-2">
+                                                <i class="feather icon-info"></i> Format: PDF, JPG, JPEG, PNG (Maksimal 5MB)
+                                            </small>
+                                            @error('file')
+                                                <span class="invalid-feedback d-block">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="feather icon-upload"></i> Upload Dokumen
-                                    </button>
-                                    <a href="javascript:void(0);" class="btn btn-secondary" onclick="window.history.back()">
-                                        <i class="feather icon-x"></i> Batal
-                                    </a>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="feather icon-upload"></i> Upload Dokumen
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -159,14 +209,10 @@
                                                     <strong>{{ $dokumen->nama_dokumen }}</strong>
                                                 </td>
                                                 <td>
-                                                        <span class="badge bg-secondary">{{ strtoupper($dokumen->file_type) }}</span>
-                                                        @if (in_array(strtolower($dokumen->file_type), ['jpg','jpeg','png']))
-                                                            <a href="{{ asset('storage/'.$dokumen->file_path) }}" target="_blank" class="ms-2">Lihat</a>
-                                                        @elseif (strtolower($dokumen->file_type) === 'pdf')
-                                                            <a href="{{ asset('storage/'.$dokumen->file_path) }}" target="_blank" class="ms-2">Buka</a>
-                                                        @endif
+                                                    <span
+                                                        class="badge bg-secondary">{{ strtoupper($dokumen->file_type) }}</span>
                                                 </td>
-                                            
+
                                                 <td>
                                                     @if ($dokumen->status_verifikasi === 'pending')
                                                         <span class="badge bg-warning text-dark">
@@ -185,14 +231,19 @@
                                                 <td>{{ $dokumen->created_at->format('d/m/Y H:i') }}</td>
                                                 <td>
                                                     <div class="btn-group" role="group">
-                                                        <a href="{{ route('dokumen.download', $dokumen->id) }}" 
-                                                           class="btn btn-sm btn-info" title="Download">
+                                                        <a href="{{ route('dokumen.view', $dokumen->id) }}"
+                                                            target="_blank" class="btn btn-sm btn-primary"
+                                                            title="Lihat">
+                                                            <i class="feather icon-eye"></i>
+                                                        </a>
+                                                        <a href="{{ route('dokumen.download', $dokumen->id) }}"
+                                                            class="btn btn-sm btn-info" title="Download">
                                                             <i class="feather icon-download"></i>
                                                         </a>
                                                         @if ($dokumen->status_verifikasi === 'pending')
-                                                            <button type="button" class="btn btn-sm btn-danger" 
-                                                                    onclick="deleteDokumen({{ $dokumen->id }})" 
-                                                                    title="Hapus">
+                                                            <button type="button" class="btn btn-sm btn-danger"
+                                                                onclick="deleteDokumen({{ $dokumen->id }})"
+                                                                title="Hapus">
                                                                 <i class="feather icon-trash-2"></i>
                                                             </button>
                                                         @endif
@@ -211,7 +262,8 @@
             <div class="row mt-4">
                 <div class="col-md-12">
                     <div class="alert alert-info" role="alert">
-                        <i class="feather icon-info"></i> Belum ada dokumen yang diupload. Silakan upload dokumen yang diperlukan.
+                        <i class="feather icon-info"></i> Belum ada dokumen yang diupload. Silakan upload dokumen yang
+                        diperlukan.
                     </div>
                 </div>
             </div>
@@ -220,7 +272,8 @@
     </div>
 
     <!-- Modal Konfirmasi Hapus -->
-    <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel" aria-hidden="true">
+    <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-labelledby="modalHapusLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -251,38 +304,39 @@
             if (!dokumenIdToDelete) return;
 
             fetch(`/dokumen/${dokumenIdToDelete}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success message
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
-                    alertDiv.innerHTML = `
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ||
+                            '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Show success message
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                        alertDiv.innerHTML = `
                         ${data.message}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     `;
-                    document.querySelector('.pc-content').insertAdjacentElement('afterbegin', alertDiv);
-                    
-                    // Reload page after 2 seconds
-                    setTimeout(() => location.reload(), 2000);
-                } else {
-                    alert('Gagal menghapus dokumen: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat menghapus dokumen');
-            })
-            .finally(() => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('modalHapus'));
-                modal.hide();
-            });
+                        document.querySelector('.pc-content').insertAdjacentElement('afterbegin', alertDiv);
+
+                        // Reload page after 2 seconds
+                        setTimeout(() => location.reload(), 2000);
+                    } else {
+                        alert('Gagal menghapus dokumen: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat menghapus dokumen');
+                })
+                .finally(() => {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('modalHapus'));
+                    modal.hide();
+                });
         });
 
         // Preview file name

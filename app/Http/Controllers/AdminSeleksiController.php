@@ -10,7 +10,7 @@ class AdminSeleksiController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Biodata::with(['user', 'user.dokumens']);
+        $query = Biodata::with(['user', 'user.dokumens', 'kelas']);
 
         if ($request->has('status') && $request->status != '') {
             $query->where('status_seleksi', $request->status);

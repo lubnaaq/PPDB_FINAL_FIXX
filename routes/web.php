@@ -61,11 +61,16 @@ Route::middleware(['auth', 'web'])->group(function () {
 
     // Admin routes
     Route::middleware(['cekRole:admin'])->group(function () {
+        
+        Route::get('/pendaftar', [App\Http\Controllers\AdminPendaftarController::class, 'index'])->name('admin.pendaftar');
 
         Route::get('/verifikasi', [AdminDokumenController::class, 'index'])->name('admin.verifikasi');
         Route::get('/dokumen/{dokumen}', [AdminDokumenController::class, 'show'])->name('admin.dokumen.show');
         Route::put('/dokumen/{dokumen}/status', [AdminDokumenController::class, 'updateStatus'])->name('admin.dokumen.updateStatus');
-        Route::put('/payment/{payment}/status', [AdminDokumenController::class, 'updatePaymentStatus'])->name('admin.payment.updateStatus');
+        
+        // Admin Payment Routes (New)
+        Route::get('/pembayaran', [App\Http\Controllers\AdminPembayaranController::class, 'index'])->name('admin.pembayaran');
+        Route::put('/admin/payment/{payment}/status', [App\Http\Controllers\AdminPembayaranController::class, 'updateStatus'])->name('admin.payment.updateStatus');
         
         Route::get('/seleksi', [AdminSeleksiController::class, 'index'])->name('admin.seleksi');
         Route::put('/seleksi/{id}', [AdminSeleksiController::class, 'update'])->name('admin.seleksi.update');
@@ -182,6 +187,7 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::post('/dokumen', [DokumenController::class, 'store'])->name('dokumen.store');
         Route::delete('/dokumen/{dokumen}', [DokumenController::class, 'destroy'])->name('dokumen.destroy');
         Route::get('/dokumen/{dokumen}/download', [DokumenController::class, 'download'])->name('dokumen.download');
+        Route::get('/dokumen/{dokumen}/view', [DokumenController::class, 'viewFile'])->name('dokumen.view');
         
         Route::get('/status', [StatusController::class, 'index'])->name('user.status');
         Route::get('/hasil-pengumuman', [StatusController::class, 'pengumuman'])->name('user.hasil_pengumuman');

@@ -5,7 +5,7 @@
         body {
             background-image:
                 linear-gradient(rgba(249, 248, 248, 0.55), rgba(0, 0, 0, 0.64)),
-                url('{{ asset("assets/images/user/image.png") }}');
+                url('{{ asset('assets/images/user/image.png') }}');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -14,6 +14,7 @@
 
         /* Print Styles */
         @media print {
+
             /* Hide non-printable elements */
             body {
                 background: white !important;
@@ -194,13 +195,17 @@
             <table style="width: 100%; border: none;">
                 <tr style="border: none;">
                     <td style="width: 80px; border: none; vertical-align: top;">
-                         <img src="https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png" alt="Logo" style="width: 80px; height: auto;">
+                        <img src="https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png"
+                            alt="Logo" style="width: 80px; height: auto;">
                     </td>
                     <td style="border: none; text-align: center; padding-left: 20px;">
                         <h2 style="margin: 0; font-size: 18pt; font-weight: bold;">SMK ANTARTIKA 1 SIDOARJO</h2>
-                        <h3 style="margin: 5px 0; font-size: 10pt; font-weight: bold;">PENGUMUMAN HASIL SELEKSI PENERIMAAN SISWA BARU</h3>
-                        <p style="margin: 2px 0; font-size: 8pt;">Jl. Siwalan Panji, Bedrek, Siwalanpanji, Kec. Sidoarjo, Kab. Sidoarjo, Jawa Timur 61252</p>
-                        <p style="margin: 2px 0; font-size: 8pt;">Telp:  (031) 8962851 | Email: info@smkantartika.sch.id | Website: www.smkantartika.sch.id</p>
+                        <h3 style="margin: 5px 0; font-size: 10pt; font-weight: bold;">PENGUMUMAN HASIL SELEKSI PENERIMAAN
+                            SISWA BARU</h3>
+                        <p style="margin: 2px 0; font-size: 8pt;">Jl. Siwalan Panji, Bedrek, Siwalanpanji, Kec. Sidoarjo,
+                            Kab. Sidoarjo, Jawa Timur 61252</p>
+                        <p style="margin: 2px 0; font-size: 8pt;">Telp: (031) 8962851 | Email: info@smkantartika.sch.id |
+                            Website: www.smkantartika.sch.id</p>
                     </td>
                     <td style="width: 80px; border: none;"></td>
                 </tr>
@@ -209,10 +214,11 @@
 
         <!-- Print Info (Only visible when printing) -->
         <div class="print-info">
-            <h3 style="text-align: center; margin: 20px 0 30px 0; font-size: 14pt; font-weight: bold; text-decoration: underline;">
+            <h3
+                style="text-align: center; margin: 20px 0 30px 0; font-size: 14pt; font-weight: bold; text-decoration: underline;">
                 DAFTAR SISWA YANG DINYATAKAN LULUS SELEKSI
             </h3>
-            
+
             <table style="border: none; width: auto; margin-bottom: 20px;">
                 <tr style="border: none;">
                     <td style="width: 150px; border: none; padding: 3px 0;">Tahun Ajaran</td>
@@ -269,7 +275,8 @@
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
                             </div>
                         @endif
 
@@ -289,14 +296,17 @@
                             <div class="mb-3">
                                 <label class="form-label">Ubah Status</label>
                                 <select name="announcement_open" class="form-select">
-                                    <option value="0" {{ !$announcementOpen ? 'selected' : '' }}>Tutup Pengumuman</option>
-                                    <option value="1" {{ $announcementOpen ? 'selected' : '' }}>Buka Pengumuman</option>
+                                    <option value="0" {{ !$announcementOpen ? 'selected' : '' }}>Tutup Pengumuman
+                                    </option>
+                                    <option value="1" {{ $announcementOpen ? 'selected' : '' }}>Buka Pengumuman
+                                    </option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Tanggal Pengumuman</label>
-                                <input type="date" name="announcement_date" class="form-control" value="{{ $announcementDate }}">
+                                <input type="date" name="announcement_date" class="form-control"
+                                    value="{{ $announcementDate }}">
                                 <small class="text-muted">Tanggal yang ditampilkan ke siswa jika pengumuman ditutup.</small>
                             </div>
 
@@ -353,6 +363,7 @@
                                         <th>Nama Lengkap</th>
                                         <th>NISN</th>
                                         <th>Asal Sekolah</th>
+                                        <th>Kelas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -362,10 +373,12 @@
                                             <td>{{ $student->nama_lengkap }}</td>
                                             <td>{{ $student->nisn ?? '-' }}</td>
                                             <td>{{ $student->asal_sekolah ?? '-' }}</td>
+                                            <td>{{ $student->kelas ? $student->kelas->nama_kelas : '-' }}</td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center py-4">Belum ada siswa yang dinyatakan lulus.</td>
+                                            <td colspan="5" class="text-center py-4">Belum ada siswa yang dinyatakan
+                                                lulus.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -380,23 +393,29 @@
         <!-- Print Signature Section (Only visible when printing) -->
         <div class="print-signature">
             <p style="margin: 20px 0 10px 0; text-align: justify; font-size: 10pt; line-height: 1.6;">
-                Dengan ini diumumkan bahwa siswa-siswa yang terdaftar dalam daftar di atas telah dinyatakan <strong>LULUS</strong> dalam Seleksi Penerimaan Peserta Didik Baru (PPDB) SMK Negeri Unggulan Tahun Ajaran 2026/2027 dan diharuskan untuk melakukan pendaftaran ulang sesuai dengan jadwal dan prosedur yang telah ditentukan.
+                Dengan ini diumumkan bahwa siswa-siswa yang terdaftar dalam daftar di atas telah dinyatakan
+                <strong>LULUS</strong> dalam Seleksi Penerimaan Peserta Didik Baru (PPDB) SMK Negeri Unggulan Tahun Ajaran
+                2026/2027 dan diharuskan untuk melakukan pendaftaran ulang sesuai dengan jadwal dan prosedur yang telah
+                ditentukan.
             </p>
-            
+
             <table class="signature-table" style="border: none; width: 100%; margin-top: 50px;">
                 <tr style="border: none;">
                     <td style="width: 50%; border: none; text-align: center; vertical-align: top;">
                         <p style="margin: 0; font-size: 10pt;">Mengetahui,</p>
                         <p style="margin: 5px 0 0 0; font-weight: bold; font-size: 10pt;">Ketua Panitia PPDB</p>
                         <div style="height: 80px;"></div>
-                        <p style="margin: 0; font-weight: bold; text-decoration: underline; font-size: 10pt;">_______________________</p>
+                        <p style="margin: 0; font-weight: bold; text-decoration: underline; font-size: 10pt;">
+                            _______________________</p>
                         <p style="margin: 5px 0 0 0; font-size: 9pt;">NIP. ___________________</p>
                     </td>
                     <td style="width: 50%; border: none; text-align: center; vertical-align: top;">
-                        <p style="margin: 0; font-size: 10pt;">Bandung, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                        <p style="margin: 0; font-size: 10pt;">Bandung,
+                            {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
                         <p style="margin: 5px 0 0 0; font-weight: bold; font-size: 10pt;">Kepala Sekolah</p>
                         <div style="height: 80px;"></div>
-                        <p style="margin: 0; font-weight: bold; text-decoration: underline; font-size: 10pt;">_______________________</p>
+                        <p style="margin: 0; font-weight: bold; text-decoration: underline; font-size: 10pt;">
+                            _______________________</p>
                         <p style="margin: 5px 0 0 0; font-size: 9pt;">NIP. ___________________</p>
                     </td>
                 </tr>
@@ -405,8 +424,10 @@
 
         <!-- Print Footer (Only visible when printing) -->
         <div class="print-footer">
-            <p style="margin: 0; font-size: 9pt;">Dokumen ini dicetak secara otomatis dari Sistem PPDB SMK Negeri Unggulan</p>
-            <p style="margin: 5px 0 0 0; font-size: 9pt;">Halaman ini merupakan dokumen resmi dan sah tanpa memerlukan tanda tangan basah</p>
+            <p style="margin: 0; font-size: 9pt;">Dokumen ini dicetak secara otomatis dari Sistem PPDB SMK Negeri Unggulan
+            </p>
+            <p style="margin: 5px 0 0 0; font-size: 9pt;">Halaman ini merupakan dokumen resmi dan sah tanpa memerlukan
+                tanda tangan basah</p>
         </div>
     </div>
 @endsection

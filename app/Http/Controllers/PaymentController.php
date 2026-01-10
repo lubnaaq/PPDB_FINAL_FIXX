@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Models\Gelombang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,22 +14,66 @@ class PaymentController extends Controller
     public function index()
     {
         $user = Auth::user();
+
+        // 1. Cek User Verification
+        if (!$user->is_verified && !$user->email_verified_at) {
+            return redirect()->route('dashboard')->with('error', 'Silakan verifikasi akun Anda terlebih dahulu.');
+        }
+        
+        // 2. Cek Biodata (Existence)
+        $biodata = $user->biodata;
+        if (!$biodata) {
+            return redirect()->route('user.biodata')->with('error', 'Silakan lengkapi biodata terlebih dahulu.');
+        }
+
+        // 3. Cek Dokumen (Wajib 6 Dokumen Utama sesuai form)
+        // Pastikan user sudah upload semua dokumen yang diminta
+        $wajib = [
+            'Ijazah', 
+            'NISN', 
+            'Kartu Keluarga', 
+            'Akta Kelahiran', 
+            'Surat Keterangan Domisili', 
+            'Foto 3x4'
+        ];
+        $uploaded = $user->dokumens->pluck('nama_dokumen')->toArray();
+        $missing = array_diff($wajib, $uploaded);
+
+        if (count($missing) > 0) {
+            $msg = 'Harap lengkapi semua dokumen wajib berikut: ' . implode(', ', $missing);
+            return redirect()->route('user.dokumen')->with('error', $msg);
+        }
+
+        // 4. Cek Status Seleksi
+        // Pembayaran hanya terbuka jika siswa sudah LULUS seleksi
+        if ($biodata->status_seleksi !== 'lulus') {
+             return redirect()->route('user.status')->with('error', 'Menu pembayaran terkunci. Anda belum dinyatakan LULUS seleksi penerimaan.');
+        }
+
         $payments = Payment::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
         
         $biodata = $user->biodata;
         $jurusan = $biodata ? $biodata->jurusan : null;
 
-        // Hitung total biaya (disamakan dengan logic JS: cutoff 31 Mei 2026)
+        // Hitung total biaya
         $totalBiaya = 0;
-        $cutoffDate = \Carbon\Carbon::create(2026, 5, 31, 23, 59, 59);
-        $now = \Carbon\Carbon::now();
 
         if ($jurusan) {
-            if ($now->lte($cutoffDate)) {
-                $totalBiaya = $jurusan->harga_gelombang_1;
-            } else {
-                $totalBiaya = $jurusan->harga_gelombang_2;
+            $basePrice = $jurusan->harga;
+            
+            // Fallback compatibility: If base price 0, use legacy price
+            if ($basePrice <= 0 && $jurusan->harga_gelombang_1 > 0) {
+                $basePrice = $jurusan->harga_gelombang_1;
             }
+            
+            $gelombang = $biodata->gelombang;
+            if (!$gelombang) {
+                // Determine active gelombang if not set
+                $gelombang = Gelombang::active()->first();
+            }
+            
+            $potongan = $gelombang ? $gelombang->potongan : 0;
+            $totalBiaya = max(0, $basePrice - $potongan);
         }
 
         // Hitung yang sudah dibayar (hanya verified)
@@ -58,7 +103,10 @@ class PaymentController extends Controller
             'sisaTagihan', 
             'isLunas', 
             'hasPending',
-            'angsuranKe'
+            'angsuranKe',
+            'gelombang',
+            'basePrice',
+            'potongan'
         ));
     }
 

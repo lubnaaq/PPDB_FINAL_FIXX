@@ -23,4 +23,9 @@ class Jurusan extends Model
     {
         return $this->hasMany(Biodata::class);
     }
+    
+    public function kelas()
+    {
+        return $this->hasMany(Kelas::class);
+    }
 }

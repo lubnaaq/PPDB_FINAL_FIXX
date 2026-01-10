@@ -77,9 +77,18 @@
                                 <div>
                                     <h5 class="alert-heading mb-1">Informasi Biaya Jurusan</h5>
                                     <p class="mb-0">Jurusan: <strong>{{ $jurusan->nama }}</strong></p>
-                                    <p class="mb-0">Gelombang saat ini: <strong id="gelombangText">Mendeteksi...</strong>
+                                    <p class="mb-0">Gelombang:
+                                        <strong>{{ isset($gelombang) && $gelombang ? $gelombang->nama : 'Umum' }}</strong>
                                     </p>
-                                    <p class="mb-0">Biaya yang harus dibayar: <strong id="biayaText">Rp 0</strong></p>
+                                    @if (isset($basePrice) && $basePrice > 0)
+                                        <p class="mb-0">Biaya Dasar: Rp {{ number_format($basePrice, 0, ',', '.') }}</p>
+                                    @endif
+                                    @if (isset($potongan) && $potongan > 0)
+                                        <p class="mb-0">Potongan Gelombang: <span class="text-success">- Rp
+                                                {{ number_format($potongan, 0, ',', '.') }}</span></p>
+                                    @endif
+                                    <p class="mb-0 mt-1"><strong>Total Biaya: Rp
+                                            {{ number_format($totalBiaya, 0, ',', '.') }}</strong></p>
                                 </div>
                             </div>
                         @endif
@@ -392,8 +401,15 @@
                                                     <small>{{ $payment->notes ?? '-' }}</small>
                                                 </td>
                                                 <td>
-                                                    <a href="{{ asset('storage/' . $payment->proof_file_path) }}"
-                                                        target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                                    @if ($payment->status === 'rejected')
+                                                        <button type="button" class="btn btn-sm btn-secondary"
+                                                            onclick="showRejectedInfo()">
+                                                            <i class="feather icon-eye-off"></i> Lihat
+                                                        </button>
+                                                    @else
+                                                        <a href="{{ asset('storage/' . $payment->proof_file_path) }}"
+                                                            target="_blank" class="btn btn-sm btn-info">Lihat</a>
+                                                    @endif
                                                 </td>
                                                 <td>
                                                     @if ($payment->status === 'pending')
@@ -478,7 +494,18 @@
         @endif
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        function showRejectedInfo() {
+            Swal.fire({
+                title: 'Bukti Tidak Tersedia',
+                text: "Bukti pembayaran ini tidak dapat dibuka karena telah ditolak. Silakan upload bukti baru.",
+                icon: 'info',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        }
+
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function() {
                 // Bisa tambahkan notifikasi toast disini jika mau
@@ -492,7 +519,7 @@
             return new Intl.NumberFormat('id-ID').format(value);
         }
 
-        let totalPrice = 0;
+        let totalPrice = {{ $totalBiaya ?? 0 }};
         const sisaTagihan = {{ $sisaTagihan ?? 0 }};
         const angsuranKe = {{ $angsuranKe ?? 1 }};
 
@@ -500,27 +527,9 @@
             const jurusan = @json($jurusan ?? null);
 
             if (jurusan) {
-                // Gunakan tanggal dari device user
-                const today = new Date();
-
-                // Tentukan batas akhir Gelombang 1
-                // Contoh: 31 Mei 2026
-                // Format: YYYY-MM-DD
-                const cutoffDate = new Date('2026-05-31');
-
-                let price = 0;
-                let gelombang = '';
-
-                // Bandingkan tanggal hari ini dengan batas akhir gelombang 1
-                if (today <= cutoffDate) {
-                    price = parseFloat(jurusan.harga_gelombang_1);
-                    gelombang = 'Gelombang 1 (s/d 31 Mei 2026)';
-                } else {
-                    price = parseFloat(jurusan.harga_gelombang_2);
-                    gelombang = 'Gelombang 2 (Mulai 1 Juni 2026)';
-                }
-
-                totalPrice = price;
+                // Logic harga sudah dihandle di server (PaymentController)
+                // Kita gunakan totalPrice dari server
+                let price = totalPrice;
 
                 // Jika sudah ada pembayaran, total yang harus dibayar sekarang adalah sisa tagihan
                 let currentPayable = price;
@@ -532,8 +541,6 @@
                 const totalBiaya = document.getElementById('totalBiaya');
                 const amountInput = document.getElementById('amount');
                 const amountFormatted = document.getElementById('amountFormatted');
-                const gelombangText = document.getElementById('gelombangText');
-                const biayaText = document.getElementById('biayaText');
                 const totalAmountInput = document.getElementById('total_amount');
 
                 // Set total biaya
@@ -544,24 +551,15 @@
                 // Set nilai default
                 if (amountInput) {
                     amountInput.value = currentPayable;
-                    amountInput.readOnly = true; // Default lunas/sisa lunas
+                    amountInput.readOnly = true;
                 }
 
                 if (totalAmountInput) {
                     totalAmountInput.value = price;
                 }
 
-                // Update tampilan format currency
                 if (amountFormatted) {
                     amountFormatted.textContent = formatCurrency(currentPayable);
-                }
-
-                if (gelombangText) {
-                    gelombangText.textContent = gelombang;
-                }
-
-                if (biayaText) {
-                    biayaText.textContent = 'Rp ' + formatCurrency(price);
                 }
             }
 

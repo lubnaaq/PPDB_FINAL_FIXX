@@ -33,6 +33,8 @@ class Biodata extends Model
         'hobi',
         'keterangan',
         'jurusan_id',
+        'kelas_id',
+        'gelombang_id',
     ];
 
     protected $casts = [
@@ -72,6 +74,16 @@ class Biodata extends Model
     public function jurusan()
     {
         return $this->belongsTo(Jurusan::class);
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
+
+    public function gelombang()
+    {
+        return $this->belongsTo(Gelombang::class);
     }
 }
 

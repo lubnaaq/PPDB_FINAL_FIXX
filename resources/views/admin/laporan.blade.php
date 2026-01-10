@@ -243,8 +243,8 @@
                 <tr style="border: none;">
                     <td style="width: 80px; border: none; vertical-align: top;">
                         <!-- Logo placeholder - Ganti dengan logo sekolah Anda -->
-                        <img src="https://smkantartika1sda.sch.id/wp-content/uploads/2025/05/cropped-ANT-LG.png"
-                            alt="Logo" style="width: 80px; height: auto;">
+                        <img src="{{ asset('assets/images/cropped-ANT-LG.png') }}" alt="Logo"
+                            style="width: 80px; height: auto;">
                     </td>
                     <td style="border: none; text-align: center; padding-left: 20px;">
                         <h2 style="margin: 0; font-size: 18pt; font-weight: bold;">SMK ANTARTIKA 1 SIDOARJO</h2>

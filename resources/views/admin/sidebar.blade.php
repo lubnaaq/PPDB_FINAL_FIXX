@@ -1,7 +1,17 @@
 <li class="pc-item">
+    <a href="{{ route('admin.pendaftar') }}" class="pc-link">
+        <span class="pc-micon"><i class="ti ti-users"></i></span>
+        <span class="pc-mtext">Data Pendaftar</span></a>
+</li>
+<li class="pc-item">
+    <a href="{{ route('admin.pembayaran') }}" class="pc-link">
+        <span class="pc-micon"><i class="ti ti-receipt"></i></span>
+        <span class="pc-mtext">Verifikasi Pembayaran</span></a>
+</li>
+<li class="pc-item">
     <a href="{{ route('admin.verifikasi') }}" class="pc-link">
-        <span class="pc-micon"><i class="ti ti-file-check"></i>
-        </span><span class="pc-mtext">Verifikasi Berkas</span></a>
+        <span class="pc-micon"><i class="ti ti-file-check"></i></span>
+        <span class="pc-mtext">Verifikasi Dokumen</span></a>
 </li>
 <li class="pc-item"><a href="{{ route('admin.seleksi') }}" class="pc-link">
         <span class="pc-micon"><i class="ti ti-list-check"></i></span>
