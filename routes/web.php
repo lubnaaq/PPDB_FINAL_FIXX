@@ -59,6 +59,10 @@ Route::middleware(['auth', 'web'])->group(function () {
         return view('myprofile');
     });
 
+    // Shared routes (User & Admin)
+    Route::get('/dokumen/{dokumen}/download', [DokumenController::class, 'download'])->name('dokumen.download');
+    Route::get('/dokumen/{dokumen}/view', [DokumenController::class, 'viewFile'])->name('dokumen.view');
+
     // Admin routes
     Route::middleware(['cekRole:admin'])->group(function () {
         
@@ -186,15 +190,24 @@ Route::middleware(['auth', 'web'])->group(function () {
         Route::get('/dokumen', [DokumenController::class, 'index'])->name('user.dokumen');
         Route::post('/dokumen', [DokumenController::class, 'store'])->name('dokumen.store');
         Route::delete('/dokumen/{dokumen}', [DokumenController::class, 'destroy'])->name('dokumen.destroy');
-        Route::get('/dokumen/{dokumen}/download', [DokumenController::class, 'download'])->name('dokumen.download');
-        Route::get('/dokumen/{dokumen}/view', [DokumenController::class, 'viewFile'])->name('dokumen.view');
         
         Route::get('/status', [StatusController::class, 'index'])->name('user.status');
         Route::get('/hasil-pengumuman', [StatusController::class, 'pengumuman'])->name('user.hasil_pengumuman');
         Route::get('/daftar-ulang', function () {
             $user = auth()->user();
             $dokumens = \App\Models\Dokumen::where('user_id', $user->id)->get();
-            return view('user.daftar_ulang', compact('dokumens'));
+            
+            // Get user's gelombang
+            $registrationDate = $user->created_at ?? now();
+            $userGelombang = \App\Models\Gelombang::whereDate('tanggal_mulai', '<=', $registrationDate)
+                ->whereDate('tanggal_selesai', '>=', $registrationDate)
+                ->first();
+                
+            if (!$userGelombang) {
+                 $userGelombang = \App\Models\Gelombang::active()->first();
+            }
+            
+            return view('user.daftar_ulang', compact('dokumens', 'userGelombang'));
         })->name('user.daftar_ulang');
 
         Route::get('/payment', [App\Http\Controllers\PaymentController::class, 'index'])->name('user.payment.index');

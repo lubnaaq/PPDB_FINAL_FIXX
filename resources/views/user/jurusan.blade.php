@@ -92,18 +92,44 @@
                                                     <div class="mt-3 mb-3">
                                                         <h6 class="mb-2">Biaya Pendidikan:</h6>
                                                         <ul class="list-group list-group-flush small">
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
-                                                                Gelombang 1
-                                                                <span class="fw-bold text-primary">Rp
-                                                                    {{ number_format($jurusan->harga_gelombang_1, 0, ',', '.') }}</span>
-                                                            </li>
-                                                            <li
-                                                                class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
-                                                                Gelombang 2
-                                                                <span class="fw-bold text-danger">Rp
-                                                                    {{ number_format($jurusan->harga_gelombang_2, 0, ',', '.') }}</span>
-                                                            </li>
+                                                            @if (isset($userGelombang))
+                                                                @php
+                                                                    $price = 0;
+                                                                    if (stripos($userGelombang->nama, '1') !== false) {
+                                                                        $price = $jurusan->harga_gelombang_1;
+                                                                    } elseif (
+                                                                        stripos($userGelombang->nama, '2') !== false
+                                                                    ) {
+                                                                        $price = $jurusan->harga_gelombang_2;
+                                                                    } else {
+                                                                        // Default fallback
+                                                                        $price = $jurusan->harga_gelombang_1;
+                                                                    }
+                                                                @endphp
+                                                                <li
+                                                                    class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
+                                                                    <span>{{ $userGelombang->nama }} <span
+                                                                            class="badge bg-success ms-1"
+                                                                            style="font-size: 0.7em;">User
+                                                                            Area</span></span>
+                                                                    <span class="fw-bold text-primary">Rp
+                                                                        {{ number_format($price, 0, ',', '.') }}</span>
+                                                                </li>
+                                                            @else
+                                                                {{-- Fallback original view if no wave determined --}}
+                                                                <li
+                                                                    class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
+                                                                    Gelombang 1
+                                                                    <span class="fw-bold text-primary">Rp
+                                                                        {{ number_format($jurusan->harga_gelombang_1, 0, ',', '.') }}</span>
+                                                                </li>
+                                                                <li
+                                                                    class="list-group-item d-flex justify-content-between align-items-center px-0 py-1 bg-transparent">
+                                                                    Gelombang 2
+                                                                    <span class="fw-bold text-danger">Rp
+                                                                        {{ number_format($jurusan->harga_gelombang_2, 0, ',', '.') }}</span>
+                                                                </li>
+                                                            @endif
                                                         </ul>
                                                     </div>
 

@@ -26,6 +26,11 @@ class PaymentController extends Controller
             return redirect()->route('user.biodata')->with('error', 'Silakan lengkapi biodata terlebih dahulu.');
         }
 
+        // Check if Jurusan selected
+        if (!$biodata->jurusan_id) {
+            return redirect()->route('user.jurusan')->with('error', 'Silakan pilih jurusan terlebih dahulu sebelum melakukan pembayaran.');
+        }
+
         // 3. Cek Dokumen (Wajib 6 Dokumen Utama sesuai form)
         // Pastikan user sudah upload semua dokumen yang diminta
         $wajib = [

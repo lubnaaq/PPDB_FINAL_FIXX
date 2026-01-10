@@ -119,8 +119,8 @@ class DokumenController extends Controller
      */
     public function download(Dokumen $dokumen)
     {
-        // Check if user owns this document
-        if ($dokumen->user_id !== Auth::id()) {
+        // Check if user owns this document or is admin
+        if ($dokumen->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized');
         }
 
@@ -136,8 +136,8 @@ class DokumenController extends Controller
      */
     public function viewFile(Dokumen $dokumen)
     {
-        // Check if user owns this document
-        if ($dokumen->user_id !== Auth::id()) {
+        // Check if user owns this document or is admin
+        if ($dokumen->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403, 'Unauthorized');
         }
 

@@ -41,7 +41,18 @@ class JurusanController extends Controller
             $biodata->refresh();
         }
 
-        return view('user.jurusan', compact('jurusans', 'selectedJurusanId', 'hasPayment', 'isVerified', 'hasBiodata', 'biodata'));
+        // Determine Gelombang based on user registration date
+        $registrationDate = $user->created_at ?? now();
+        $userGelombang = Gelombang::whereDate('tanggal_mulai', '<=', $registrationDate)
+            ->whereDate('tanggal_selesai', '>=', $registrationDate)
+            ->first();
+
+        // Fallback: If no wave matches registration date, look for currently active wave
+        if (!$userGelombang) {
+            $userGelombang = Gelombang::active()->first();
+        }
+
+        return view('user.jurusan', compact('jurusans', 'selectedJurusanId', 'hasPayment', 'isVerified', 'hasBiodata', 'biodata', 'userGelombang'));
     }
 
     public function store(Request $request)
