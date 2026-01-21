@@ -310,6 +310,9 @@
                                                     <option value="Buddha"
                                                         {{ old('agama', $biodata->agama ?? '') == 'Buddha' ? 'selected' : '' }}>
                                                         Buddha</option>
+                                                     <option value="Kong Hu Cu"
+                                                        {{ old('agama', $biodata->agama ?? '') == 'Kong Hu Cu' ? 'selected' : '' }}>
+                                                        Kong Hu Cu</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -434,7 +437,7 @@
                                         </div>
 
                                         <!-- Data Keluarga -->
-                                        <h6 class="mb-3 text-primary">Data Keluarga</h6>
+                                        <h6 class="mb-3 text-primary">Data Wali Murid</h6>
                                         <div class="row mb-4">
                                             <div class="col-12">
                                                 <div class="form-group mb-3">
@@ -988,13 +991,33 @@
             display: none;
         }
 
+        /* Background utama halaman */
+        .pc-content {
+            background: url('assets/images/widget/image.png') !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: rgba(236, 237, 244, 0.87) !important;
+        }
+
+        .card-header {
+            background-color: rgba(240, 240, 245, 0.83) !important;
+        }
+
         /* Print Styles matching daftar_ulang and hasil_pengumuman */
         @media print {
 
             /* Hide non-printable elements */
             body {
-                background: white !important;
-                background-image: none !important;
+                background: url('assets/images/widget/image.png') !important;
+                background-size: cover !important;
+                background-attachment: fixed !important;
+                background-position: center !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 color: #000 !important;
@@ -1028,7 +1051,10 @@
                 left: 0;
                 width: 100%;
                 z-index: 9999;
-                background: white;
+                background: url('assets/images/widget/image.png') !important;
+                background-size: cover !important;
+                background-attachment: fixed !important;
+                background-position: center !important;
             }
 
             .card {
@@ -1041,6 +1067,7 @@
             .card-body {
                 padding: 0 !important;
                 margin: 0 !important;
+                background-color: rgba(255, 255, 255, 0.14) !important;
             }
 
             /* Show print header */
@@ -1050,6 +1077,8 @@
                 margin-bottom: 30px;
                 padding-bottom: 20px;
                 border-bottom: 3px solid #000;
+                background-color: rgba(255, 255, 255, 0.2) !important;
+                position: relative;
             }
 
             .print-header h2 {
@@ -1123,7 +1152,7 @@
                 margin-top: 50px;
                 font-size: 9pt;
                 color: #666;
-                border-top: 1px solid #ccc;
+                border-top: 1px solid #cccccce2;
                 padding-top: 10px;
                 position: fixed;
                 bottom: 20px;

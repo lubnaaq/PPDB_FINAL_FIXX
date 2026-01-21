@@ -95,9 +95,27 @@
 </script>
 
 <style>
+    /* Configurable theme variables (edit values to change colors) */
+    :root {
+        /* Background image (can be url('...') or none) */
+        --bg-image-url: url('assets/images/widget/image.png');
+
+        /* Overlay card colors */
+        --card-bg: rgba(255, 255, 255, 0.62);
+        --card-header-bg: rgba(255, 255, 255, 0.90);
+
+        /* Blur intensity (set to 0px to disable) */
+        --card-blur: 6px;
+
+        /* Accent colors (optional, for custom elements) */
+        --accent-primary: #0d6efd;
+        --accent-success: #198754;
+        --accent-info: #0dc6f0;
+        --accent-warning: #ffc107;
+    }
+
     .dashboard-background {
-        background: 
-            url('https://file.data.kemendikdasmen.go.id/sekolahkita/20/2050/20501717-4.jpg');
+        background-image: var(--bg-image-url);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -106,7 +124,11 @@
     }
 
     .dashboard-background .card {
-        background-color: rgba(255, 255, 255, 0.53);
-        backdrop-filter: blur(6px);
+        background-color: var(--card-bg);
+        backdrop-filter: blur(var(--card-blur));
+    }
+
+    .dashboard-background .card .card-header {
+        background-color: var(--card-header-bg);
     }
 </style>

@@ -494,6 +494,26 @@
         @endif
     </div>
 
+    <style>
+        /* Background utama mengikuti biodata */
+        .pc-content {
+            background: url('assets/images/widget/image.png') !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            min-height: 100vh;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.85) !important;
+        }
+
+        .card-header {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function showRejectedInfo() {

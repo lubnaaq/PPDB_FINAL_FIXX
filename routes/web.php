@@ -86,8 +86,8 @@ Route::middleware(['auth', 'web'])->group(function () {
             // Endpoint JSON untuk data laporan real-time (statistik + chart)
             Route::get('/laporan/data', function () {
                 // Statistik ringkas
-                $totalPendaftar = \App\Models\User::count();
-                $sudahIsiBiodata = \App\Models\User::has('biodata')->count();
+                $totalPendaftar = \App\Models\User::where('role', 'user')->count();
+                $sudahIsiBiodata = \App\Models\User::where('role', 'user')->has('biodata')->count();
                 $sudahUploadDokumen = \App\Models\Dokumen::distinct('user_id')->count('user_id');
                 $lulusSeleksi = \App\Models\Biodata::where('status_seleksi', 'lulus')->count();
                 $sudahBayar = \App\Models\Payment::where('status', 'verified')->count();
