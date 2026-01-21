@@ -32,6 +32,13 @@ class Biodata extends Model
         'nisn',
         'hobi',
         'keterangan',
+        'status_orang_tua',
+        // Ayah
+        'nama_ayah', 'nik_ayah', 'tahun_lahir_ayah', 'pekerjaan_ayah', 'pendidikan_ayah', 'penghasilan_ayah', 'no_hp_ayah',
+        // Ibu
+        'nama_ibu', 'nik_ibu', 'tahun_lahir_ibu', 'pekerjaan_ibu', 'pendidikan_ibu', 'penghasilan_ibu', 'no_hp_ibu',
+        // Wali
+        'nama_wali', 'nik_wali', 'tahun_lahir_wali', 'pekerjaan_wali', 'pendidikan_wali', 'penghasilan_wali', 'no_hp_wali',
         'jurusan_id',
         'kelas_id',
         'gelombang_id',

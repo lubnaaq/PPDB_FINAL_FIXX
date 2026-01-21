@@ -57,6 +57,36 @@ class BiodataController extends Controller
             'nisn' => 'nullable|string|max:20',
             'hobi' => 'nullable|string|max:500',
             'keterangan' => 'nullable|string|max:1000',
+            
+            // Data Keluarga
+            'status_orang_tua' => 'required|in:Lengkap,Yatim,Piatu,Yatim Piatu',
+            
+            // Ayah
+            'nama_ayah' => 'nullable|string|max:255',
+            'nik_ayah' => 'nullable|string|max:20',
+            'tahun_lahir_ayah' => 'nullable|string|max:4',
+            'pekerjaan_ayah' => 'nullable|string|max:255',
+            'pendidikan_ayah' => 'nullable|string|max:255',
+            'penghasilan_ayah' => 'nullable|string|max:255',
+            'no_hp_ayah' => 'nullable|string|max:20',
+
+            // Ibu
+            'nama_ibu' => 'nullable|string|max:255',
+            'nik_ibu' => 'nullable|string|max:20',
+            'tahun_lahir_ibu' => 'nullable|string|max:4',
+            'pekerjaan_ibu' => 'nullable|string|max:255',
+            'pendidikan_ibu' => 'nullable|string|max:255',
+            'penghasilan_ibu' => 'nullable|string|max:255',
+            'no_hp_ibu' => 'nullable|string|max:20',
+
+            // Wali
+            'nama_wali' => 'nullable|string|max:255',
+            'nik_wali' => 'nullable|string|max:20',
+            'tahun_lahir_wali' => 'nullable|string|max:4',
+            'pekerjaan_wali' => 'nullable|string|max:255',
+            'pendidikan_wali' => 'nullable|string|max:255',
+            'penghasilan_wali' => 'nullable|string|max:255',
+            'no_hp_wali' => 'nullable|string|max:20',
         ];
 
         $validated = $request->validate($rules);

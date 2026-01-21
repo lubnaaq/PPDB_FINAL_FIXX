@@ -433,6 +433,225 @@
                                             </div>
                                         </div>
 
+                                        <!-- Data Keluarga -->
+                                        <h6 class="mb-3 text-primary">Data Keluarga</h6>
+                                        <div class="row mb-4">
+                                            <div class="col-12">
+                                                <div class="form-group mb-3">
+                                                    <label class="form-label">Status Orang Tua <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" name="status_orang_tua"
+                                                        id="statusOrangTua" required>
+                                                        <option value="">Pilih Status</option>
+                                                        <option value="Lengkap"
+                                                            {{ old('status_orang_tua', $biodata->status_orang_tua ?? '') == 'Lengkap' ? 'selected' : '' }}>
+                                                            Lengkap (Ada Ayah & Ibu)</option>
+                                                        <option value="Yatim"
+                                                            {{ old('status_orang_tua', $biodata->status_orang_tua ?? '') == 'Yatim' ? 'selected' : '' }}>
+                                                            Yatim (Ayah Meninggal)</option>
+                                                        <option value="Piatu"
+                                                            {{ old('status_orang_tua', $biodata->status_orang_tua ?? '') == 'Piatu' ? 'selected' : '' }}>
+                                                            Piatu (Ibu Meninggal)</option>
+                                                        <option value="Yatim Piatu"
+                                                            {{ old('status_orang_tua', $biodata->status_orang_tua ?? '') == 'Yatim Piatu' ? 'selected' : '' }}>
+                                                            Yatim Piatu (Ayah & Ibu Meninggal)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Section Ayah -->
+                                        <div id="sectionAyah" style="display: none;">
+                                            <h6 class="mb-3 text-secondary">Data Ayah</h6>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Nama Ayah <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="nama_ayah"
+                                                        value="{{ old('nama_ayah', $biodata->nama_ayah ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">NIK Ayah <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="nik_ayah"
+                                                        inputmode="numeric" pattern="[0-9]*" maxlength="16"
+                                                        value="{{ old('nik_ayah', $biodata->nik_ayah ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tahun Lahir Ayah <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" name="tahun_lahir_ayah"
+                                                        value="{{ old('tahun_lahir_ayah', $biodata->tahun_lahir_ayah ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Pekerjaan Ayah <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="pekerjaan_ayah"
+                                                        value="{{ old('pekerjaan_ayah', $biodata->pekerjaan_ayah ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Pendidikan Terakhir Ayah <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="pendidikan_ayah"
+                                                        value="{{ old('pendidikan_ayah', $biodata->pendidikan_ayah ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Penghasilan Ayah <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" name="penghasilan_ayah">
+                                                        <option value="">Pilih Penghasilan</option>
+                                                        <option value="< 1 Juta"
+                                                            {{ old('penghasilan_ayah', $biodata->penghasilan_ayah ?? '') == '< 1 Juta' ? 'selected' : '' }}>
+                                                            < 1 Juta</option>
+                                                        <option value="1-3 Juta"
+                                                            {{ old('penghasilan_ayah', $biodata->penghasilan_ayah ?? '') == '1-3 Juta' ? 'selected' : '' }}>
+                                                            1 - 3 Juta</option>
+                                                        <option value="3-5 Juta"
+                                                            {{ old('penghasilan_ayah', $biodata->penghasilan_ayah ?? '') == '3-5 Juta' ? 'selected' : '' }}>
+                                                            3 - 5 Juta</option>
+                                                        <option value="> 5 Juta"
+                                                            {{ old('penghasilan_ayah', $biodata->penghasilan_ayah ?? '') == '> 5 Juta' ? 'selected' : '' }}>
+                                                            > 5 Juta</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">No. HP Ayah <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="no_hp_ayah"
+                                                        inputmode="numeric" pattern="[0-9]*"
+                                                        value="{{ old('no_hp_ayah', $biodata->no_hp_ayah ?? '') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Section Ibu -->
+                                        <div id="sectionIbu" style="display: none;">
+                                            <h6 class="mb-3 text-secondary">Data Ibu</h6>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Nama Ibu <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="nama_ibu"
+                                                        value="{{ old('nama_ibu', $biodata->nama_ibu ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">NIK Ibu <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="nik_ibu"
+                                                        inputmode="numeric" pattern="[0-9]*" maxlength="16"
+                                                        value="{{ old('nik_ibu', $biodata->nik_ibu ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tahun Lahir Ibu <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" name="tahun_lahir_ibu"
+                                                        value="{{ old('tahun_lahir_ibu', $biodata->tahun_lahir_ibu ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Pekerjaan Ibu <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="pekerjaan_ibu"
+                                                        value="{{ old('pekerjaan_ibu', $biodata->pekerjaan_ibu ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Pendidikan Terakhir Ibu <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="pendidikan_ibu"
+                                                        value="{{ old('pendidikan_ibu', $biodata->pendidikan_ibu ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Penghasilan Ibu <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" name="penghasilan_ibu">
+                                                        <option value="">Pilih Penghasilan</option>
+                                                        <option value="< 1 Juta"
+                                                            {{ old('penghasilan_ibu', $biodata->penghasilan_ibu ?? '') == '< 1 Juta' ? 'selected' : '' }}>
+                                                            < 1 Juta</option>
+                                                        <option value="1-3 Juta"
+                                                            {{ old('penghasilan_ibu', $biodata->penghasilan_ibu ?? '') == '1-3 Juta' ? 'selected' : '' }}>
+                                                            1 - 3 Juta</option>
+                                                        <option value="3-5 Juta"
+                                                            {{ old('penghasilan_ibu', $biodata->penghasilan_ibu ?? '') == '3-5 Juta' ? 'selected' : '' }}>
+                                                            3 - 5 Juta</option>
+                                                        <option value="> 5 Juta"
+                                                            {{ old('penghasilan_ibu', $biodata->penghasilan_ibu ?? '') == '> 5 Juta' ? 'selected' : '' }}>
+                                                            > 5 Juta</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">No. HP Ibu <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="no_hp_ibu"
+                                                        inputmode="numeric" pattern="[0-9]*"
+                                                        value="{{ old('no_hp_ibu', $biodata->no_hp_ibu ?? '') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Section Wali -->
+                                        <div id="sectionWali" style="display: none;">
+                                            <h6 class="mb-3 text-secondary">Data Wali</h6>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Nama Wali <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="nama_wali"
+                                                        value="{{ old('nama_wali', $biodata->nama_wali ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">NIK Wali <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="nik_wali"
+                                                        inputmode="numeric" pattern="[0-9]*" maxlength="16"
+                                                        value="{{ old('nik_wali', $biodata->nik_wali ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Tahun Lahir Wali <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="number" class="form-control" name="tahun_lahir_wali"
+                                                        value="{{ old('tahun_lahir_wali', $biodata->tahun_lahir_wali ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Pekerjaan Wali <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="pekerjaan_wali"
+                                                        value="{{ old('pekerjaan_wali', $biodata->pekerjaan_wali ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Pendidikan Terakhir Wali <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="pendidikan_wali"
+                                                        value="{{ old('pendidikan_wali', $biodata->pendidikan_wali ?? '') }}">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">Penghasilan Wali <span
+                                                            class="text-danger">*</span></label>
+                                                    <select class="form-select" name="penghasilan_wali">
+                                                        <option value="">Pilih Penghasilan</option>
+                                                        <option value="< 1 Juta"
+                                                            {{ old('penghasilan_wali', $biodata->penghasilan_wali ?? '') == '< 1 Juta' ? 'selected' : '' }}>
+                                                            < 1 Juta</option>
+                                                        <option value="1-3 Juta"
+                                                            {{ old('penghasilan_wali', $biodata->penghasilan_wali ?? '') == '1-3 Juta' ? 'selected' : '' }}>
+                                                            1 - 3 Juta</option>
+                                                        <option value="3-5 Juta"
+                                                            {{ old('penghasilan_wali', $biodata->penghasilan_wali ?? '') == '3-5 Juta' ? 'selected' : '' }}>
+                                                            3 - 5 Juta</option>
+                                                        <option value="> 5 Juta"
+                                                            {{ old('penghasilan_wali', $biodata->penghasilan_wali ?? '') == '> 5 Juta' ? 'selected' : '' }}>
+                                                            > 5 Juta</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label class="form-label">No. HP Wali <span
+                                                            class="text-danger">*</span></label>
+                                                    <input type="text" class="form-control" name="no_hp_wali"
+                                                        inputmode="numeric" pattern="[0-9]*"
+                                                        value="{{ old('no_hp_wali', $biodata->no_hp_wali ?? '') }}">
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <!-- Terms & Submit -->
                                         <div class="row">
                                             <div class="col-12">
@@ -510,6 +729,58 @@
                         // Hapus semua karakter non-angka
                         this.value = this.value.replace(/[^0-9]/g, '');
                     });
+
+                    // Logic Status Orang Tua
+                    const statusOrangTuaSelect = document.getElementById('statusOrangTua');
+                    const sectionAyah = document.getElementById('sectionAyah');
+                    const sectionIbu = document.getElementById('sectionIbu');
+                    const sectionWali = document.getElementById('sectionWali');
+
+                    function toggleRequired(section, isRequired) {
+                        const inputs = section.querySelectorAll('input, select');
+                        inputs.forEach(input => {
+                            if (isRequired) {
+                                input.setAttribute('required', 'required');
+                            } else {
+                                input.removeAttribute('required');
+                            }
+                        });
+                    }
+
+                    function handleStatusOrangTua() {
+                        const status = statusOrangTuaSelect.value;
+
+                        // Hide all first
+                        sectionAyah.style.display = 'none';
+                        sectionIbu.style.display = 'none';
+                        sectionWali.style.display = 'none';
+
+                        toggleRequired(sectionAyah, false);
+                        toggleRequired(sectionIbu, false);
+                        toggleRequired(sectionWali, false);
+
+                        if (status === 'Lengkap') {
+                            sectionAyah.style.display = 'block';
+                            sectionIbu.style.display = 'block';
+                            toggleRequired(sectionAyah, true);
+                            toggleRequired(sectionIbu, true);
+                        } else if (status === 'Yatim') {
+                            sectionIbu.style.display = 'block';
+                            toggleRequired(sectionIbu, true);
+                        } else if (status === 'Piatu') {
+                            sectionAyah.style.display = 'block';
+                            toggleRequired(sectionAyah, true);
+                        } else if (status === 'Yatim Piatu') {
+                            sectionWali.style.display = 'block';
+                            toggleRequired(sectionWali, true);
+                        }
+                    }
+
+                    if (statusOrangTuaSelect) {
+                        statusOrangTuaSelect.addEventListener('change', handleStatusOrangTua);
+                        // Run once on load to set initial state
+                        handleStatusOrangTua();
+                    }
 
                     // Cascading Dropdown Logic using EMSIFA API
                     const provinsiSelect = document.getElementById('provinsiSelect');
