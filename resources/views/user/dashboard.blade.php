@@ -98,7 +98,7 @@
     /* Configurable theme variables (edit values to change colors) */
     :root {
         /* Background image (can be url('...') or none) */
-        --bg-image-url: url('assets/images/widget/image.png');
+        --bg-image-url: url('assets/images/user/image.png');
 
         /* Overlay card colors */
         --card-bg: rgba(255, 255, 255, 0.62);

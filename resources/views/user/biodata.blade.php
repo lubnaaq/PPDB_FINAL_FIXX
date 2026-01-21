@@ -993,7 +993,7 @@
 
         /* Background utama halaman */
         .pc-content {
-            background: url('assets/images/widget/image.png') !important;
+            background: url('assets/images/user/image.png') !important;
             background-size: cover !important;
             background-attachment: fixed !important;
             background-position: center !important;
