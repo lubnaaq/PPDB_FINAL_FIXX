@@ -207,6 +207,12 @@
             justify-content: center;
         }
 
+        /* Hide PNG/SVG export for selected charts */
+        .csv-only-toolbar .apexcharts-menu-item.exportSVG,
+        .csv-only-toolbar .apexcharts-menu-item.exportPNG {
+            display: none !important;
+        }
+
         /* Last update info */
         .last-update {
             position: absolute;
@@ -330,7 +336,7 @@
                             </h5>
                         </div>
                         <div class="card-body">
-                            <div id="dashStatusVerifikasiChart"></div>
+                            <div id="dashStatusVerifikasiChart" class="csv-only-toolbar"></div>
                         </div>
                     </div>
                 </div>
@@ -342,7 +348,7 @@
                             <h5><i class="feather icon-filter me-2" style="color: #ffc107;"></i>Status Seleksi Biodata</h5>
                         </div>
                         <div class="card-body">
-                            <div id="dashStatusSeleksiChart"></div>
+                            <div id="dashStatusSeleksiChart" class="csv-only-toolbar"></div>
                         </div>
                     </div>
                 </div>
