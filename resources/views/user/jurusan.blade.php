@@ -147,7 +147,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="card-footer bg-transparent border-top-0">
-                                                    <small class="text-muted">Kuota: {{ $jurusan->kuota }} Siswa</small>
+                                                    @php
+                                                        $sisa = max(0, $jurusan->kuota - $jurusan->biodatas_count);
+                                                    @endphp
+                                                    <small class="text-muted">Sisa Kuota: {{ $sisa }} Siswa</small>
                                                 </div>
                                             </div>
                                         </div>

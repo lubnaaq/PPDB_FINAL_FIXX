@@ -66,6 +66,10 @@ Route::middleware(['auth', 'web'])->group(function () {
     // Admin routes
     Route::middleware(['cekRole:admin'])->group(function () {
         
+        // Admin Jurusan Routes (Quota Management)
+        Route::get('/jurusan-admin', [App\Http\Controllers\AdminJurusanController::class, 'index'])->name('admin.jurusan');
+        Route::put('/jurusan-admin/{jurusan}', [App\Http\Controllers\AdminJurusanController::class, 'update'])->name('admin.jurusan.update');
+
         Route::get('/pendaftar', [App\Http\Controllers\AdminPendaftarController::class, 'index'])->name('admin.pendaftar');
 
         Route::get('/verifikasi', [AdminDokumenController::class, 'index'])->name('admin.verifikasi');

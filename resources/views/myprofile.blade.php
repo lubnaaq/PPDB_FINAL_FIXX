@@ -165,6 +165,121 @@
                                                         </p>
                                                     </div>
                                                 </div>
+
+                                                <h5 class="mb-3 mt-4">Data Keluarga</h5>
+                                                <div class="row mb-3">
+                                                    <label class="col-md-3 col-form-label fw-bold">Status Orang Tua</label>
+                                                    <div class="col-md-9">
+                                                        <p class="form-control-plaintext">
+                                                            {{ $biodata->status_orang_tua ?? '-' }}</p>
+                                                    </div>
+                                                </div>
+
+                                                @if ($biodata->status_orang_tua == 'Lengkap' || $biodata->status_orang_tua == 'Piatu')
+                                                    <!-- Data Ayah -->
+                                                    <h6 class="text-secondary mt-3 mb-2">Data Ayah</h6>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">Nama Ayah</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->nama_ayah ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">NIK Ayah</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->nik_ayah ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">Pekerjaan</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->pekerjaan_ayah ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">No. HP Ayah</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->no_hp_ayah ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
+                                                @if ($biodata->status_orang_tua == 'Lengkap' || $biodata->status_orang_tua == 'Yatim')
+                                                    <!-- Data Ibu -->
+                                                    <h6 class="text-secondary mt-3 mb-2">Data Ibu</h6>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">Nama Ibu</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->nama_ibu ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">NIK Ibu</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->nik_ibu ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">Pekerjaan</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->pekerjaan_ibu ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">No. HP Ibu</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->no_hp_ibu ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                @endif
+
+                                                @if ($biodata->status_orang_tua == 'Yatim Piatu')
+                                                    <!-- Data Wali -->
+                                                    <h6 class="text-secondary mt-3 mb-2">Data Wali</h6>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">Nama Wali</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->nama_wali ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">NIK Wali</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->nik_wali ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">Hubungan</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                Data Wali Pengganti Orang Tua</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">Pekerjaan</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->pekerjaan_wali ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <label class="col-md-3 col-form-label fw-bold">No. HP Wali</label>
+                                                        <div class="col-md-9">
+                                                            <p class="form-control-plaintext">
+                                                                {{ $biodata->no_hp_wali ?? '-' }}</p>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             @else
                                                 <div class="alert alert-warning" role="alert">
                                                     Anda belum mengisi biodata. Silakan isi biodata terlebih dahulu di menu

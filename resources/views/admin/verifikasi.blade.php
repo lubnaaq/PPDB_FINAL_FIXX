@@ -58,7 +58,7 @@
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead class="table-light">
-                                    <tr>
+                                    <tr class="text-center">
                                         <th width="5%">No.</th>
                                         <th width="25%">Nama Pendaftar</th>
                                         <th width="20%">Email</th>
@@ -92,8 +92,8 @@
                                             $paymentStatus =
                                                 $user->payments->sortByDesc('created_at')->first()?->status ?? 'none';
                                         @endphp
-                                        <tr>
-                                            <td>{{ $counter++ }}</td>
+                                        <tr class="align-middle">
+                                            <td class="text-center">{{ $counter++ }}</td>
                                             <td>
                                                 <strong>{{ $user->name ?? '-' }}</strong>
                                                 @if (optional(optional($user)->biodata)->kelas)
@@ -102,12 +102,12 @@
                                                         class="text-success fw-bold">{{ $user->biodata->kelas->nama_kelas }}</small>
                                                 @endif
                                             </td>
-                                            <td><small>{{ $user->email ?? '-' }}</small></td>
+                                            <td class="text-center"><small>{{ $user->email ?? '-' }}</small></td>
                                             <td class="text-center">
                                                 <span class="badge bg-info">{{ $totalDocs }} Dokumen</span>
                                             </td>
                                             <td>
-                                                <div class="d-flex flex-wrap gap-1">
+                                                <div class="d-flex flex-wrap gap-1 justify-content-center">
                                                     @if ($pendingDocs > 0)
                                                         <span class="badge bg-warning text-dark">{{ $pendingDocs }}
                                                             Menunggu</span>
@@ -131,8 +131,8 @@
                                                     <span class="badge bg-secondary">Belum Bayar</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-primary w-100"
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-sm btn-primary"
                                                     onclick="toggleDetails({{ $userId }})">
                                                     <i class="feather icon-chevron-down" id="icon-{{ $userId }}"></i>
                                                 </button>
@@ -150,7 +150,7 @@
                                                         <div class="table-responsive">
                                                             <table class="table table-sm table-bordered bg-white mb-0">
                                                                 <thead class="table-secondary">
-                                                                    <tr>
+                                                                    <tr class="text-center">
                                                                         <th width="5%">No.</th>
                                                                         <th width="30%">Nama Dokumen</th>
                                                                         <th width="10%">Tipe</th>
@@ -195,7 +195,7 @@
                                                                                         <i class="feather icon-eye"></i>
                                                                                         Lihat
                                                                                     </a>
-                                                                                    @if ($dok->status_verifikasi !== 'disetujui')
+                                                                                    @if ($dok->status_verifikasi === 'pending')
                                                                                         <button type="button"
                                                                                             class="btn btn-sm btn-success"
                                                                                             onclick="setujui({{ $dok->id }})"
@@ -204,8 +204,6 @@
                                                                                                 class="feather icon-check"></i>
                                                                                             Setujui
                                                                                         </button>
-                                                                                    @endif
-                                                                                    @if ($dok->status_verifikasi !== 'ditolak')
                                                                                         <button type="button"
                                                                                             class="btn btn-sm btn-danger"
                                                                                             onclick="tolak({{ $dok->id }})"
@@ -344,13 +342,10 @@
                                                 <i class="feather icon-eye"></i> Lihat
                                             </a>`;
 
-                            if (status !== 'disetujui') {
+                            if (status === 'pending') {
                                 buttons += `<button type="button" class="btn btn-sm btn-success" onclick="setujui(${id})" title="Setujui">
                                                 <i class="feather icon-check"></i> Setujui
                                             </button>`;
-                            }
-
-                            if (status !== 'ditolak') {
                                 buttons += `<button type="button" class="btn btn-sm btn-danger" onclick="tolak(${id})" title="Tolak">
                                                 <i class="feather icon-x"></i> Tolak
                                             </button>`;

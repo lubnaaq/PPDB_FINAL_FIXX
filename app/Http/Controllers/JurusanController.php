@@ -14,7 +14,7 @@ class JurusanController extends Controller
 {
     public function index()
     {
-        $jurusans = Jurusan::all();
+        $jurusans = Jurusan::withCount('biodatas')->get();
         $user = Auth::user();
         $biodata = $user->biodata;
         $selectedJurusanId = $biodata ? $biodata->jurusan_id : null;

@@ -58,7 +58,7 @@
                         <div class="table-responsive">
                             <table class="table table-striped table-hover">
                                 <thead>
-                                    <tr>
+                                    <tr class="text-center">
                                         <th>No.</th>
                                         <th>Nama Pendaftar</th>
                                         <th>Jumlah</th>
@@ -70,8 +70,8 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($payments as $i => $pay)
-                                        <tr>
-                                            <td>{{ ($payments->currentPage() - 1) * $payments->perPage() + $i + 1 }}</td>
+                                        <tr class="align-middle">
+                                            <td class="text-center">{{ ($payments->currentPage() - 1) * $payments->perPage() + $i + 1 }}</td>
                                             <td>
                                                 {{ $pay->user->name ?? '-' }}
                                                 @if (optional(optional($pay->user)->biodata)->kelas)
@@ -80,9 +80,9 @@
                                                         class="text-success fw-bold">{{ $pay->user->biodata->kelas->nama_kelas }}</small>
                                                 @endif
                                             </td>
-                                            <td>Rp {{ number_format($pay->amount, 0, ',', '.') }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($pay->payment_date)->format('d/m/Y') }}</td>
-                                            <td>
+                                            <td class="text-center">Rp {{ number_format($pay->amount, 0, ',', '.') }}</td>
+                                            <td class="text-center">{{ \Carbon\Carbon::parse($pay->payment_date)->format('d/m/Y') }}</td>
+                                            <td class="text-center">
                                                 @if ($pay->status === 'pending')
                                                     <span class="badge bg-warning text-dark">Menunggu</span>
                                                 @elseif ($pay->status === 'verified')
@@ -91,7 +91,7 @@
                                                     <span class="badge bg-danger">Ditolak</span>
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 @if ($pay->status === 'rejected')
                                                     <button type="button" class="btn btn-sm btn-secondary"
                                                         onclick="showRejectedInfo()">
@@ -104,17 +104,19 @@
                                                     </a>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-sm btn-success"
-                                                        onclick="setujuiPayment({{ $pay->id }})">
-                                                        <i class="feather icon-check"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-sm btn-danger"
-                                                        onclick="tolakPayment({{ $pay->id }})">
-                                                        <i class="feather icon-x"></i>
-                                                    </button>
-                                                </div>
+                                            <td class="text-center">
+                                                @if ($pay->status === 'pending')
+                                                    <div class="btn-group" role="group">
+                                                        <button type="button" class="btn btn-sm btn-success"
+                                                            onclick="setujuiPayment({{ $pay->id }})">
+                                                            <i class="feather icon-check"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-sm btn-danger"
+                                                            onclick="tolakPayment({{ $pay->id }})">
+                                                            <i class="feather icon-x"></i>
+                                                        </button>
+                                                    </div>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty
